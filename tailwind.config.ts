@@ -33,7 +33,18 @@ const config: Config = {
         serif: ["'Playfair Display'", "Georgia", "serif"],
       },
       maxWidth: {
-        page: "1280px",
+        page: "1240px",
+        prose: "62ch",
+      },
+      borderRadius: {
+        card: "20px",
+        "card-lg": "28px",
+        "card-xl": "32px",
+      },
+      boxShadow: {
+        soft: "0 1px 2px rgba(122,99,71,0.04), 0 8px 24px -12px rgba(122,99,71,0.18)",
+        "soft-lg":
+          "0 2px 4px rgba(122,99,71,0.05), 0 18px 40px -16px rgba(122,99,71,0.22)",
       },
       animation: {
         "scroll-x": "scroll-x 30s linear infinite",

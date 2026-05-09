@@ -77,7 +77,7 @@ export default function HomePage() {
             >
               ›
             </button>
-            <div className="aspect-square w-full overflow-hidden rounded-[28px] shadow-sm ring-1 ring-cream-300/40">
+            <div className="aspect-square w-full overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
               <PuppyImage variant="p3" />
             </div>
           </div>
@@ -120,7 +120,7 @@ export default function HomePage() {
             Highlight
           </h2>
         </div>
-        <div className="mx-auto mt-12 aspect-[16/10] max-w-3xl overflow-hidden rounded-[28px] shadow-sm ring-1 ring-cream-300/40">
+        <div className="mx-auto mt-12 aspect-[16/10] max-w-3xl overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
           <PuppyImage variant="p7" />
         </div>
       </Section>
@@ -164,17 +164,17 @@ export default function HomePage() {
             <Link
               key={i}
               href="/visitor-guide"
-              className="group rounded-3xl bg-cream-50 p-3 ring-1 ring-cream-300/50 transition-all hover:-translate-y-1 hover:shadow-md"
+              className="group rounded-card-lg bg-cream-50 p-3 ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
             >
-              <div className="aspect-[4/5] overflow-hidden rounded-2xl">
+              <div className="aspect-[4/5] overflow-hidden rounded-card">
                 <PuppyImage variant={r.variant} />
               </div>
               <div className="px-2 pb-2 pt-5">
-                <div className="flex items-center justify-between text-sm text-ink-500">
+                <div className="flex items-center justify-between text-[13px] text-ink-500">
                   <span className="font-semibold text-ink-900">{r.name}</span>
-                  <span>{r.period}</span>
+                  <span className="tnum tracking-tight">{r.period}</span>
                 </div>
-                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-ink-700">
+                <p className="mt-3 line-clamp-3 text-[14px] leading-[1.8] text-ink-700">
                   “{r.text}”
                 </p>
               </div>
@@ -185,19 +185,19 @@ export default function HomePage() {
 
       {/* CTA */}
       <Section className="pt-24 lg:pt-32">
-        <div className="overflow-hidden rounded-[32px] bg-[#1A1612] px-8 py-14 text-center text-cream-100 md:px-14 md:py-20">
-          <p className="font-serif tracking-[0.4em] text-kennel-accent">
-            COTON · KENNEL
+        <div className="overflow-hidden rounded-card-xl bg-[#1A1612] px-8 py-16 text-center text-cream-100 md:px-14 md:py-20">
+          <p className="font-serif text-[12px] uppercase tracking-[0.42em] text-kennel-accent">
+            Coton · Kennel
           </p>
-          <h2 className="mt-4 text-2xl font-bold md:text-4xl">
+          <h2 className="mt-5 text-[26px] font-bold leading-[1.25] tracking-[-0.018em] md:text-[40px] md:leading-[1.18]">
             평생을 함께할 가족, 이제 만나러 가요.
           </h2>
-          <p className="mt-4 text-cream-300/80">
+          <p className="mx-auto mt-5 max-w-md text-[14.5px] leading-[1.8] text-cream-300/80">
             방문 상담은 사전 예약제로 운영됩니다. 언제든 편하게 문의 주세요.
           </p>
           <Link
             href="/contact"
-            className="mt-8 inline-flex items-center gap-3 rounded-full bg-kennel-btn px-7 py-3.5 text-sm font-medium text-cream-50 transition-all hover:-translate-y-0.5 hover:bg-kennel-dark"
+            className="mt-9 inline-flex items-center gap-3 rounded-full bg-kennel-btn px-7 py-3.5 text-[13.5px] font-medium tracking-wide text-cream-50 transition-all hover:-translate-y-0.5 hover:bg-kennel-dark"
           >
             상담 / 문의하기
             <svg width="20" height="10" viewBox="0 0 20 10" fill="none" aria-hidden>
@@ -233,7 +233,7 @@ function Marquee({
         {list.map((p, i) => (
           <div
             key={i}
-            className="aspect-[4/3] w-[260px] shrink-0 overflow-hidden rounded-2xl bg-cream-50 ring-1 ring-cream-300/40 transition-transform group-hover:scale-[0.99]"
+            className="aspect-[4/3] w-[260px] shrink-0 overflow-hidden rounded-card bg-cream-50 ring-1 ring-cream-300/50 transition-transform group-hover:scale-[0.99]"
           >
             <PuppyImage variant={p.variant} alt={p.name} />
           </div>

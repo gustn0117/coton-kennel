@@ -92,15 +92,17 @@ export default function ContactPage() {
           {STEPS.map((s, i) => (
             <article
               key={i}
-              className="rounded-3xl bg-cream-50 p-7 ring-1 ring-cream-300/50 transition-all hover:-translate-y-1 hover:shadow-md"
+              className="rounded-card-lg bg-cream-50 p-8 ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-kennel-gold/10">
-                <span className="font-serif text-2xl font-bold text-kennel-gold">
+              <div className="flex h-14 w-14 items-center justify-center rounded-card bg-kennel-gold/10">
+                <span className="tnum font-serif text-[22px] font-bold tracking-tight text-kennel-gold">
                   {s.num}
                 </span>
               </div>
-              <h3 className="mt-5 text-lg font-bold text-ink-900">{s.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-ink-700">
+              <h3 className="mt-6 text-[18px] font-bold leading-[1.3] tracking-[-0.018em] text-ink-900">
+                {s.title}
+              </h3>
+              <p className="mt-3 text-[13.5px] leading-[1.8] text-ink-700">
                 {s.desc}
               </p>
             </article>
@@ -123,9 +125,9 @@ export default function ContactPage() {
             href="https://pf.kakao.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative overflow-hidden rounded-3xl bg-cream-50 p-8 ring-1 ring-cream-300/50 transition-all hover:-translate-y-1 hover:shadow-md"
+            className="group relative overflow-hidden rounded-card-lg bg-cream-50 p-8 ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FEE500]">
+            <div className="flex h-14 w-14 items-center justify-center rounded-card bg-[#FEE500]">
               <svg viewBox="0 0 32 32" className="h-7 w-7" fill="#1A1A1A" aria-hidden>
                 <path d="M16 4C8.27 4 2 8.86 2 14.85c0 3.83 2.6 7.18 6.5 9.05l-1.4 4.94c-.13.45.36.82.76.58l5.84-3.62c.75.1 1.52.15 2.3.15 7.73 0 14-4.86 14-10.85S23.73 4 16 4z" />
               </svg>
@@ -141,9 +143,9 @@ export default function ContactPage() {
 
           <a
             href="tel:01000000000"
-            className="group relative overflow-hidden rounded-3xl bg-cream-50 p-8 ring-1 ring-cream-300/50 transition-all hover:-translate-y-1 hover:shadow-md"
+            className="group relative overflow-hidden rounded-card-lg bg-cream-50 p-8 ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cream-200">
+            <div className="flex h-14 w-14 items-center justify-center rounded-card bg-cream-200">
               <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" aria-hidden>
                 <path
                   d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"
@@ -162,9 +164,9 @@ export default function ContactPage() {
 
           <a
             href="#wechat"
-            className="group relative overflow-hidden rounded-3xl bg-cream-50 p-8 ring-1 ring-cream-300/50 transition-all hover:-translate-y-1 hover:shadow-md"
+            className="group relative overflow-hidden rounded-card-lg bg-cream-50 p-8 ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#07C160]">
+            <div className="flex h-14 w-14 items-center justify-center rounded-card bg-[#07C160]">
               <svg viewBox="0 0 24 24" className="h-7 w-7" fill="white" aria-hidden>
                 <path d="M8.69 3C4.55 3 1.2 5.7 1.2 9.04c0 1.93 1.13 3.66 2.88 4.78l-.72 2.16 2.52-1.26c.66.18 1.34.28 2.04.3-.1-.42-.16-.84-.16-1.28 0-3.34 3.36-6.04 7.5-6.04.18 0 .36 0 .54.02C15.06 4.6 12.18 3 8.69 3z" />
               </svg>
@@ -181,21 +183,23 @@ export default function ContactPage() {
       {/* Notices */}
       <Section className="pt-24 lg:pt-32">
         <SectionHeading eyebrow="Notice" title="새로 들어온 소식" />
-        <ul className="mt-8 overflow-hidden rounded-2xl bg-cream-50 ring-1 ring-cream-300/50">
+        <ul className="mt-8 overflow-hidden rounded-card bg-cream-50 ring-1 ring-cream-300/50">
           {NOTICES.map((n, i) => (
             <li key={i} className="border-b border-cream-200 last:border-b-0">
               <button
                 type="button"
                 onClick={() => setOpenNotice(n)}
-                className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left text-sm transition-colors hover:bg-cream-100"
+                className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left text-[14px] transition-colors hover:bg-cream-100"
               >
                 <span className="flex items-center gap-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-kennel-gold/15 text-xs font-semibold text-kennel-gold">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-kennel-gold/15 text-[11px] font-semibold tracking-wide text-kennel-gold">
                     N
                   </span>
                   <span className="font-medium text-ink-900">{n.title}</span>
                 </span>
-                <span className="text-xs text-ink-500">{n.date}</span>
+                <span className="tnum text-[12.5px] tracking-tight text-ink-500">
+                  {n.date}
+                </span>
               </button>
             </li>
           ))}
@@ -205,7 +209,7 @@ export default function ContactPage() {
       {/* FAQ */}
       <Section className="pt-24 lg:pt-32">
         <SectionHeading eyebrow="FAQ" title="자주 묻는 질문" />
-        <div className="mt-8 divide-y divide-cream-200 rounded-2xl bg-cream-50 ring-1 ring-cream-300/50">
+        <div className="mt-8 divide-y divide-cream-200 rounded-card bg-cream-50 ring-1 ring-cream-300/50">
           {FAQ.map((f, i) => (
             <div key={i}>
               <button
@@ -245,7 +249,7 @@ export default function ContactPage() {
           onClick={() => setOpenNotice(null)}
         >
           <div
-            className="relative w-full max-w-2xl rounded-3xl bg-white p-8 shadow-2xl"
+            className="relative w-full max-w-2xl rounded-card-xl bg-white p-8 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -269,7 +273,7 @@ export default function ContactPage() {
               </span>
             </div>
             <div className="grid gap-6 md:grid-cols-[1fr_1.2fr]">
-              <div className="aspect-square w-full overflow-hidden rounded-2xl">
+              <div className="aspect-square w-full overflow-hidden rounded-card">
                 <PuppyImage variant="p1" />
               </div>
               <div>

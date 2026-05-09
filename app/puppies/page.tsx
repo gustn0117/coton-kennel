@@ -69,7 +69,7 @@ export default function PuppiesPage() {
 
       {/* Filter row */}
       <Section className="pt-6">
-        <div className="flex flex-wrap items-center justify-center gap-4 rounded-2xl bg-cream-50 px-6 py-5 ring-1 ring-cream-300/50 md:gap-8">
+        <div className="flex flex-wrap items-center justify-center gap-4 rounded-card bg-cream-50 px-6 py-5 ring-1 ring-cream-300/50 md:gap-8">
           <Filter
             label="색상"
             value={filters.color}
@@ -113,32 +113,34 @@ export default function PuppiesPage() {
                   setSelected(p);
                   setActiveThumb(0);
                 }}
-                className="group rounded-3xl bg-cream-50 p-3 text-left ring-1 ring-cream-300/50 transition-all hover:-translate-y-1 hover:shadow-md"
+                className="group rounded-card-lg bg-cream-50 p-3 text-left ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
               >
-                <div className="relative aspect-square w-full overflow-hidden rounded-2xl">
+                <div className="relative aspect-square w-full overflow-hidden rounded-card">
                   <PuppyImage variant={p.variant} />
                   {p.status === "분양완료" && (
-                    <span className="absolute left-3 top-3 rounded-full bg-ink-900/80 px-3 py-1 text-xs font-medium text-cream-100">
+                    <span className="absolute left-3 top-3 rounded-full bg-ink-900/80 px-3 py-1 text-[11px] font-medium tracking-wide text-cream-100">
                       분양완료
                     </span>
                   )}
                 </div>
                 <div className="px-2 pb-1 pt-4">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-bold text-ink-900">
-                      {p.name}를 입양해주세요
-                    </h3>
-                  </div>
-                  <div className="mt-1.5 flex items-center gap-2 text-xs">
+                  <h3 className="text-[16.5px] font-bold leading-[1.3] tracking-[-0.018em] text-ink-900">
+                    {p.name}를 입양해주세요
+                  </h3>
+                  <div className="mt-2 flex items-center gap-1.5 text-[11.5px]">
                     <span className="rounded-full bg-cream-200 px-2 py-0.5 font-medium text-kennel-dark">
                       {p.gender}
                     </span>
-                    <span className="rounded-full bg-cream-200 px-2 py-0.5 font-medium text-kennel-dark">
+                    <span className="tnum rounded-full bg-cream-200 px-2 py-0.5 font-medium tracking-tight text-kennel-dark">
                       {p.months}개월
                     </span>
                   </div>
-                  <p className="mt-3 text-sm text-ink-700">색상 : {p.color}</p>
-                  <p className="text-sm text-ink-700">분양 : {p.status === "분양중" ? "미분양" : "완료"}</p>
+                  <p className="mt-3 text-[13.5px] leading-[1.7] text-ink-700">
+                    색상 · {p.color}
+                  </p>
+                  <p className="text-[13.5px] leading-[1.7] text-ink-700">
+                    분양 · {p.status === "분양중" ? "미분양" : "완료"}
+                  </p>
                 </div>
               </button>
             ))}
@@ -174,7 +176,7 @@ export default function PuppiesPage() {
           onClick={() => setSelected(null)}
         >
           <div
-            className="relative w-full max-w-3xl rounded-3xl bg-white p-6 shadow-2xl md:p-8"
+            className="relative w-full max-w-3xl rounded-card-xl bg-white p-6 shadow-2xl md:p-9"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -187,7 +189,7 @@ export default function PuppiesPage() {
             </button>
 
             <div className="grid gap-8 md:grid-cols-[1fr_1fr]">
-              <div className="aspect-square w-full overflow-hidden rounded-2xl">
+              <div className="aspect-square w-full overflow-hidden rounded-card">
                 <PuppyImage
                   variant={selected.thumbs[activeThumb] ?? selected.variant}
                 />
@@ -195,24 +197,26 @@ export default function PuppiesPage() {
 
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-2xl font-extrabold text-ink-900">
+                  <h3 className="text-[26px] font-extrabold leading-[1.2] tracking-[-0.02em] text-ink-900">
                     {selected.name}
                   </h3>
-                  <span className="rounded-full bg-cream-200 px-2.5 py-0.5 text-xs font-semibold text-kennel-dark">
+                  <span className="rounded-full bg-cream-200 px-2.5 py-0.5 text-[11.5px] font-semibold text-kennel-dark">
                     {selected.gender}
                   </span>
-                  <span className="ml-auto rounded-full bg-cream-200 px-2.5 py-0.5 text-xs font-semibold text-kennel-dark">
+                  <span className="tnum ml-auto rounded-full bg-cream-200 px-2.5 py-0.5 text-[11.5px] font-semibold tracking-tight text-kennel-dark">
                     {selected.months}개월
                   </span>
                 </div>
-                <ul className="mt-6 space-y-2 text-sm text-ink-700">
-                  <li>색상 : {selected.color}</li>
+                <ul className="mt-7 space-y-2.5 text-[14px] text-ink-700">
+                  <li>색상 · {selected.color}</li>
                   <li>
-                    분양 :{" "}
+                    분양 ·{" "}
                     {selected.status === "분양중" ? "미분양" : "분양완료"}
                   </li>
-                  <li>성별 : {selected.gender}</li>
-                  <li>태어난지 : {selected.months}개월</li>
+                  <li>성별 · {selected.gender}</li>
+                  <li className="tnum tracking-tight">
+                    태어난지 · {selected.months}개월
+                  </li>
                 </ul>
                 <a
                   href="/contact"

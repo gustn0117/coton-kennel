@@ -92,7 +92,7 @@ export default function HeritagePage() {
             >
               ›
             </button>
-            <div className="aspect-[5/4] w-full overflow-hidden rounded-[28px] shadow-sm ring-1 ring-cream-300/50">
+            <div className="aspect-[5/4] w-full overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
               <PuppyImage variant="p11" />
             </div>
           </div>
@@ -110,15 +110,19 @@ export default function HeritagePage() {
           {TROPHIES.map((t, i) => (
             <article
               key={i}
-              className="rounded-3xl bg-cream-50 p-6 ring-1 ring-cream-300/50 transition-all hover:-translate-y-1 hover:shadow-md"
+              className="rounded-card-lg bg-cream-50 p-7 ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
             >
-              <span className="font-serif text-xs tracking-[0.3em] text-kennel-gold">
+              <span className="tnum font-serif text-[12px] tracking-[0.32em] text-kennel-gold">
                 {t.year}
               </span>
-              <h3 className="mt-3 text-xl font-bold text-ink-900">{t.award}</h3>
-              <p className="mt-2 text-sm text-ink-500">{t.host}</p>
-              <span className="mt-6 block h-px bg-cream-300" />
-              <span className="mt-3 inline-flex items-center gap-1 text-xs text-kennel-gold">
+              <h3 className="mt-3 text-[19px] font-bold leading-[1.3] tracking-[-0.018em] text-ink-900">
+                {t.award}
+              </h3>
+              <p className="mt-2 text-[13.5px] leading-[1.7] text-ink-500">
+                {t.host}
+              </p>
+              <span className="mt-7 block h-px bg-cream-300" />
+              <span className="mt-3 inline-flex items-center gap-1 font-serif text-[11px] uppercase tracking-[0.24em] text-kennel-gold">
                 FCI · KKF
               </span>
             </article>
@@ -137,15 +141,17 @@ export default function HeritagePage() {
           {TIMELINE.map((t, i) => (
             <li key={i} className="relative">
               <div className="flex items-center gap-3">
-                <span className="font-serif text-3xl font-bold text-kennel-gold">
+                <span className="tnum font-serif text-[32px] font-bold leading-none tracking-tight text-kennel-gold">
                   {t.year}
                 </span>
                 {i < TIMELINE.length - 1 && (
                   <span className="hidden h-px flex-1 bg-cream-300 md:block" />
                 )}
               </div>
-              <h3 className="mt-3 text-lg font-bold text-ink-900">{t.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-500">
+              <h3 className="mt-4 text-[17px] font-bold leading-[1.3] tracking-[-0.018em] text-ink-900">
+                {t.title}
+              </h3>
+              <p className="mt-2 text-[13.5px] leading-[1.8] text-ink-500">
                 {t.desc}
               </p>
             </li>
@@ -155,20 +161,20 @@ export default function HeritagePage() {
 
       {/* Footer cta */}
       <Section className="pt-24 lg:pt-32">
-        <div className="overflow-hidden rounded-[32px] bg-cream-50 px-8 py-14 ring-1 ring-cream-300/50 md:px-14 md:py-20">
+        <div className="overflow-hidden rounded-card-xl bg-cream-50 px-8 py-14 ring-1 ring-cream-300/50 md:px-14 md:py-20">
           <div className="grid items-center gap-10 md:grid-cols-[1fr_minmax(0,1.1fr)] md:px-0">
             <div>
-              <p className="font-serif tracking-[0.3em] text-kennel-gold">
-                COTON KENNEL
+              <p className="font-serif text-[12px] uppercase tracking-[0.36em] text-kennel-gold">
+                Coton Kennel
               </p>
-              <h2 className="mt-3 text-3xl font-bold leading-tight text-ink-900 md:text-4xl">
+              <h2 className="mt-4 text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
                 혈통의 깊이를
                 <br />
                 직접 만나보세요.
               </h2>
               <a
                 href="/puppies"
-                className="mt-7 inline-flex items-center gap-2 rounded-full bg-kennel-btn px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-kennel-dark"
+                className="mt-8 inline-flex items-center gap-2 rounded-full bg-kennel-btn px-6 py-3 text-[13.5px] font-medium tracking-wide text-white transition-colors hover:bg-kennel-dark"
               >
                 강아지 보러가기
                 <svg width="18" height="10" viewBox="0 0 20 10" fill="none" aria-hidden>
@@ -176,7 +182,7 @@ export default function HeritagePage() {
                 </svg>
               </a>
             </div>
-            <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl">
+            <div className="aspect-[4/3] w-full overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
               <PuppyImage variant="p7" />
             </div>
           </div>

@@ -78,7 +78,7 @@ export default function Hero({
               ›
             </button>
           )}
-          <div className="aspect-[5/4] w-full overflow-hidden rounded-[28px] shadow-[0_8px_28px_-12px_rgba(122,99,71,0.25)] ring-1 ring-cream-300/60">
+          <div className="aspect-[5/4] w-full overflow-hidden rounded-card-lg shadow-soft-lg ring-1 ring-cream-300/60">
             <PuppyImage variant={variant} />
           </div>
         </div>

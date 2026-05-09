@@ -24,12 +24,19 @@ type Props = {
   alt?: string;
 };
 
-const TONES: { bg: string; line: string }[] = [
-  { bg: "#F5EFE3", line: "#D7C49F" },
-  { bg: "#FAF6EE", line: "#D7C49F" },
-  { bg: "#EFE6D2", line: "#C9A878" },
-  { bg: "#F5EFE3", line: "#C9A878" },
+type Tone = { bg: string; line: string; opacity: number };
+
+const TONES: Tone[] = [
+  { bg: "#F5EFE3", line: "#C9A878", opacity: 0.55 },
+  { bg: "#FAF6EE", line: "#A48056", opacity: 0.42 },
+  { bg: "#EFE6D2", line: "#A48056", opacity: 0.5 },
+  { bg: "#F5EFE3", line: "#7A6347", opacity: 0.32 },
+  { bg: "#FAF6EE", line: "#C9A878", opacity: 0.62 },
+  { bg: "#EFE6D2", line: "#7A6347", opacity: 0.3 },
 ];
+
+const ANGLES = [45, -45, 30, -30, 60, -60];
+const GAPS = [9, 11, 13, 10, 12, 14];
 
 const ORDER: Variant[] = [
   "hero",
@@ -59,8 +66,8 @@ export default function PuppyImage({
 }: Props) {
   const idx = Math.max(0, ORDER.indexOf(variant));
   const tone = TONES[idx % TONES.length];
-  const angle = idx % 2 === 0 ? 45 : -45;
-  const gap = 10 + (idx % 3) * 2;
+  const angle = ANGLES[idx % ANGLES.length];
+  const gap = GAPS[idx % GAPS.length];
   const patternId = `hatch-${variant}`;
 
   return (
@@ -91,6 +98,7 @@ export default function PuppyImage({
               x2="0"
               y2={gap}
               stroke={tone.line}
+              strokeOpacity={tone.opacity}
               strokeWidth="1.1"
               strokeLinecap="square"
             />
