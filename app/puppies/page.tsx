@@ -5,20 +5,22 @@ import Hero from "@/components/Hero";
 import { Section } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
 
-type Variant =
+type V =
   | "p1" | "p2" | "p3" | "p4" | "p5" | "p6"
   | "p7" | "p8" | "p9" | "p10" | "p11" | "p12";
 
-const PUPPIES: {
+type Puppy = {
   id: number;
   name: string;
   color: "화이트" | "크림";
   months: number;
   gender: "여아" | "남아";
   status: "분양중" | "분양완료";
-  variant: Variant;
-  thumbs: Variant[];
-}[] = [
+  variant: V;
+  thumbs: V[];
+};
+
+const PUPPIES: Puppy[] = [
   { id: 1, name: "코코", color: "화이트", months: 3, gender: "여아", status: "분양중", variant: "p1", thumbs: ["p1", "p7", "p2", "p3"] },
   { id: 2, name: "루나", color: "화이트", months: 2, gender: "여아", status: "분양중", variant: "p2", thumbs: ["p2", "p8", "p3", "p7"] },
   { id: 3, name: "베베", color: "크림", months: 4, gender: "남아", status: "분양중", variant: "p3", thumbs: ["p3", "p11", "p1", "p9"] },
@@ -31,131 +33,91 @@ const PUPPIES: {
   { id: 10, name: "두부", color: "화이트", months: 6, gender: "남아", status: "분양완료", variant: "p10", thumbs: ["p10", "p4", "p7", "p6"] },
   { id: 11, name: "우유", color: "화이트", months: 3, gender: "여아", status: "분양중", variant: "p11", thumbs: ["p11", "p3", "p9", "p1"] },
   { id: 12, name: "치즈", color: "크림", months: 4, gender: "남아", status: "분양중", variant: "p12", thumbs: ["p12", "p2", "p10", "p4"] },
+  { id: 13, name: "초롱", color: "화이트", months: 2, gender: "여아", status: "분양중", variant: "p1", thumbs: ["p1", "p9", "p11", "p3"] },
+  { id: 14, name: "솜이", color: "크림", months: 4, gender: "남아", status: "분양완료", variant: "p5", thumbs: ["p5", "p2", "p7", "p10"] },
+  { id: 15, name: "구름", color: "화이트", months: 3, gender: "여아", status: "분양중", variant: "p9", thumbs: ["p9", "p1", "p3", "p11"] },
+  { id: 16, name: "달이", color: "화이트", months: 5, gender: "남아", status: "분양중", variant: "p11", thumbs: ["p11", "p9", "p7", "p1"] },
 ];
 
 export default function PuppiesPage() {
-  const [filters, setFilters] = useState({
-    color: "전체",
-    months: "전체",
-    gender: "전체",
-    status: "전체",
-  });
-  const [selected, setSelected] = useState<(typeof PUPPIES)[number] | null>(
-    null
-  );
+  const [selected, setSelected] = useState<Puppy | null>(null);
   const [activeThumb, setActiveThumb] = useState(0);
-
-  const filtered = PUPPIES.filter(
-    (p) =>
-      (filters.color === "전체" || p.color === filters.color) &&
-      (filters.months === "전체" ||
-        (filters.months === "1~3개월"
-          ? p.months <= 3
-          : filters.months === "4~6개월"
-          ? p.months >= 4 && p.months <= 6
-          : true)) &&
-      (filters.gender === "전체" || p.gender === filters.gender) &&
-      (filters.status === "전체" || p.status === filters.status)
-  );
 
   return (
     <>
       <Hero
         title={`Introduce\nPuppies`}
-        description="강아지를 소개해드립니다 !"
+        description="강아지를 소개합니다 !"
         variant="p11"
         withCarouselArrows
       />
 
-      {/* Filter row */}
-      <Section className="pt-6">
-        <div className="flex flex-wrap items-center justify-center gap-4 rounded-card bg-cream-50 px-6 py-5 ring-1 ring-cream-300/50 md:gap-8">
-          <Filter
-            label="색상"
-            value={filters.color}
-            options={["전체", "화이트", "크림"]}
-            onChange={(v) => setFilters({ ...filters, color: v })}
-          />
-          <Filter
-            label="개월 수"
-            value={filters.months}
-            options={["전체", "1~3개월", "4~6개월"]}
-            onChange={(v) => setFilters({ ...filters, months: v })}
-          />
-          <Filter
-            label="성별"
-            value={filters.gender}
-            options={["전체", "여아", "남아"]}
-            onChange={(v) => setFilters({ ...filters, gender: v })}
-          />
-          <Filter
-            label="분양 상태"
-            value={filters.status}
-            options={["전체", "분양중", "분양완료"]}
-            onChange={(v) => setFilters({ ...filters, status: v })}
-          />
+      {/* Pagination dots above grid */}
+      <Section className="pt-2">
+        <div className="flex justify-center gap-2">
+          {[0, 1, 2, 3].map((i) => (
+            <span
+              key={i}
+              className={`h-1.5 rounded-full transition-all ${
+                i === 0 ? "w-6 bg-kennel-gold" : "w-1.5 bg-cream-300"
+              }`}
+            />
+          ))}
         </div>
       </Section>
 
-      {/* Grid */}
-      <Section className="pt-10">
-        {filtered.length === 0 ? (
-          <p className="py-20 text-center text-ink-500">
-            조건에 맞는 아이가 없습니다.
-          </p>
-        ) : (
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
-            {filtered.map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => {
-                  setSelected(p);
-                  setActiveThumb(0);
-                }}
-                className="group rounded-card-lg bg-cream-50 p-3 text-left ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
-              >
-                <div className="relative aspect-square w-full overflow-hidden rounded-card">
-                  <PuppyImage variant={p.variant} />
-                  {p.status === "분양완료" && (
-                    <span className="absolute left-3 top-3 rounded-full bg-ink-900/80 px-3 py-1 text-[11px] font-medium tracking-wide text-cream-100">
-                      분양완료
-                    </span>
-                  )}
-                </div>
-                <div className="px-2 pb-1 pt-4">
-                  <h3 className="text-[16.5px] font-bold leading-[1.3] tracking-[-0.018em] text-ink-900">
-                    {p.name}를 입양해주세요
-                  </h3>
-                  <div className="mt-2 flex items-center gap-1.5 text-[11.5px]">
-                    <span className="rounded-full bg-cream-200 px-2 py-0.5 font-medium text-kennel-dark">
-                      {p.gender}
-                    </span>
-                    <span className="tnum rounded-full bg-cream-200 px-2 py-0.5 font-medium tracking-tight text-kennel-dark">
-                      {p.months}개월
-                    </span>
-                  </div>
-                  <p className="mt-3 text-[13.5px] leading-[1.7] text-ink-700">
-                    색상 · {p.color}
-                  </p>
-                  <p className="text-[13.5px] leading-[1.7] text-ink-700">
-                    분양 · {p.status === "분양중" ? "미분양" : "완료"}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-        )}
+      {/* 4x4 Grid */}
+      <Section className="pt-12">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
+          {PUPPIES.map((p) => (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => {
+                setSelected(p);
+                setActiveThumb(0);
+              }}
+              className="group text-left"
+            >
+              <div className="relative aspect-square w-full overflow-hidden rounded-card ring-1 ring-cream-300/50 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-soft-lg">
+                <PuppyImage variant={p.variant} />
+                {p.status === "분양완료" && (
+                  <span className="absolute left-3 top-3 rounded-full bg-ink-900/80 px-3 py-1 text-[11px] font-medium tracking-wide text-cream-100">
+                    분양완료
+                  </span>
+                )}
+              </div>
+              <div className="mt-4 flex items-center justify-between">
+                <h3 className="text-[14.5px] font-semibold tracking-[-0.012em] text-ink-900">
+                  {p.name}를 입양해주세요
+                </h3>
+                <span
+                  className={`h-2 w-2 shrink-0 rounded-full ${
+                    p.status === "분양중" ? "bg-kennel-gold" : "bg-ink-400/60"
+                  }`}
+                  aria-label={p.status}
+                />
+              </div>
+            </button>
+          ))}
+        </div>
       </Section>
 
       {/* Pagination */}
-      <Section className="py-14">
+      <Section className="pt-14 pb-20">
         <div className="flex items-center justify-center gap-1.5 text-sm">
+          <button
+            type="button"
+            aria-label="이전"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-200"
+          >
+            ‹
+          </button>
           {[1, 2, 3].map((n) => (
             <button
               key={n}
               type="button"
-              className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+              className={`tnum flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
                 n === 1
                   ? "bg-kennel-gold font-semibold text-white"
                   : "text-ink-500 hover:bg-cream-200"
@@ -164,6 +126,13 @@ export default function PuppiesPage() {
               {n}
             </button>
           ))}
+          <button
+            type="button"
+            aria-label="다음"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-200"
+          >
+            ›
+          </button>
         </div>
       </Section>
 
@@ -197,59 +166,71 @@ export default function PuppiesPage() {
 
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-[26px] font-extrabold leading-[1.2] tracking-[-0.02em] text-ink-900">
+                  <h3 className="text-[26px] font-bold tracking-[-0.022em] text-ink-900">
                     {selected.name}
                   </h3>
-                  <span className="rounded-full bg-cream-200 px-2.5 py-0.5 text-[11.5px] font-semibold text-kennel-dark">
+                  <span className="rounded-full bg-cream-200 px-2.5 py-0.5 text-[12px] font-semibold text-kennel-dark">
                     {selected.gender}
                   </span>
-                  <span className="tnum ml-auto rounded-full bg-cream-200 px-2.5 py-0.5 text-[11.5px] font-semibold tracking-tight text-kennel-dark">
+                  <span className="ml-auto rounded-full bg-cream-200 px-2.5 py-0.5 text-[12px] font-semibold tracking-tight text-kennel-dark">
                     {selected.months}개월
                   </span>
                 </div>
-                <ul className="mt-7 space-y-2.5 text-[14px] text-ink-700">
-                  <li>색상 · {selected.color}</li>
-                  <li>
-                    분양 ·{" "}
-                    {selected.status === "분양중" ? "미분양" : "분양완료"}
+                <ul className="mt-6 space-y-2.5 text-[13.5px] text-ink-700">
+                  <li className="flex justify-between border-b border-cream-200 pb-2">
+                    <span className="text-ink-500">색상</span>
+                    <span>{selected.color}</span>
                   </li>
-                  <li>성별 · {selected.gender}</li>
-                  <li className="tnum tracking-tight">
-                    태어난지 · {selected.months}개월
+                  <li className="flex justify-between border-b border-cream-200 pb-2">
+                    <span className="text-ink-500">분양</span>
+                    <span>
+                      {selected.status === "분양중" ? "미분양" : "분양완료"}
+                    </span>
+                  </li>
+                  <li className="flex justify-between border-b border-cream-200 pb-2">
+                    <span className="text-ink-500">성별</span>
+                    <span>{selected.gender}</span>
+                  </li>
+                  <li className="flex justify-between">
+                    <span className="text-ink-500">태어난지</span>
+                    <span className="tnum">{selected.months}개월</span>
                   </li>
                 </ul>
                 <a
                   href="/contact"
-                  className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-kennel-btn px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-kennel-dark"
+                  className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-kennel-btn px-5 py-3 text-[13.5px] font-medium text-white transition-colors hover:bg-kennel-dark"
                 >
                   바로 상담하기
-                  <svg width="18" height="10" viewBox="0 0 20 10" fill="none" aria-hidden>
-                    <path d="M0 5h18m0 0L13 1m5 4L13 9" stroke="currentColor" strokeWidth="1.4" />
+                  <svg width="20" height="8" viewBox="0 0 22 8" fill="none" aria-hidden>
+                    <path
+                      d="M0 4h20m0 0L16 1m4 3l-4 3"
+                      stroke="currentColor"
+                      strokeWidth="1.2"
+                      strokeLinecap="round"
+                    />
                   </svg>
                 </a>
               </div>
             </div>
 
-            {/* Dots */}
             <div className="mt-6 flex justify-center gap-1.5">
               {selected.thumbs.map((_, i) => (
                 <span
                   key={i}
-                  className={`h-1.5 w-1.5 rounded-full ${
-                    i === activeThumb ? "bg-kennel-gold" : "bg-cream-300"
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === activeThumb ? "w-5 bg-kennel-gold" : "w-1.5 bg-cream-300"
                   }`}
                 />
               ))}
             </div>
 
-            {/* Thumbnail strip */}
             <div className="mt-6 grid grid-cols-4 gap-3">
               {selected.thumbs.map((v, i) => (
                 <button
                   key={i}
                   type="button"
                   onClick={() => setActiveThumb(i)}
-                  className={`aspect-square w-full overflow-hidden rounded-xl ring-2 transition-all ${
+                  className={`aspect-square overflow-hidden rounded-card ring-2 transition-all ${
                     i === activeThumb
                       ? "ring-kennel-gold"
                       : "ring-transparent hover:ring-cream-300"
@@ -263,34 +244,5 @@ export default function PuppiesPage() {
         </div>
       )}
     </>
-  );
-}
-
-function Filter({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  options: string[];
-  onChange: (v: string) => void;
-}) {
-  return (
-    <label className="flex items-center gap-2 text-sm">
-      <span className="font-medium text-kennel-dark">{label}</span>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="rounded-full border border-cream-300 bg-cream-100 px-3 py-1.5 text-sm font-medium text-ink-900 focus:border-kennel-gold focus:outline-none"
-      >
-        {options.map((o) => (
-          <option key={o} value={o}>
-            {o}
-          </option>
-        ))}
-      </select>
-    </label>
   );
 }

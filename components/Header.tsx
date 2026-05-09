@@ -46,13 +46,13 @@ export default function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-1 rounded-full bg-cream-200/80 p-1 text-[13px] ring-1 ring-cream-300">
+        <div className="flex items-center gap-1 rounded-full bg-cream-200 p-1 text-[13px]">
           <button
             type="button"
             onClick={() => setLang("ko")}
-            className={`rounded-full px-3 py-1.5 font-medium transition-colors ${
+            className={`rounded-full px-3.5 py-1.5 font-medium transition-colors ${
               lang === "ko"
-                ? "bg-cream-100 text-kennel-dark"
+                ? "bg-white text-kennel-dark shadow-sm"
                 : "text-ink-500 hover:text-kennel-dark"
             }`}
           >
@@ -61,9 +61,9 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setLang("zh")}
-            className={`rounded-full px-3 py-1.5 font-medium transition-colors ${
+            className={`rounded-full px-3.5 py-1.5 font-medium transition-colors ${
               lang === "zh"
-                ? "bg-kennel-gold text-white"
+                ? "bg-kennel-btn text-white shadow-sm"
                 : "text-ink-500 hover:text-kennel-dark"
             }`}
           >
