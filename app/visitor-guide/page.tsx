@@ -1,70 +1,35 @@
 import Hero from "@/components/Hero";
-import { Section } from "@/components/Section";
+import { Section, SectionHeading } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
+import { supabasePublic, type Review } from "@/lib/supabase";
 
-type V =
-  | "p1" | "p2" | "p3" | "p4" | "p5" | "p6"
-  | "p7" | "p8" | "p9" | "p10" | "p11" | "p12";
+export const dynamic = "force-dynamic";
 
-const REVIEWS: {
-  name: string;
-  date: string;
-  rating: number;
-  title: string;
-  text: string;
-  variant: V;
-}[] = [
+const VISIT_STEPS = [
   {
-    name: "박*은 가족",
-    date: "2026.04.12",
-    rating: 4,
-    title: "후기 제목",
-    text: "후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.",
-    variant: "p1",
+    num: "01",
+    title: "사전 예약",
+    desc: "전화 또는 카카오톡으로 방문 일정을 예약합니다. 평일/주말 모두 가능합니다.",
   },
   {
-    name: "김*수 가족",
-    date: "2026.03.30",
-    rating: 4,
-    title: "후기 제목",
-    text: "후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.",
-    variant: "p9",
+    num: "02",
+    title: "켄넬 방문",
+    desc: "분양 가능한 아이들을 직접 만나고 부모견과 환경을 확인하실 수 있습니다.",
   },
   {
-    name: "이*아 가족",
-    date: "2026.02.15",
-    rating: 4,
-    title: "후기 제목",
-    text: "후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.",
-    variant: "p3",
-  },
-  {
-    name: "정*민 가족",
-    date: "2026.01.28",
-    rating: 4,
-    title: "후기 제목",
-    text: "후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.",
-    variant: "p11",
-  },
-  {
-    name: "윤*린 가족",
-    date: "2025.12.20",
-    rating: 4,
-    title: "후기 제목",
-    text: "후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.",
-    variant: "p5",
-  },
-  {
-    name: "한*우 가족",
-    date: "2025.11.05",
-    rating: 4,
-    title: "후기 제목",
-    text: "후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.\n후기 내용이 들어갑니다. 후기 내용이 들어갑니다.",
-    variant: "p6",
+    num: "03",
+    title: "상담 및 결정",
+    desc: "선호하는 색상·성격·시기를 안내해드리고 적합한 아이를 함께 결정합니다.",
   },
 ];
 
-export default function VisitorGuidePage() {
+export default async function VisitorGuidePage() {
+  const { data } = await supabasePublic
+    .from("reviews")
+    .select("*")
+    .order("created_at", { ascending: false });
+  const reviews = (data ?? []) as Review[];
+
   return (
     <>
       <Hero
@@ -82,87 +47,119 @@ export default function VisitorGuidePage() {
 
       {/* 가족이 된 후기 */}
       <Section className="pt-20 lg:pt-28">
-        <h2 className="text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
-          가족이 된 <span className="text-kennel-gold">후기</span>
-        </h2>
-
+        <SectionHeading
+          title={
+            <>
+              가족이 된 <span className="text-kennel-gold">후기</span>
+            </>
+          }
+        />
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {REVIEWS.map((r, i) => (
+          {reviews.map((r) => (
             <article
-              key={i}
-              className="rounded-card-lg bg-cream-50 ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
+              key={r.id}
+              className="rounded-card-lg bg-cream-50 p-3 ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
             >
-              <div className="aspect-[16/10] w-full overflow-hidden rounded-t-card-lg">
-                <PuppyImage variant={r.variant} />
+              <div className="aspect-[4/5] w-full overflow-hidden rounded-card">
+                <PuppyImage variant={r.variant as never} />
               </div>
-              <div className="px-5 pb-5 pt-5">
-                <Stars rating={r.rating} />
-                <div className="mt-3 flex items-baseline gap-2">
-                  <h3 className="text-[15px] font-bold tracking-[-0.018em] text-ink-900">
-                    {r.title}
-                  </h3>
-                  <span className="tnum text-[12px] tracking-tight text-ink-400">
-                    {r.date}
-                  </span>
+              <div className="px-3 pb-2 pt-5">
+                <div className="flex items-center justify-between text-[12.5px] text-ink-500">
+                  <span className="font-semibold text-ink-900">{r.name}</span>
+                  <span className="tnum tracking-tight">{r.period}</span>
                 </div>
-                <p className="mt-2 line-clamp-3 whitespace-pre-line text-[12.5px] leading-[1.7] text-ink-500">
-                  {r.text}
+                <h3 className="mt-3 text-[17px] font-bold leading-[1.3] tracking-[-0.018em] text-ink-900">
+                  {r.title}
+                </h3>
+                <p className="mt-2.5 line-clamp-3 text-[14px] leading-[1.8] text-ink-700">
+                  {r.body}
                 </p>
               </div>
             </article>
           ))}
-        </div>
-
-        <div className="mt-14 flex items-center justify-center gap-1.5 text-sm">
-          <button
-            type="button"
-            aria-label="이전"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-200"
-          >
-            ‹
-          </button>
-          {[1, 2, 3].map((n) => (
-            <button
-              key={n}
-              type="button"
-              className={`tnum flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
-                n === 1
-                  ? "bg-kennel-gold font-semibold text-white"
-                  : "text-ink-500 hover:bg-cream-200"
-              }`}
-            >
-              {n}
-            </button>
-          ))}
-          <button
-            type="button"
-            aria-label="다음"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-200"
-          >
-            ›
-          </button>
+          {reviews.length === 0 && (
+            <p className="col-span-full rounded-card-lg bg-cream-50 p-10 text-center text-[14px] text-ink-500 ring-1 ring-cream-300/50">
+              아직 등록된 후기가 없습니다.
+            </p>
+          )}
         </div>
       </Section>
 
-      <div className="pb-20" />
-    </>
-  );
-}
+      {/* 매장 방문 안내 */}
+      <Section className="pt-24 lg:pt-32">
+        <SectionHeading
+          eyebrow="Visit"
+          title="매장 방문 안내"
+          align="center"
+        />
+        <p className="mx-auto mt-4 max-w-xl text-center text-sm text-ink-500">
+          꼬똥 켄넬은 1:1 사전 예약제로 운영되며, 켄넬 환경과 부모견을 직접
+          확인하실 수 있습니다.
+        </p>
 
-function Stars({ rating }: { rating: number }) {
-  return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating}점 / 5점`}>
-      {[1, 2, 3, 4, 5].map((n) => (
-        <svg
-          key={n}
-          viewBox="0 0 20 20"
-          className="h-4 w-4"
-          fill={n <= rating ? "#F4B940" : "#E6D9BD"}
-          aria-hidden
-        >
-          <path d="M10 1.5l2.5 5.7 6.2.6-4.7 4.2 1.4 6.1-5.4-3.3-5.4 3.3 1.4-6.1L1.3 7.8l6.2-.6L10 1.5z" />
-        </svg>
-      ))}
-    </div>
+        <div className="mt-14 grid gap-8 md:grid-cols-3">
+          {VISIT_STEPS.map((s, i) => (
+            <article
+              key={i}
+              className="relative overflow-hidden rounded-card-lg bg-cream-50 p-9 ring-1 ring-cream-300/50 transition-shadow duration-300 hover:shadow-soft"
+            >
+              <span className="tnum font-serif text-[52px] font-bold leading-none tracking-tight text-kennel-gold/90">
+                {s.num}
+              </span>
+              <h3 className="mt-5 text-[19px] font-bold leading-[1.3] tracking-[-0.018em] text-ink-900">
+                {s.title}
+              </h3>
+              <p className="mt-3 text-[14px] leading-[1.8] text-ink-700">
+                {s.desc}
+              </p>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      {/* Visit info */}
+      <Section className="pt-24 lg:pt-32">
+        <div className="grid gap-8 md:grid-cols-2">
+          <div className="aspect-[4/3] w-full overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
+            <PuppyImage variant="p7" />
+          </div>
+          <div className="rounded-card-lg bg-cream-50 p-9 ring-1 ring-cream-300/50 md:p-10">
+            <p className="font-serif text-[12px] uppercase tracking-[0.36em] text-kennel-gold">
+              Visit Info
+            </p>
+            <h3 className="mt-3 text-[22px] font-bold leading-[1.25] tracking-[-0.018em] text-ink-900 md:text-[26px]">
+              운영 시간 · 위치
+            </h3>
+            <ul className="mt-7 space-y-3 text-[14px] text-ink-700">
+              <li className="flex items-baseline justify-between gap-4 border-b border-cream-300/70 pb-3">
+                <span className="font-medium text-ink-500">운영 시간</span>
+                <span className="tnum tracking-tight">매일 11:00 — 19:00</span>
+              </li>
+              <li className="flex items-baseline justify-between gap-4 border-b border-cream-300/70 pb-3">
+                <span className="font-medium text-ink-500">예약 방법</span>
+                <span>카카오톡 · 전화 · WeChat</span>
+              </li>
+              <li className="flex items-baseline justify-between gap-4 border-b border-cream-300/70 pb-3">
+                <span className="font-medium text-ink-500">위치</span>
+                <span>서울특별시</span>
+              </li>
+              <li className="flex items-baseline justify-between gap-4">
+                <span className="font-medium text-ink-500">주차</span>
+                <span>가능</span>
+              </li>
+            </ul>
+            <a
+              href="/contact"
+              className="mt-9 inline-flex items-center gap-2 rounded-full bg-kennel-btn px-6 py-3 text-[13.5px] font-medium tracking-wide text-white transition-colors hover:bg-kennel-dark"
+            >
+              방문 예약하기
+              <svg width="18" height="10" viewBox="0 0 20 10" fill="none" aria-hidden>
+                <path d="M0 5h18m0 0L13 1m5 4L13 9" stroke="currentColor" strokeWidth="1.4" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </Section>
+    </>
   );
 }

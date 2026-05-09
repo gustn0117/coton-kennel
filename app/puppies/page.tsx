@@ -1,47 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
 import { Section } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
-
-type V =
-  | "p1" | "p2" | "p3" | "p4" | "p5" | "p6"
-  | "p7" | "p8" | "p9" | "p10" | "p11" | "p12";
-
-type Puppy = {
-  id: number;
-  name: string;
-  color: "화이트" | "크림";
-  months: number;
-  gender: "여아" | "남아";
-  status: "분양중" | "분양완료";
-  variant: V;
-  thumbs: V[];
-};
-
-const PUPPIES: Puppy[] = [
-  { id: 1, name: "코코", color: "화이트", months: 3, gender: "여아", status: "분양중", variant: "p1", thumbs: ["p1", "p7", "p2", "p3"] },
-  { id: 2, name: "루나", color: "화이트", months: 2, gender: "여아", status: "분양중", variant: "p2", thumbs: ["p2", "p8", "p3", "p7"] },
-  { id: 3, name: "베베", color: "크림", months: 4, gender: "남아", status: "분양중", variant: "p3", thumbs: ["p3", "p11", "p1", "p9"] },
-  { id: 4, name: "콩이", color: "화이트", months: 3, gender: "남아", status: "분양완료", variant: "p4", thumbs: ["p4", "p2", "p10", "p7"] },
-  { id: 5, name: "보리", color: "화이트", months: 2, gender: "여아", status: "분양중", variant: "p5", thumbs: ["p5", "p9", "p1", "p11"] },
-  { id: 6, name: "초코", color: "크림", months: 5, gender: "남아", status: "분양중", variant: "p6", thumbs: ["p6", "p10", "p2", "p4"] },
-  { id: 7, name: "라떼", color: "화이트", months: 4, gender: "여아", status: "분양중", variant: "p7", thumbs: ["p7", "p1", "p3", "p11"] },
-  { id: 8, name: "쿠키", color: "크림", months: 3, gender: "남아", status: "분양중", variant: "p8", thumbs: ["p8", "p2", "p5", "p9"] },
-  { id: 9, name: "단비", color: "화이트", months: 2, gender: "여아", status: "분양중", variant: "p9", thumbs: ["p9", "p11", "p1", "p3"] },
-  { id: 10, name: "두부", color: "화이트", months: 6, gender: "남아", status: "분양완료", variant: "p10", thumbs: ["p10", "p4", "p7", "p6"] },
-  { id: 11, name: "우유", color: "화이트", months: 3, gender: "여아", status: "분양중", variant: "p11", thumbs: ["p11", "p3", "p9", "p1"] },
-  { id: 12, name: "치즈", color: "크림", months: 4, gender: "남아", status: "분양중", variant: "p12", thumbs: ["p12", "p2", "p10", "p4"] },
-  { id: 13, name: "초롱", color: "화이트", months: 2, gender: "여아", status: "분양중", variant: "p1", thumbs: ["p1", "p9", "p11", "p3"] },
-  { id: 14, name: "솜이", color: "크림", months: 4, gender: "남아", status: "분양완료", variant: "p5", thumbs: ["p5", "p2", "p7", "p10"] },
-  { id: 15, name: "구름", color: "화이트", months: 3, gender: "여아", status: "분양중", variant: "p9", thumbs: ["p9", "p1", "p3", "p11"] },
-  { id: 16, name: "달이", color: "화이트", months: 5, gender: "남아", status: "분양중", variant: "p11", thumbs: ["p11", "p9", "p7", "p1"] },
-];
+import { supabasePublic, type Puppy } from "@/lib/supabase";
 
 export default function PuppiesPage() {
+  const [PUPPIES, setPuppies] = useState<Puppy[]>([]);
   const [selected, setSelected] = useState<Puppy | null>(null);
   const [activeThumb, setActiveThumb] = useState(0);
+
+  useEffect(() => {
+    supabasePublic
+      .from("puppies")
+      .select("*")
+      .order("order_index", { ascending: true })
+      .then(({ data }) => setPuppies((data ?? []) as Puppy[]));
+  }, []);
 
   return (
     <>
@@ -80,7 +56,7 @@ export default function PuppiesPage() {
               className="group text-left"
             >
               <div className="relative aspect-square w-full overflow-hidden rounded-card ring-1 ring-cream-300/50 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-soft-lg">
-                <PuppyImage variant={p.variant} />
+                <PuppyImage variant={p.variant as never} />
                 {p.status === "분양완료" && (
                   <span className="absolute left-3 top-3 rounded-full bg-ink-900/80 px-3 py-1 text-[11px] font-medium tracking-wide text-cream-100">
                     분양완료
@@ -160,7 +136,7 @@ export default function PuppiesPage() {
             <div className="grid gap-8 md:grid-cols-[1fr_1fr]">
               <div className="aspect-square w-full overflow-hidden rounded-card">
                 <PuppyImage
-                  variant={selected.thumbs[activeThumb] ?? selected.variant}
+                  variant={(selected.thumbs[activeThumb] ?? selected.variant) as never}
                 />
               </div>
 
@@ -236,7 +212,7 @@ export default function PuppiesPage() {
                       : "ring-transparent hover:ring-cream-300"
                   }`}
                 >
-                  <PuppyImage variant={v} />
+                  <PuppyImage variant={v as never} />
                 </button>
               ))}
             </div>

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
 import { Section } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
+import { supabasePublic, type Notice } from "@/lib/supabase";
 
 const STEPS = [
   {
@@ -40,13 +41,7 @@ const STORE_INFO: { label: string; value: string }[] = [
   { label: "주차", value: "가능" },
 ];
 
-const NOTICES = [
-  { date: "2026.05.01", title: "공지사항 제목이 들어갑니다." },
-  { date: "2026.04.16", title: "공지사항 제목이 들어갑니다." },
-  { date: "2026.03.30", title: "공지사항 제목이 들어갑니다." },
-  { date: "2026.03.16", title: "공지사항 제목이 들어갑니다." },
-  { date: "2026.02.21", title: "공지사항 제목이 들어갑니다." },
-];
+// Notices are loaded from Supabase. Local fallback shape kept for typing convenience.
 
 const FAQ = [
   {
@@ -67,9 +62,18 @@ const FAQ = [
 ];
 
 export default function ContactPage() {
-  const [openNotice, setOpenNotice] = useState<typeof NOTICES[number] | null>(null);
+  const [notices, setNotices] = useState<Notice[]>([]);
+  const [openNotice, setOpenNotice] = useState<Notice | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showWeChatQR, setShowWeChatQR] = useState(false);
+
+  useEffect(() => {
+    supabasePublic
+      .from("notices")
+      .select("*")
+      .order("date", { ascending: false })
+      .then(({ data }) => setNotices((data ?? []) as Notice[]));
+  }, []);
 
   return (
     <>
@@ -345,19 +349,28 @@ export default function ContactPage() {
             </tr>
           </thead>
           <tbody>
-            {NOTICES.map((n, i) => (
+            {notices.map((n, i) => (
               <tr
-                key={i}
+                key={n.id}
                 onClick={() => setOpenNotice(n)}
                 className="cursor-pointer border-b border-cream-300/60 transition-colors hover:bg-cream-50"
               >
                 <td className="tnum py-4 text-center text-ink-500">
-                  {NOTICES.length - i}
+                  {notices.length - i}
                 </td>
                 <td className="py-4 text-ink-900">{n.title}</td>
-                <td className="tnum py-4 text-right pr-6 text-ink-500">{n.date}</td>
+                <td className="tnum py-4 text-right pr-6 text-ink-500">
+                  {n.date}
+                </td>
               </tr>
             ))}
+            {notices.length === 0 && (
+              <tr>
+                <td colSpan={3} className="py-10 text-center text-[13px] text-ink-500">
+                  등록된 공지사항이 없습니다.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </Section>
@@ -390,19 +403,13 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="text-[20px] font-bold tracking-[-0.018em] text-ink-900">
-                  공지사항 제목
+                  {openNotice.title}
                 </h3>
                 <p className="tnum mt-1 text-[12px] text-ink-400">
                   {openNotice.date}
                 </p>
-                <p className="mt-5 text-[13.5px] leading-[1.85] text-ink-700">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry’s
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
+                <p className="mt-5 whitespace-pre-line text-[13.5px] leading-[1.85] text-ink-700">
+                  {openNotice.body || "내용이 없습니다."}
                 </p>
               </div>
             </div>
