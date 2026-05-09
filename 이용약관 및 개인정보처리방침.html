@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>꼬똥켄넬 — 이용약관 및 개인정보처리방침</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Noto+Sans+KR:wght@400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary: #1a1a18;
+      --text-secondary: #5f5e5a;
+      --text-tertiary: #888780;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f5f4f0;
+      --bg-tertiary: #f0ede6;
+      --border-main: rgba(0,0,0,0.1);
+      --border-light: rgba(0,0,0,0.07);
+      --accent: #6b5c40;
+      --accent-bg: #f5ede0;
+      --notice-bg: #faf7f2;
+      --notice-border: #e8dece;
+      --notice-text: #7a6040;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-primary: #f0ede6;
+        --text-secondary: #b4b2a9;
+        --text-tertiary: #888780;
+        --bg-primary: #1e1d1b;
+        --bg-secondary: #252320;
+        --bg-tertiary: #181714;
+        --border-main: rgba(255,255,255,0.1);
+        --border-light: rgba(255,255,255,0.06);
+        --accent: #c4a97a;
+        --accent-bg: #2a2218;
+        --notice-bg: #241f18;
+        --notice-border: #3a3020;
+        --notice-text: #c4a97a;
+      }
+    }
+
+    body {
+      font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 2rem 1rem 5rem;
+      line-height: 1.6;
+    }
+
+    .wrapper { max-width: 860px; margin: 0 auto; }
+
+    .header-box {
+      padding: 2rem 0 1.5rem;
+      border-bottom: 0.5px solid var(--border-main);
+    }
+
+    .brand-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: 4px 10px;
+      border-radius: 100px;
+      margin-bottom: 0.75rem;
+    }
+
+    .doc-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .doc-meta { font-size: 13px; color: var(--text-tertiary); }
+
+    .tab-bar {
+      display: flex;
+      border-bottom: 1.5px solid var(--border-main);
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 2.5px solid transparent;
+      margin-bottom: -1.5px;
+      padding: 0.8rem 1.6rem;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      font-family: inherit;
+    }
+
+    .tab-btn.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--text-primary);
+    }
+
+    .doc-container {
+      background: var(--bg-primary);
+      border: 0.5px solid var(--border-main);
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      padding: 2.5rem 3rem 3rem;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .section { margin-bottom: 2.5rem; }
+    .section:last-child { margin-bottom: 0; }
+
+    .article-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 0.5px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .article-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .article-body {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-secondary);
+    }
+
+    .article-body p { margin-bottom: 0.6rem; }
+    .article-body p:last-child { margin-bottom: 0; }
+    .article-body strong { color: var(--text-primary); font-weight: 500; }
+
+    ol.clause-list {
+      padding-left: 1.4rem;
+      margin-top: 0.5rem;
+    }
+
+    ol.clause-list li {
+      margin-bottom: 0.5rem;
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+
+    ul.clause-list {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 0.5rem;
+    }
+
+    ul.clause-list li {
+      padding-left: 1.2rem;
+      position: relative;
+      margin-bottom: 0.5rem;
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+
+    ul.clause-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text-tertiary);
+    }
+
+    .notice-box {
+      background: var(--notice-bg);
+      border: 0.5px solid var(--notice-border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-top: 0.75rem;
+    }
+
+    .notice-box p {
+      font-size: 13px;
+      color: var(--notice-text);
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 0.75rem;
+    }
+
+    .contact-item {
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+    }
+
+    .contact-label {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .contact-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .divider {
+      border: none;
+      border-top: 0.5px solid var(--border-light);
+      margin: 2rem 0;
+    }
+
+    .highlight-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 100px;
+      border: 0.5px solid var(--border-main);
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 600px) {
+      .doc-container { padding: 1.5rem 1.25rem 2rem; }
+      .doc-title { font-size: 21px; }
+      .tab-btn { padding: 0.75rem 1rem; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header-box">
+      <div class="brand-badge">꼬똥켄넬 공식 문서</div>
+      <div class="doc-title" id="main-title">이용약관</div>
+      <div class="doc-meta" id="doc-meta">시행일: 2025년 1월 1일 &nbsp;·&nbsp; 최종 개정: 2025년 6월</div>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('terms', this)">이용약관</button>
+      <button class="tab-btn" onclick="switchTab('privacy', this)">개인정보처리방침</button>
+    </div>
+
+    <div class="doc-container">
+
+      <!-- 이용약관 -->
+      <div id="terms" class="tab-content active">
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">1</span>목적</div>
+          <div class="article-body">
+            <p>본 약관은 꼬똥켄넬(이하 "업체")이 운영하는 웹사이트(이하 "사이트")에서 제공하는 서비스의 이용과 관련하여 업체와 이용자 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">2</span>용어의 정의</div>
+          <div class="article-body">
+            <ol class="clause-list">
+              <li><strong>"사이트"</strong>란 업체가 반려견 분양 및 상담 서비스를 제공하기 위해 운영하는 웹사이트를 의미합니다.</li>
+              <li><strong>"이용자"</strong>란 사이트에 접속하여 본 약관에 따라 서비스를 이용하는 자를 의미합니다.</li>
+              <li><strong>"서비스"</strong>란 반려견 정보 제공, 상담 신청, 문의 접수, SNS 연결 등의 제반 서비스를 의미합니다.</li>
+              <li><strong>"분양 계약"</strong>이란 업체와 이용자가 반려견 분양을 위해 체결하는 별도의 서면 또는 전자적 계약을 의미합니다.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">3</span>약관의 효력 및 변경</div>
+          <div class="article-body">
+            <ol class="clause-list">
+              <li>본 약관은 사이트에 게시함으로써 효력이 발생합니다.</li>
+              <li>업체는 「전자상거래 등에서의 소비자보호에 관한 법률」, 「약관의 규제에 관한 법률」 등 관련 법령을 위배하지 않는 범위에서 약관을 변경할 수 있습니다.</li>
+              <li>약관이 변경되는 경우 업체는 변경 내용을 적용일로부터 최소 7일 전(이용자에게 불리한 변경의 경우 30일 전)에 사이트에 공지합니다.</li>
+              <li>이용자가 변경된 약관의 효력 발생일 이후에도 서비스를 계속 이용하는 경우, 변경된 약관에 동의한 것으로 간주합니다.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">4</span>서비스의 제공 및 변경</div>
+          <div class="article-body">
+            <p>업체는 다음과 같은 서비스를 제공합니다.</p>
+            <ul class="clause-list">
+              <li>반려견 및 견종 정보 제공</li>
+              <li>분양 상담 및 예약 서비스</li>
+              <li>문의 접수 및 고객 응대</li>
+              <li>SNS 및 외부 플랫폼 연동 서비스</li>
+              <li>기타 업체가 정하는 서비스</li>
+            </ul>
+            <div class="notice-box">
+              <p>업체는 운영상·기술상의 필요에 따라 서비스 내용을 변경할 수 있습니다. 서비스 변경 시에는 변경 내용 및 적용일을 사전에 공지합니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">5</span>서비스 이용 및 이용자 의무</div>
+          <div class="article-body">
+            <p>이용자는 다음 행위를 하여서는 안 됩니다.</p>
+            <ul class="clause-list">
+              <li>허위 정보 작성 또는 타인의 정보 도용</li>
+              <li>사이트 운영을 방해하는 행위 (해킹, 크롤링, 자동화 도구 이용 등 포함)</li>
+              <li>법령 또는 공서양속에 반하는 행위</li>
+              <li>업체 또는 제3자의 명예를 훼손하거나 지적재산권을 침해하는 행위</li>
+              <li>상업적 목적의 무단 스팸 전송 또는 광고 행위</li>
+              <li>기타 업체가 정한 이용 정책에 위반하는 행위</li>
+            </ul>
+            <p style="margin-top:0.75rem;">위 행위 발생 시 업체는 사전 통보 없이 서비스 이용을 제한하거나 법적 조치를 취할 수 있습니다.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">6</span>지적재산권</div>
+          <div class="article-body">
+            <ol class="clause-list">
+              <li>사이트 내 모든 콘텐츠(사진, 영상, 로고, 문구 등)의 저작권은 업체 또는 정당한 권리자에게 있으며, 무단 복제·배포·수정·전시를 금합니다.</li>
+              <li>이용자는 사이트 콘텐츠를 업체의 서면 동의 없이 상업적 목적으로 이용할 수 없습니다.</li>
+              <li>이용자가 사이트에 게시한 콘텐츠에 대한 책임은 이용자 본인에게 있으며, 업체는 해당 콘텐츠가 타인의 권리를 침해하는 경우 삭제 또는 비공개 처리할 수 있습니다.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">7</span>분양 계약 및 청약철회</div>
+          <div class="article-body">
+            <ol class="clause-list">
+              <li>반려견 분양 상담은 사이트를 통해 진행되며, 실제 분양 계약은 별도의 서면 또는 전자적 계약에 의합니다.</li>
+              <li>분양 계약 체결 후 청약 철회 및 환불 조건은 관련 법령(「전자상거래 등에서의 소비자보호에 관한 법률」) 및 분양 계약서에 따릅니다.</li>
+              <li>반려견의 특성상 계약 체결 후 일정 조건 하에서 청약철회가 제한될 수 있으며, 이는 계약 체결 시 별도로 안내드립니다.</li>
+              <li>분양 후 반려견의 건강 이상 또는 유전 질환에 관한 사항은 분양 계약서의 보증 조항에 따라 처리됩니다.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">8</span>면책조항</div>
+          <div class="article-body">
+            <ol class="clause-list">
+              <li>업체는 천재지변, 서버 장애, 통신사 장애 등 불가항력적인 사유로 인한 서비스 중단에 대해 책임을 지지 않습니다.</li>
+              <li>업체는 이용자가 사이트에 게시된 정보를 활용하여 발생한 손해에 대해 고의 또는 중대한 과실이 없는 한 책임을 지지 않습니다.</li>
+              <li>업체는 이용자 간 또는 이용자와 제3자 간에 발생한 분쟁에 대해 개입 의무가 없으며, 이로 인한 손해를 배상할 책임이 없습니다.</li>
+              <li>사이트에 링크된 외부 사이트의 내용 및 서비스에 대해서 업체는 책임을 지지 않습니다.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">9</span>준거법 및 관할법원</div>
+          <div class="article-body">
+            <ol class="clause-list">
+              <li>본 약관은 대한민국 법률에 따라 해석되며 적용됩니다.</li>
+              <li>서비스 이용과 관련하여 업체와 이용자 간에 발생한 분쟁에 대해서는 업체 소재지 관할 법원을 전속 관할로 합니다.</li>
+              <li>분쟁 해결에 앞서 업체는 이용자와 원만한 합의를 위해 노력합니다.</li>
+            </ol>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="article-body" style="font-size:13px; color: var(--text-tertiary);">
+          <p>부칙: 본 약관은 2025년 1월 1일부터 시행합니다.</p>
+        </div>
+
+      </div>
+
+      <!-- 개인정보처리방침 -->
+      <div id="privacy" class="tab-content">
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">1</span>수집하는 개인정보 항목</div>
+          <div class="article-body">
+            <p>꼬똥켄넬(이하 "업체")은 상담 및 서비스 제공을 위해 아래와 같이 개인정보를 수집합니다.</p>
+            <div class="highlight-row">
+              <span class="tag">이름</span>
+              <span class="tag">연락처 (휴대전화번호)</span>
+              <span class="tag">카카오톡 ID / SNS 계정</span>
+              <span class="tag">문의 내용</span>
+              <span class="tag">접속 로그 · IP · 쿠키</span>
+            </div>
+            <div class="notice-box">
+              <p>필수 항목은 이름과 연락처이며, 나머지는 선택 항목입니다. 선택 항목을 제공하지 않으셔도 서비스 이용에는 지장이 없습니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">2</span>개인정보 수집 및 이용 목적</div>
+          <div class="article-body">
+            <ul class="clause-list">
+              <li>분양 상담 및 문의 응대</li>
+              <li>고객 관리 및 서비스 제공</li>
+              <li>예약 및 상담 일정 진행</li>
+              <li>공지사항 및 서비스 관련 안내 전달</li>
+              <li>서비스 품질 개선 및 통계 분석</li>
+              <li>법령상 의무 이행</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">3</span>개인정보 보유 및 이용기간</div>
+          <div class="article-body">
+            <p>업체는 개인정보 수집·이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다.</p>
+            <p style="margin-top:0.5rem;">다만, 관련 법령에 따라 아래와 같이 일정 기간 보관합니다.</p>
+            <ul class="clause-list">
+              <li>계약 또는 청약철회에 관한 기록 — <strong>5년</strong> (전자상거래법)</li>
+              <li>소비자 불만 또는 분쟁 처리에 관한 기록 — <strong>3년</strong> (전자상거래법)</li>
+              <li>접속에 관한 기록 — <strong>3개월</strong> (통신비밀보호법)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">4</span>개인정보 제3자 제공</div>
+          <div class="article-body">
+            <p>업체는 이용자의 개인정보를 원칙적으로 외부에 제공하지 않습니다. 다만, 아래의 경우는 예외로 합니다.</p>
+            <ul class="clause-list">
+              <li>이용자가 사전에 명시적으로 동의한 경우</li>
+              <li>법령에 의거하거나 수사기관의 적법한 요청이 있는 경우</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">5</span>개인정보 처리 위탁</div>
+          <div class="article-body">
+            <p>업체는 원활한 서비스 제공을 위해 일부 업무를 외부 업체에 위탁할 수 있으며, 위탁 시 관련 법령에 따라 안전하게 관리합니다. 위탁 업체 및 위탁 업무 내용이 변경될 경우 본 방침을 통해 공지합니다.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">6</span>이용자의 권리 및 행사 방법</div>
+          <div class="article-body">
+            <p>이용자는 언제든지 자신의 개인정보에 대해 다음의 권리를 행사할 수 있습니다.</p>
+            <ul class="clause-list">
+              <li>개인정보 열람 요청</li>
+              <li>오류 정정 또는 삭제 요청</li>
+              <li>처리 정지 요청</li>
+            </ul>
+            <p style="margin-top:0.6rem;">권리 행사는 아래 연락처(제9조)를 통해 요청하실 수 있으며, 업체는 지체 없이 조치합니다. 만 14세 미만 아동의 개인정보를 수집하는 경우 법정대리인의 동의를 받습니다.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">7</span>개인정보 보호를 위한 기술적·관리적 조치</div>
+          <div class="article-body">
+            <ul class="clause-list">
+              <li>개인정보 접근 권한 최소화 및 접근 통제</li>
+              <li>보안 프로그램 설치 및 주기적 갱신</li>
+              <li>개인정보 취급자 최소화 및 정기 교육 실시</li>
+              <li>개인정보 처리 시스템 보안 점검</li>
+              <li>외부 침입 차단을 위한 방화벽 운영</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">8</span>쿠키(Cookie) 정책</div>
+          <div class="article-body">
+            <ol class="clause-list">
+              <li>사이트는 이용자 편의 향상을 위해 쿠키를 사용할 수 있습니다. 쿠키는 이용자의 브라우저에 저장되는 소량의 텍스트 파일입니다.</li>
+              <li>쿠키는 이용자의 사이트 이용 패턴 분석, 서비스 개선 등의 목적으로 활용됩니다.</li>
+              <li>이용자는 브라우저 설정을 통해 쿠키 저장을 거부하거나 삭제할 수 있습니다. 단, 쿠키를 비활성화하는 경우 일부 서비스 이용이 제한될 수 있습니다.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">9</span>개인정보 보호책임자 및 연락처</div>
+          <div class="article-body">
+            <p style="margin-bottom:0.75rem;">개인정보 처리에 관한 문의, 불만 처리 및 피해 구제는 아래 담당자에게 문의하시기 바랍니다.</p>
+            <div class="contact-grid">
+              <div class="contact-item">
+                <div class="contact-label">업체명</div>
+                <div class="contact-value">꼬똥켄넬</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-label">연락처</div>
+                <div class="contact-value">0507-1390-8073</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-label">이메일</div>
+                <div class="contact-value">이메일 주소 입력</div>
+              </div>
+            </div>
+            <div class="notice-box">
+              <p>개인정보 침해에 관한 신고 및 상담은 한국인터넷진흥원(KISA) 개인정보 침해신고센터(privacy.kisa.or.kr / 국번 없이 118)에 문의하실 수 있습니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="article-title"><span class="article-num">10</span>방침의 변경</div>
+          <div class="article-body">
+            <p>본 개인정보처리방침은 관련 법령 및 내부 정책에 따라 변경될 수 있습니다. 변경 시에는 사이트를 통해 사전 공지하며, 변경된 방침은 공지한 날로부터 효력이 발생합니다.</p>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="article-body" style="font-size:13px; color: var(--text-tertiary);">
+          <p>공고일: 2025년 1월 1일 &nbsp;·&nbsp; 시행일: 2025년 1월 1일</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+      const titles = { terms: '이용약관', privacy: '개인정보처리방침' };
+      document.getElementById('main-title').textContent = titles[tabId];
+    }
+  </script>
+</body>
+</html>
