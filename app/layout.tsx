@@ -20,7 +20,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <body className="bg-cream-100 min-h-screen">
+      <body className="bg-white min-h-screen">
         <Header />
         <main>{children}</main>
         <FloatingBar />

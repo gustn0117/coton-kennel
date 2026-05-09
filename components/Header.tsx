@@ -17,7 +17,7 @@ export default function Header() {
   const [lang, setLang] = useState<"ko" | "zh">("ko");
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-cream-300/30 bg-cream-100/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-cream-300/40 bg-white/85 backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-page items-center justify-between gap-6 px-6 lg:px-10">
         <Logo />
 

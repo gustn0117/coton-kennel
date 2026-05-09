@@ -27,7 +27,7 @@ export default function Hero({
   withCarouselArrows = false,
 }: Props) {
   return (
-    <section className="bg-cream-100 pt-8 md:pt-12">
+    <section className="bg-white pt-8 md:pt-12">
       <div className="mx-auto grid max-w-page items-center gap-10 px-6 pb-20 md:grid-cols-[1fr_minmax(0,1.15fr)] md:gap-16 md:px-10 md:pb-28">
         <div className="relative">
           {withCarouselArrows && (
