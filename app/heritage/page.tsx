@@ -1,11 +1,31 @@
 import Hero from "@/components/Hero";
 import { Section } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
+import ImageCarousel from "@/components/ImageCarousel";
+import { supabasePublic, type SiteImage } from "@/lib/supabase";
 
-export default function HeritagePage() {
+export const dynamic = "force-dynamic";
+
+async function fetchSiteImages(key: string): Promise<SiteImage[]> {
+  const { data } = await supabasePublic
+    .from("site_images")
+    .select("*")
+    .eq("key", key)
+    .order("slot", { ascending: true });
+  return (data ?? []) as SiteImage[];
+}
+
+export default async function HeritagePage() {
+  const [heroImages, championImages, ctaImages] = await Promise.all([
+    fetchSiteImages("heritage.hero"),
+    fetchSiteImages("heritage.champion"),
+    fetchSiteImages("heritage.cta"),
+  ]);
+  const ctaUrl = ctaImages[0]?.image_url ?? null;
   return (
     <>
       <Hero
+        images={heroImages}
         title="Heritage"
         description={
           <>
@@ -53,22 +73,14 @@ export default function HeritagePage() {
             </p>
           </div>
           <div className="relative">
-            <button
-              type="button"
-              aria-label="이전"
-              className="absolute -left-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-cream-50 text-kennel-dark shadow-soft ring-1 ring-cream-300 md:flex"
-            >
-              ‹
-            </button>
-            <button
-              type="button"
-              aria-label="다음"
-              className="absolute -right-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-cream-50 text-kennel-dark shadow-soft ring-1 ring-cream-300 md:flex"
-            >
-              ›
-            </button>
             <div className="aspect-[5/4] w-full overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
-              <PuppyImage variant="p11" />
+              <ImageCarousel
+                images={championImages}
+                fallbackVariant="p11"
+                showArrows
+                showDots
+                alt="Champion line"
+              />
             </div>
           </div>
         </div>
@@ -103,7 +115,7 @@ export default function HeritagePage() {
             </p>
           </div>
           <div className="aspect-[5/4] w-full overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
-            <PuppyImage variant="p3" />
+            <PuppyImage variant="p3" url={ctaUrl} />
           </div>
         </div>
       </Section>

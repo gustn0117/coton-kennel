@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
 import { Section } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
-import { supabasePublic, type Notice } from "@/lib/supabase";
+import { supabasePublic, type Notice, type SiteImage } from "@/lib/supabase";
 import MapEmbed, { mapLink } from "@/components/MapEmbed";
 
 const STORE_ADDRESS = "서울 강동구 구천면로29길 23";
@@ -69,6 +69,7 @@ export default function ContactPage() {
   const [openNotice, setOpenNotice] = useState<Notice | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showWeChatQR, setShowWeChatQR] = useState(false);
+  const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
 
   useEffect(() => {
     supabasePublic
@@ -76,6 +77,12 @@ export default function ContactPage() {
       .select("*")
       .order("date", { ascending: false })
       .then(({ data }) => setNotices((data ?? []) as Notice[]));
+    supabasePublic
+      .from("site_images")
+      .select("*")
+      .eq("key", "contact.hero")
+      .order("slot", { ascending: true })
+      .then(({ data }) => setHeroImages((data ?? []) as SiteImage[]));
   }, []);
 
   return (
@@ -91,6 +98,7 @@ export default function ContactPage() {
           </>
         }
         variant="p3"
+        images={heroImages}
       />
 
       {/* Vistor Guide - 5 alternating steps */}

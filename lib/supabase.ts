@@ -52,6 +52,88 @@ export type Puppy = {
   created_at: string;
 };
 
+export type SiteImage = {
+  key: string;
+  slot: number;
+  image_url: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type SiteImageGroup = {
+  key: string;
+  label: string;
+  description: string;
+  page: string;
+  multiple: boolean;
+};
+
+export const SITE_IMAGE_GROUPS: SiteImageGroup[] = [
+  {
+    key: "home.hero",
+    label: "홈 — 메인 히어로",
+    description: "사이트 첫 화면 우측의 큰 이미지. 좌/우 화살표로 넘기는 캐러셀.",
+    page: "/",
+    multiple: true,
+  },
+  {
+    key: "home.premium",
+    label: "홈 — Premium Guide 섹션",
+    description: "‘Premium Guide’ 문구 좌측의 사진. 좌/우 화살표 캐러셀.",
+    page: "/",
+    multiple: true,
+  },
+  {
+    key: "home.highlight",
+    label: "홈 — Highlight 섹션",
+    description: "‘Highlight’ 제목 아래 16:10 비율의 한 장짜리 이미지.",
+    page: "/",
+    multiple: false,
+  },
+  {
+    key: "puppies.hero",
+    label: "강아지 페이지 — 메인 히어로",
+    description: "/puppies 첫 화면 우측 이미지. 좌/우 화살표 캐러셀.",
+    page: "/puppies",
+    multiple: true,
+  },
+  {
+    key: "visitor-guide.hero",
+    label: "후기/방문 안내 — 메인 히어로",
+    description: "/visitor-guide 첫 화면 우측 이미지.",
+    page: "/visitor-guide",
+    multiple: false,
+  },
+  {
+    key: "heritage.hero",
+    label: "Heritage — 메인 히어로",
+    description: "/heritage 첫 화면 우측 이미지. 좌/우 화살표 캐러셀.",
+    page: "/heritage",
+    multiple: true,
+  },
+  {
+    key: "heritage.champion",
+    label: "Heritage — Champion Line 섹션",
+    description: "‘도그쇼 수상 경력’ 우측 이미지. 좌/우 화살표 캐러셀.",
+    page: "/heritage",
+    multiple: true,
+  },
+  {
+    key: "heritage.cta",
+    label: "Heritage — 하단 CTA 박스",
+    description: "‘혈통의 깊이를 직접 만나보세요’ 우측 한 장.",
+    page: "/heritage",
+    multiple: false,
+  },
+  {
+    key: "contact.hero",
+    label: "상담/문의 — 메인 히어로",
+    description: "/contact 첫 화면 우측 이미지.",
+    page: "/contact",
+    multiple: false,
+  },
+];
+
 export type Review = {
   id: string;
   name: string;

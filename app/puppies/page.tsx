@@ -1,15 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Hero from "@/components/Hero";
 import { Section } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
-import { supabasePublic, type Puppy } from "@/lib/supabase";
+import { supabasePublic, type Puppy, type SiteImage } from "@/lib/supabase";
+
+const PAGE_SIZE = 8;
 
 export default function PuppiesPage() {
   const [PUPPIES, setPuppies] = useState<Puppy[]>([]);
+  const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
   const [selected, setSelected] = useState<Puppy | null>(null);
   const [activeThumb, setActiveThumb] = useState(0);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     supabasePublic
@@ -17,7 +21,20 @@ export default function PuppiesPage() {
       .select("*")
       .order("order_index", { ascending: true })
       .then(({ data }) => setPuppies((data ?? []) as Puppy[]));
+    supabasePublic
+      .from("site_images")
+      .select("*")
+      .eq("key", "puppies.hero")
+      .order("slot", { ascending: true })
+      .then(({ data }) => setHeroImages((data ?? []) as SiteImage[]));
   }, []);
+
+  const totalPages = Math.max(1, Math.ceil(PUPPIES.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages - 1);
+  const visiblePuppies = useMemo(
+    () => PUPPIES.slice(safePage * PAGE_SIZE, (safePage + 1) * PAGE_SIZE),
+    [PUPPIES, safePage]
+  );
 
   return (
     <>
@@ -26,26 +43,34 @@ export default function PuppiesPage() {
         description="강아지를 소개합니다 !"
         variant="p11"
         withCarouselArrows
+        images={heroImages}
       />
 
       {/* Pagination dots above grid */}
-      <Section className="pt-2">
-        <div className="flex justify-center gap-2">
-          {[0, 1, 2, 3].map((i) => (
-            <span
-              key={i}
-              className={`h-1.5 rounded-full transition-all ${
-                i === 0 ? "w-6 bg-kennel-gold" : "w-1.5 bg-cream-300"
-              }`}
-            />
-          ))}
-        </div>
-      </Section>
+      {totalPages > 1 && (
+        <Section className="pt-2">
+          <div className="flex justify-center gap-2">
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setPage(i)}
+                aria-label={`${i + 1}페이지`}
+                className={`h-1.5 rounded-full transition-all ${
+                  i === safePage
+                    ? "w-6 bg-kennel-gold"
+                    : "w-1.5 bg-cream-300 hover:bg-cream-300/70"
+                }`}
+              />
+            ))}
+          </div>
+        </Section>
+      )}
 
       {/* 4x4 Grid */}
       <Section className="pt-12">
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
-          {PUPPIES.map((p) => (
+          {visiblePuppies.map((p) => (
             <button
               key={p.id}
               type="button"
@@ -80,37 +105,46 @@ export default function PuppiesPage() {
       </Section>
 
       {/* Pagination */}
-      <Section className="pt-14 pb-20">
-        <div className="flex items-center justify-center gap-1.5 text-sm">
-          <button
-            type="button"
-            aria-label="이전"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-200"
-          >
-            ‹
-          </button>
-          {[1, 2, 3].map((n) => (
+      {totalPages > 1 && (
+        <Section className="pt-14 pb-20">
+          <div className="flex items-center justify-center gap-1.5 text-sm">
             <button
-              key={n}
               type="button"
-              className={`tnum flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
-                n === 1
-                  ? "bg-kennel-gold font-semibold text-white"
-                  : "text-ink-500 hover:bg-cream-200"
-              }`}
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              disabled={safePage === 0}
+              aria-label="이전 페이지"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-200 disabled:opacity-30 disabled:hover:bg-transparent"
             >
-              {n}
+              ‹
             </button>
-          ))}
-          <button
-            type="button"
-            aria-label="다음"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-200"
-          >
-            ›
-          </button>
-        </div>
-      </Section>
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setPage(i)}
+                aria-label={`${i + 1}페이지`}
+                aria-current={i === safePage ? "page" : undefined}
+                className={`tnum flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+                  i === safePage
+                    ? "bg-kennel-gold font-semibold text-white"
+                    : "text-ink-500 hover:bg-cream-200"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+              disabled={safePage === totalPages - 1}
+              aria-label="다음 페이지"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-200 disabled:opacity-30 disabled:hover:bg-transparent"
+            >
+              ›
+            </button>
+          </div>
+        </Section>
+      )}
 
       {/* Detail modal */}
       {selected && (

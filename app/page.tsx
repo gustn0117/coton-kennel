@@ -2,7 +2,13 @@ import Link from "next/link";
 import Hero from "@/components/Hero";
 import { Section } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
-import { supabasePublic, type Puppy, type Review } from "@/lib/supabase";
+import ImageCarousel from "@/components/ImageCarousel";
+import {
+  supabasePublic,
+  type Puppy,
+  type Review,
+  type SiteImage,
+} from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
@@ -10,8 +16,23 @@ const FALLBACK_VARIANTS = [
   "p1", "p2", "p3", "p7", "p9", "p11", "p5", "p10", "p8", "p12",
 ];
 
+async function fetchSiteImages(key: string): Promise<SiteImage[]> {
+  const { data } = await supabasePublic
+    .from("site_images")
+    .select("*")
+    .eq("key", key)
+    .order("slot", { ascending: true });
+  return (data ?? []) as SiteImage[];
+}
+
 export default async function HomePage() {
-  const [{ data: reviewsData }, { data: puppiesData }] = await Promise.all([
+  const [
+    { data: reviewsData },
+    { data: puppiesData },
+    heroImages,
+    premiumImages,
+    highlightImages,
+  ] = await Promise.all([
     supabasePublic
       .from("reviews")
       .select("*")
@@ -22,6 +43,9 @@ export default async function HomePage() {
       .select("*")
       .eq("status", "분양중")
       .order("order_index", { ascending: true }),
+    fetchSiteImages("home.hero"),
+    fetchSiteImages("home.premium"),
+    fetchSiteImages("home.highlight"),
   ]);
 
   const reviews = (reviewsData ?? []) as Review[];
@@ -29,6 +53,7 @@ export default async function HomePage() {
   const half = Math.ceil(puppies.length / 2);
   const puppiesTop = puppies.slice(0, half);
   const puppiesBottom = puppies.slice(half);
+  const highlightUrl = highlightImages[0]?.image_url ?? null;
 
   return (
     <>
@@ -37,6 +62,8 @@ export default async function HomePage() {
         description="평생을 함께할 아이를 준비합니다"
         cta={{ href: "/puppies", label: "강아지 보러가기" }}
         variant="hero"
+        images={heroImages}
+        withCarouselArrows
       />
 
       {/* Premium Guide */}
@@ -44,7 +71,13 @@ export default async function HomePage() {
         <div className="grid items-center gap-12 md:grid-cols-[minmax(0,1fr)_1.05fr]">
           <div className="relative">
             <div className="aspect-square w-full overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
-              <PuppyImage variant="p3" />
+              <ImageCarousel
+                images={premiumImages}
+                fallbackVariant="p3"
+                showArrows
+                showDots
+                alt="Premium Guide"
+              />
             </div>
           </div>
 
@@ -87,7 +120,7 @@ export default async function HomePage() {
           </h2>
         </div>
         <div className="mx-auto mt-12 aspect-[16/10] max-w-3xl overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
-          <PuppyImage variant="p7" />
+          <PuppyImage variant="p7" url={highlightUrl} />
         </div>
       </Section>
 

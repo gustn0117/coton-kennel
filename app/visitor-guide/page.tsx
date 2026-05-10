@@ -1,10 +1,19 @@
 import Hero from "@/components/Hero";
 import { Section, SectionHeading } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
-import { supabasePublic, type Review } from "@/lib/supabase";
+import { supabasePublic, type Review, type SiteImage } from "@/lib/supabase";
 import MapEmbed, { mapLink } from "@/components/MapEmbed";
 
 const STORE_ADDRESS = "서울 강동구 구천면로29길 23";
+
+async function fetchSiteImages(key: string): Promise<SiteImage[]> {
+  const { data } = await supabasePublic
+    .from("site_images")
+    .select("*")
+    .eq("key", key)
+    .order("slot", { ascending: true });
+  return (data ?? []) as SiteImage[];
+}
 
 export const dynamic = "force-dynamic";
 
@@ -27,15 +36,19 @@ const VISIT_STEPS = [
 ];
 
 export default async function VisitorGuidePage() {
-  const { data } = await supabasePublic
-    .from("reviews")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const [{ data }, heroImages] = await Promise.all([
+    supabasePublic
+      .from("reviews")
+      .select("*")
+      .order("created_at", { ascending: false }),
+    fetchSiteImages("visitor-guide.hero"),
+  ]);
   const reviews = (data ?? []) as Review[];
 
   return (
     <>
       <Hero
+        images={heroImages}
         eyebrow="Review"
         title="Vistor Guide"
         description={

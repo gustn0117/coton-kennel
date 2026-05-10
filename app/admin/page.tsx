@@ -1,9 +1,15 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
-import type { Notice, Puppy, Review } from "@/lib/supabase";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import type {
+  Notice,
+  Puppy,
+  Review,
+  SiteImage,
+} from "@/lib/supabase";
+import { SITE_IMAGE_GROUPS } from "@/lib/supabase";
 
-type Tab = "notices" | "puppies" | "reviews";
+type Tab = "site-images" | "notices" | "puppies" | "reviews";
 const STORAGE_KEY = "ck_admin_pw";
 const VARIANTS = [
   "p1", "p2", "p3", "p4", "p5", "p6",
@@ -14,7 +20,7 @@ export default function AdminPage() {
   const [pw, setPw] = useState<string | null>(null);
   const [pwInput, setPwInput] = useState("");
   const [pwErr, setPwErr] = useState<string | null>(null);
-  const [tab, setTab] = useState<Tab>("notices");
+  const [tab, setTab] = useState<Tab>("site-images");
 
   useEffect(() => {
     const saved = sessionStorage.getItem(STORAGE_KEY);
@@ -101,9 +107,10 @@ export default function AdminPage() {
         </button>
       </div>
 
-      <div className="mt-8 flex border-b border-cream-300/60">
+      <div className="mt-8 flex flex-wrap border-b border-cream-300/60">
         {(
           [
+            ["site-images", "사이트 이미지"],
             ["notices", "공지사항"],
             ["puppies", "강아지"],
             ["reviews", "후기"],
@@ -125,6 +132,7 @@ export default function AdminPage() {
       </div>
 
       <div className="mt-8">
+        {tab === "site-images" && <SiteImagesTab pw={pw} />}
         {tab === "notices" && <NoticesTab pw={pw} />}
         {tab === "puppies" && <PuppiesTab pw={pw} />}
         {tab === "reviews" && <ReviewsTab pw={pw} />}
@@ -190,12 +198,14 @@ function ImageInput({
   onChange,
   label,
   size = "h-32 w-32",
+  layout = "row",
 }: {
   pw: string;
   value: string | null | undefined;
   onChange: (url: string | null) => void;
   label: string;
   size?: string;
+  layout?: "row" | "stack";
 }) {
   const [busy, setBusy] = useState(false);
 
@@ -214,54 +224,247 @@ function ImageInput({
     }
   }
 
+  const previewBox = (
+    <div
+      className={`relative ${size} shrink-0 overflow-hidden rounded-card border border-cream-300 bg-cream-50`}
+    >
+      {value ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={value} alt="" className="h-full w-full object-cover" />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center text-[11px] text-ink-400">
+          이미지 없음
+        </div>
+      )}
+      {busy && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-[11px] font-medium text-ink-700">
+          업로드 중...
+        </div>
+      )}
+    </div>
+  );
+
+  const buttons = (
+    <div className={layout === "stack" ? "mt-2 flex gap-1.5" : "flex flex-col gap-1.5"}>
+      <label className="flex-1 cursor-pointer rounded-md border border-cream-300 bg-white px-3 py-1.5 text-center text-[12px] font-medium text-ink-700 hover:bg-cream-100">
+        {value ? "이미지 변경" : "이미지 선택"}
+        <input type="file" accept="image/*" onChange={onFile} className="hidden" />
+      </label>
+      {value && (
+        <button
+          type="button"
+          onClick={() => onChange(null)}
+          className="rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-[12px] font-medium text-red-600 hover:bg-red-100"
+        >
+          삭제
+        </button>
+      )}
+    </div>
+  );
+
   return (
     <div>
       <span className="mb-1.5 block text-[12px] font-medium tracking-wide text-ink-500">
         {label}
       </span>
-      <div className="flex items-start gap-3">
-        <div
-          className={`relative ${size} shrink-0 overflow-hidden rounded-card border border-cream-300 bg-cream-50`}
-        >
-          {value ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={value}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center text-[11px] text-ink-400">
-              없음
-            </div>
-          )}
-          {busy && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-[11px] text-ink-500">
-              업로드 중...
-            </div>
-          )}
+      {layout === "stack" ? (
+        <>
+          {previewBox}
+          {buttons}
+        </>
+      ) : (
+        <div className="flex items-start gap-3">
+          {previewBox}
+          {buttons}
         </div>
-        <div className="flex flex-col gap-1.5">
-          <label className="cursor-pointer rounded-md border border-cream-300 bg-white px-3 py-1.5 text-[12px] font-medium text-ink-700 hover:bg-cream-100">
-            이미지 선택
-            <input
-              type="file"
-              accept="image/*"
-              onChange={onFile}
-              className="hidden"
-            />
-          </label>
-          {value && (
-            <button
-              type="button"
-              onClick={() => onChange(null)}
-              className="rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-[12px] font-medium text-red-600 hover:bg-red-100"
-            >
-              삭제
-            </button>
-          )}
-        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------------- SITE IMAGES ---------------- */
+const PAGE_LABELS: Record<string, string> = {
+  "/": "홈 (메인 페이지)",
+  "/puppies": "강아지소개 페이지",
+  "/visitor-guide": "후기 / 방문 안내 페이지",
+  "/heritage": "Heritage 페이지",
+  "/contact": "상담 / 문의 페이지",
+};
+
+function SiteImagesTab({ pw }: { pw: string }) {
+  const [items, setItems] = useState<SiteImage[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  async function load() {
+    const r = await fetch("/api/admin/site-images", { cache: "no-store" });
+    setItems(await r.json());
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function patchSlot(key: string, slot: number, image_url: string | null) {
+    await fetch("/api/admin/site-images", {
+      method: "PATCH",
+      headers: authHeaders(pw),
+      body: JSON.stringify({ key, slot, image_url }),
+    });
+    await load();
+  }
+
+  async function addSlot(key: string) {
+    await fetch("/api/admin/site-images", {
+      method: "POST",
+      headers: authHeaders(pw),
+      body: JSON.stringify({ key, image_url: null }),
+    });
+    await load();
+  }
+
+  async function removeSlot(key: string, slot: number) {
+    if (!confirm("이 슬라이드를 삭제할까요?")) return;
+    await fetch(`/api/admin/site-images?key=${key}&slot=${slot}`, {
+      method: "DELETE",
+      headers: authHeaders(pw),
+    });
+    await load();
+  }
+
+  const groupsByPage = useMemo(() => {
+    const out: Record<string, typeof SITE_IMAGE_GROUPS> = {};
+    for (const g of SITE_IMAGE_GROUPS) {
+      if (!out[g.page]) out[g.page] = [];
+      out[g.page].push(g);
+    }
+    return out;
+  }, []);
+
+  if (loading) {
+    return <p className="py-10 text-center text-[14px] text-ink-500">불러오는 중...</p>;
+  }
+
+  return (
+    <div className="space-y-12">
+      <div className="rounded-card-lg border border-cream-300/70 bg-cream-50 p-5 text-[13.5px] leading-[1.8] text-ink-700">
+        <p className="font-semibold text-ink-900">📍 안내</p>
+        <ul className="mt-2 list-disc space-y-1 pl-5">
+          <li>
+            <strong>한 장만 등록한 곳</strong>은 그 사진이 그대로 보입니다.
+          </li>
+          <li>
+            <strong>여러 장 등록한 곳</strong>은 자동으로 캐러셀이 되어 사이트의
+            좌/우 화살표(‹ ›)와 점(●●●) 버튼으로 넘길 수 있습니다.
+          </li>
+          <li>
+            이미지를 비워두면 빗금 무늬 자리표시자가 표시됩니다 (사진이 없을 때
+            대체).
+          </li>
+          <li>
+            JPG/PNG 등 이미지 파일을 직접 선택하면 자동으로 1600px로 압축되어
+            Supabase Storage에 저장됩니다. 외부 URL은 사용하지 않습니다.
+          </li>
+        </ul>
       </div>
+
+      {Object.entries(groupsByPage).map(([page, groups]) => (
+        <section key={page}>
+          <div className="mb-4 flex items-end justify-between gap-3 border-b border-cream-300/60 pb-3">
+            <h3 className="text-[18px] font-bold tracking-[-0.018em] text-ink-900">
+              {PAGE_LABELS[page] || page}
+            </h3>
+            <span className="font-mono text-[11.5px] text-ink-500">
+              {page}
+            </span>
+          </div>
+
+          <div className="space-y-6">
+            {groups.map((group) => {
+              const slots = items
+                .filter((i) => i.key === group.key)
+                .sort((a, b) => a.slot - b.slot);
+              const showSlots = slots.length > 0 ? slots : [];
+
+              return (
+                <div
+                  key={group.key}
+                  className="rounded-card-lg border border-cream-300/60 bg-white p-6 shadow-soft"
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-[15.5px] font-semibold text-ink-900">
+                          {group.label}
+                        </h4>
+                        {group.multiple ? (
+                          <span className="rounded-full bg-kennel-gold/15 px-2 py-0.5 text-[11px] font-medium text-kennel-gold">
+                            캐러셀 (여러 장 가능)
+                          </span>
+                        ) : (
+                          <span className="rounded-full bg-cream-200 px-2 py-0.5 text-[11px] font-medium text-ink-700">
+                            한 장 슬롯
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1.5 text-[13px] leading-[1.7] text-ink-500">
+                        {group.description}
+                      </p>
+                    </div>
+                    {group.multiple && (
+                      <button
+                        type="button"
+                        onClick={() => addSlot(group.key)}
+                        className={primaryBtn}
+                      >
+                        + 슬라이드 추가
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
+                    {showSlots.length === 0 && (
+                      <ImageInput
+                        pw={pw}
+                        label={group.multiple ? "슬라이드 1" : "이미지"}
+                        value={null}
+                        onChange={(url) => patchSlot(group.key, 0, url)}
+                        size="aspect-[4/3] w-full"
+                        layout="stack"
+                      />
+                    )}
+                    {showSlots.map((s) => (
+                      <div key={s.slot}>
+                        <ImageInput
+                          pw={pw}
+                          label={
+                            group.multiple
+                              ? `슬라이드 ${s.slot + 1}`
+                              : "이미지"
+                          }
+                          value={s.image_url}
+                          onChange={(url) => patchSlot(group.key, s.slot, url)}
+                          size="aspect-[4/3] w-full"
+                          layout="stack"
+                        />
+                        {group.multiple && showSlots.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeSlot(group.key, s.slot)}
+                            className="mt-2 w-full rounded-md border border-red-200 bg-red-50 px-2 py-1 text-[11.5px] font-medium text-red-600 hover:bg-red-100"
+                          >
+                            이 슬라이드 삭제
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      ))}
     </div>
   );
 }
