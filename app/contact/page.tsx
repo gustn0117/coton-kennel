@@ -315,38 +315,69 @@ export default function ContactPage() {
 
       {/* 자주 묻는 질문 */}
       <Section className="pt-24 lg:pt-32">
-        <h2 className="text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
-          자주 묻는 질문
-        </h2>
-        <div className="mt-8 divide-y divide-cream-300/60 rounded-card bg-cream-50 ring-1 ring-cream-300/50">
-          {FAQ.map((f, i) => (
-            <div key={i}>
-              <button
-                type="button"
-                onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-cream-100/60"
+        <div className="flex items-end justify-between gap-4">
+          <h2 className="text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
+            자주 묻는 질문
+          </h2>
+          <span className="tnum text-[12.5px] text-ink-400">
+            총 {FAQ.length}개
+          </span>
+        </div>
+        <ul className="mt-8 overflow-hidden rounded-card-lg border border-cream-300/60 bg-white">
+          {FAQ.map((f, i) => {
+            const isOpen = openFaq === i;
+            return (
+              <li
+                key={i}
+                className={i > 0 ? "border-t border-cream-200" : ""}
               >
-                <span className="flex items-center gap-3 text-[14.5px] font-medium text-ink-900">
-                  <span className="font-serif italic text-kennel-gold">Q.</span>
-                  {f.q}
-                </span>
-                <span
-                  className={`text-kennel-gold transition-transform ${
-                    openFaq === i ? "rotate-180" : ""
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(isOpen ? null : i)}
+                  aria-expanded={isOpen}
+                  className={`flex w-full items-center gap-4 px-5 py-5 text-left transition-colors sm:px-7 ${
+                    isOpen ? "bg-cream-50" : "hover:bg-cream-50/60"
                   }`}
                 >
-                  ▾
-                </span>
-              </button>
-              {openFaq === i && (
-                <div className="bg-white px-6 pb-5 pt-1 text-[13.5px] leading-[1.85] text-ink-700">
-                  <span className="mr-2 font-serif italic text-kennel-gold">A.</span>
-                  {f.a}
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-kennel-gold/12 font-serif text-[14px] font-semibold italic text-kennel-gold">
+                    Q
+                  </span>
+                  <span className="flex-1 text-[14.5px] font-medium leading-[1.5] text-ink-900 sm:text-[15px]">
+                    {f.q}
+                  </span>
+                  <span
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
+                      isOpen
+                        ? "rotate-180 bg-ink-900 text-white"
+                        : "bg-cream-100 text-ink-500"
+                    }`}
+                    aria-hidden
+                  >
+                    <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </button>
+                <div
+                  className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="flex items-start gap-4 bg-cream-50/60 px-5 pb-6 pt-1 sm:px-7">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-kennel-gold font-serif text-[14px] font-semibold italic text-white">
+                        A
+                      </span>
+                      <p className="flex-1 whitespace-pre-line text-[14px] leading-[1.85] text-ink-700">
+                        {f.a}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+              </li>
+            );
+          })}
+        </ul>
       </Section>
 
       {/* 공지사항 */}
