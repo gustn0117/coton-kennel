@@ -20,11 +20,20 @@ export function supabaseAdmin() {
   });
 }
 
+export const STORAGE_BUCKET = "coton-kennel";
+
+export function publicStorageUrl(path: string): string {
+  if (!path) return "";
+  if (path.startsWith("http")) return path;
+  return `${URL}/storage/v1/object/public/${STORAGE_BUCKET}/${path}`;
+}
+
 export type Notice = {
   id: string;
   title: string;
   body: string;
   date: string;
+  image_url: string | null;
   created_at: string;
 };
 
@@ -38,6 +47,8 @@ export type Puppy = {
   variant: string;
   thumbs: string[];
   order_index: number;
+  image_url: string | null;
+  thumb_urls: string[];
   created_at: string;
 };
 
@@ -48,6 +59,7 @@ export type Review = {
   title: string;
   body: string;
   variant: string;
+  image_url: string | null;
   created_at: string;
 };
 

@@ -56,7 +56,7 @@ export default function PuppiesPage() {
               className="group text-left"
             >
               <div className="relative aspect-square w-full overflow-hidden rounded-card ring-1 ring-cream-300/50 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-soft-lg">
-                <PuppyImage variant={p.variant as never} />
+                <PuppyImage variant={p.variant as never} url={p.image_url} />
                 {p.status === "분양완료" && (
                   <span className="absolute left-3 top-3 rounded-full bg-ink-900/80 px-3 py-1 text-[11px] font-medium tracking-wide text-cream-100">
                     분양완료
@@ -137,6 +137,9 @@ export default function PuppiesPage() {
               <div className="aspect-square w-full overflow-hidden rounded-card">
                 <PuppyImage
                   variant={(selected.thumbs[activeThumb] ?? selected.variant) as never}
+                  url={
+                    selected.thumb_urls?.[activeThumb] || selected.image_url
+                  }
                 />
               </div>
 
@@ -212,7 +215,10 @@ export default function PuppiesPage() {
                       : "ring-transparent hover:ring-cream-300"
                   }`}
                 >
-                  <PuppyImage variant={v as never} />
+                  <PuppyImage
+                    variant={v as never}
+                    url={selected.thumb_urls?.[i] || null}
+                  />
                 </button>
               ))}
             </div>

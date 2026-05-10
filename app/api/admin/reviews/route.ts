@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
       title: b.title || "",
       body: b.body || "",
       variant: b.variant || "p1",
+      image_url: b.image_url || null,
     })
     .select()
     .single();

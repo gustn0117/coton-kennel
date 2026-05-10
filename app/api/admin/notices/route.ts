@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
       title: body.title,
       body: body.body || "",
       date: body.date,
+      image_url: body.image_url || null,
     })
     .select()
     .single();

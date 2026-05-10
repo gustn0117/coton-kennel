@@ -103,8 +103,14 @@ export default async function HomePage() {
         </Link>
       </Section>
       <div className="mt-10 space-y-4">
-        <Marquee items={puppiesTop.length > 0 ? puppiesTop : fallbackPuppies(0)} direction="left" />
-        <Marquee items={puppiesBottom.length > 0 ? puppiesBottom : fallbackPuppies(5)} direction="right" />
+        <Marquee
+          items={puppiesTop.length > 0 ? puppiesTop.map(toMarqueeItem) : fallbackPuppies(0)}
+          direction="left"
+        />
+        <Marquee
+          items={puppiesBottom.length > 0 ? puppiesBottom.map(toMarqueeItem) : fallbackPuppies(5)}
+          direction="right"
+        />
       </div>
 
       {/* Reviews */}
@@ -133,7 +139,7 @@ export default async function HomePage() {
               className="group rounded-card-lg bg-cream-50 p-3 ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
             >
               <div className="aspect-[4/5] overflow-hidden rounded-card">
-                <PuppyImage variant={r.variant as never} />
+                <PuppyImage variant={r.variant as never} url={r.image_url} />
               </div>
               <div className="px-2 pb-2 pt-5">
                 <div className="flex items-center justify-between text-[13px] text-ink-500">
@@ -181,15 +187,25 @@ export default async function HomePage() {
   );
 }
 
-function fallbackPuppies(start: number) {
+function fallbackPuppies(start: number): MarqueeItem[] {
   return FALLBACK_VARIANTS.slice(start, start + 5).map((v, i) => ({
     id: `fallback-${start}-${i}`,
     name: "준비 중",
     variant: v,
+    image_url: null,
   }));
 }
 
-type MarqueeItem = { id: string; name: string; variant: string };
+function toMarqueeItem(p: Puppy): MarqueeItem {
+  return {
+    id: p.id,
+    name: p.name,
+    variant: p.variant,
+    image_url: p.image_url,
+  };
+}
+
+type MarqueeItem = { id: string; name: string; variant: string; image_url: string | null };
 
 function Marquee({
   items,
@@ -216,7 +232,7 @@ function Marquee({
             key={`${p.id}-${i}`}
             className="aspect-[4/3] w-[260px] shrink-0 overflow-hidden rounded-card bg-cream-50 ring-1 ring-cream-300/50 transition-transform group-hover:scale-[0.99]"
           >
-            <PuppyImage variant={p.variant as never} alt={p.name} />
+            <PuppyImage variant={p.variant as never} url={p.image_url} alt={p.name} />
           </div>
         ))}
       </div>

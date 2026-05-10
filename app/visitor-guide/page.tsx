@@ -61,7 +61,7 @@ export default async function VisitorGuidePage() {
               className="rounded-card-lg bg-cream-50 p-3 ring-1 ring-cream-300/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
             >
               <div className="aspect-[4/5] w-full overflow-hidden rounded-card">
-                <PuppyImage variant={r.variant as never} />
+                <PuppyImage variant={r.variant as never} url={r.image_url} />
               </div>
               <div className="px-3 pb-2 pt-5">
                 <div className="flex items-center justify-between text-[12.5px] text-ink-500">

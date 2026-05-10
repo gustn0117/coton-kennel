@@ -137,6 +137,135 @@ function authHeaders(pw: string): HeadersInit {
   return { "Content-Type": "application/json", "x-admin-password": pw };
 }
 
+async function compressImage(file: File, maxSize = 1600, quality = 0.85): Promise<Blob> {
+  const dataUrl = await new Promise<string>((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result as string);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const i = new Image();
+    i.onload = () => resolve(i);
+    i.onerror = reject;
+    i.src = dataUrl;
+  });
+  const ratio = Math.min(1, maxSize / Math.max(img.width, img.height));
+  const w = Math.round(img.width * ratio);
+  const h = Math.round(img.height * ratio);
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  ctx.drawImage(img, 0, 0, w, h);
+  return new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (b) => (b ? resolve(b) : reject(new Error("toBlob failed"))),
+      "image/jpeg",
+      quality
+    );
+  });
+}
+
+async function uploadImage(pw: string, file: File): Promise<string> {
+  const blob = await compressImage(file);
+  const fd = new FormData();
+  fd.append(
+    "file",
+    new File([blob], file.name.replace(/\.[^.]+$/, "") + ".jpg", { type: "image/jpeg" })
+  );
+  const r = await fetch("/api/admin/upload", {
+    method: "POST",
+    headers: { "x-admin-password": pw },
+    body: fd,
+  });
+  if (!r.ok) throw new Error("upload failed");
+  const j = await r.json();
+  return j.url as string;
+}
+
+function ImageInput({
+  pw,
+  value,
+  onChange,
+  label,
+  size = "h-32 w-32",
+}: {
+  pw: string;
+  value: string | null | undefined;
+  onChange: (url: string | null) => void;
+  label: string;
+  size?: string;
+}) {
+  const [busy, setBusy] = useState(false);
+
+  async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    setBusy(true);
+    try {
+      const url = await uploadImage(pw, f);
+      onChange(url);
+    } catch (err) {
+      alert("업로드 실패: " + (err as Error).message);
+    } finally {
+      setBusy(false);
+      e.target.value = "";
+    }
+  }
+
+  return (
+    <div>
+      <span className="mb-1.5 block text-[12px] font-medium tracking-wide text-ink-500">
+        {label}
+      </span>
+      <div className="flex items-start gap-3">
+        <div
+          className={`relative ${size} shrink-0 overflow-hidden rounded-card border border-cream-300 bg-cream-50`}
+        >
+          {value ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={value}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-[11px] text-ink-400">
+              없음
+            </div>
+          )}
+          {busy && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-[11px] text-ink-500">
+              업로드 중...
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="cursor-pointer rounded-md border border-cream-300 bg-white px-3 py-1.5 text-[12px] font-medium text-ink-700 hover:bg-cream-100">
+            이미지 선택
+            <input
+              type="file"
+              accept="image/*"
+              onChange={onFile}
+              className="hidden"
+            />
+          </label>
+          {value && (
+            <button
+              type="button"
+              onClick={() => onChange(null)}
+              className="rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-[12px] font-medium text-red-600 hover:bg-red-100"
+            >
+              삭제
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ---------------- NOTICES ---------------- */
 function NoticesTab({ pw }: { pw: string }) {
   const [items, setItems] = useState<Notice[]>([]);
@@ -145,6 +274,7 @@ function NoticesTab({ pw }: { pw: string }) {
     title: "",
     body: "",
     date: new Date().toISOString().slice(0, 10),
+    image_url: null as string | null,
   });
   const [busy, setBusy] = useState(false);
 
@@ -172,7 +302,7 @@ function NoticesTab({ pw }: { pw: string }) {
       });
     }
     setEditing(null);
-    setForm({ title: "", body: "", date: new Date().toISOString().slice(0, 10) });
+    setForm({ title: "", body: "", date: new Date().toISOString().slice(0, 10), image_url: null });
     await load();
     setBusy(false);
   }
@@ -188,7 +318,7 @@ function NoticesTab({ pw }: { pw: string }) {
 
   function startEdit(n: Notice) {
     setEditing(n);
-    setForm({ title: n.title, body: n.body, date: n.date });
+    setForm({ title: n.title, body: n.body, date: n.date, image_url: n.image_url });
   }
 
   return (
@@ -217,6 +347,12 @@ function NoticesTab({ pw }: { pw: string }) {
             className={inputCls}
           />
         </Field>
+        <ImageInput
+          pw={pw}
+          label="대표 이미지 (선택)"
+          value={form.image_url}
+          onChange={(url) => setForm({ ...form, image_url: url })}
+        />
         <div className="flex gap-2 pt-2">
           <button
             type="button"
@@ -231,7 +367,12 @@ function NoticesTab({ pw }: { pw: string }) {
               type="button"
               onClick={() => {
                 setEditing(null);
-                setForm({ title: "", body: "", date: new Date().toISOString().slice(0, 10) });
+                setForm({
+                  title: "",
+                  body: "",
+                  date: new Date().toISOString().slice(0, 10),
+                  image_url: null,
+                });
               }}
               className={secondaryBtn}
             >
@@ -286,6 +427,8 @@ function PuppiesTab({ pw }: { pw: string }) {
     variant: "p1",
     thumbs: ["p1", "p2", "p3", "p4"] as string[],
     order_index: 0,
+    image_url: null as string | null,
+    thumb_urls: ["", "", "", ""] as string[],
   };
   const [form, setForm] = useState(empty);
   const [busy, setBusy] = useState(false);
@@ -330,6 +473,9 @@ function PuppiesTab({ pw }: { pw: string }) {
 
   function startEdit(p: Puppy) {
     setEditing(p);
+    const tu = p.thumb_urls && p.thumb_urls.length === 4
+      ? p.thumb_urls
+      : ["", "", "", ""];
     setForm({
       name: p.name,
       color: p.color,
@@ -339,13 +485,15 @@ function PuppiesTab({ pw }: { pw: string }) {
       variant: p.variant,
       thumbs: p.thumbs?.length ? p.thumbs : ["p1", "p2", "p3", "p4"],
       order_index: p.order_index,
+      image_url: p.image_url,
+      thumb_urls: tu,
     });
   }
 
-  function setThumb(i: number, v: string) {
-    const next = [...form.thumbs];
-    next[i] = v;
-    setForm({ ...form, thumbs: next });
+  function setThumbUrl(i: number, url: string | null) {
+    const next = [...form.thumb_urls];
+    next[i] = url || "";
+    setForm({ ...form, thumb_urls: next });
   }
 
   return (
@@ -399,7 +547,28 @@ function PuppiesTab({ pw }: { pw: string }) {
             </select>
           </Field>
         </div>
-        <Field label="대표 이미지(빗금 variant)">
+        <ImageInput
+          pw={pw}
+          label="대표 이미지"
+          value={form.image_url}
+          onChange={(url) => setForm({ ...form, image_url: url })}
+          size="h-40 w-40"
+        />
+        <Field label="상세 썸네일 4장 (선택)">
+          <div className="grid grid-cols-2 gap-3">
+            {form.thumb_urls.map((u, i) => (
+              <ImageInput
+                key={i}
+                pw={pw}
+                label={`썸네일 ${i + 1}`}
+                value={u || null}
+                onChange={(url) => setThumbUrl(i, url)}
+                size="h-24 w-24"
+              />
+            ))}
+          </div>
+        </Field>
+        <Field label="대체 빗금 variant (이미지 없을 때)">
           <select
             value={form.variant}
             onChange={(e) => setForm({ ...form, variant: e.target.value })}
@@ -409,22 +578,6 @@ function PuppiesTab({ pw }: { pw: string }) {
               <option key={v}>{v}</option>
             ))}
           </select>
-        </Field>
-        <Field label="상세 썸네일 4개">
-          <div className="grid grid-cols-4 gap-2">
-            {form.thumbs.map((t, i) => (
-              <select
-                key={i}
-                value={t}
-                onChange={(e) => setThumb(i, e.target.value)}
-                className={inputCls}
-              >
-                {VARIANTS.map((v) => (
-                  <option key={v}>{v}</option>
-                ))}
-              </select>
-            ))}
-          </div>
         </Field>
         <Field label="정렬 순서 (작을수록 앞)">
           <input
@@ -502,6 +655,7 @@ function ReviewsTab({ pw }: { pw: string }) {
     title: "",
     body: "",
     variant: "p1",
+    image_url: null as string | null,
   };
   const [form, setForm] = useState(empty);
   const [busy, setBusy] = useState(false);
@@ -552,6 +706,7 @@ function ReviewsTab({ pw }: { pw: string }) {
       title: r.title,
       body: r.body,
       variant: r.variant,
+      image_url: r.image_url,
     });
   }
 
@@ -590,7 +745,14 @@ function ReviewsTab({ pw }: { pw: string }) {
             className={inputCls}
           />
         </Field>
-        <Field label="이미지 variant">
+        <ImageInput
+          pw={pw}
+          label="후기 이미지"
+          value={form.image_url}
+          onChange={(url) => setForm({ ...form, image_url: url })}
+          size="h-32 w-32"
+        />
+        <Field label="대체 빗금 variant (이미지 없을 때)">
           <select
             value={form.variant}
             onChange={(e) => setForm({ ...form, variant: e.target.value })}

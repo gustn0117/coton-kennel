@@ -27,6 +27,8 @@ export async function POST(req: NextRequest) {
       variant: b.variant || "p1",
       thumbs: b.thumbs || [],
       order_index: Number(b.order_index) || 0,
+      image_url: b.image_url || null,
+      thumb_urls: Array.isArray(b.thumb_urls) ? b.thumb_urls : [],
     })
     .select()
     .single();

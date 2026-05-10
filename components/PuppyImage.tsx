@@ -22,6 +22,7 @@ type Props = {
   className?: string;
   variant?: Variant;
   alt?: string;
+  url?: string | null;
 };
 
 type Tone = { bg: string; line: string; opacity: number };
@@ -62,8 +63,27 @@ const ORDER: Variant[] = [
 export default function PuppyImage({
   className = "",
   variant = "hero",
-  alt = "Coton de Tulear puppy placeholder",
+  alt = "Coton de Tulear puppy",
+  url,
 }: Props) {
+  if (url) {
+    return (
+      <div
+        role="img"
+        aria-label={alt}
+        className={`relative h-full w-full select-none overflow-hidden bg-cream-100 ${className}`}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={url}
+          alt={alt}
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      </div>
+    );
+  }
+
   const idx = Math.max(0, ORDER.indexOf(variant));
   const tone = TONES[idx % TONES.length];
   const angle = ANGLES[idx % ANGLES.length];

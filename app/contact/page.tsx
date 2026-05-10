@@ -399,7 +399,7 @@ export default function ContactPage() {
             </button>
             <div className="grid gap-6 md:grid-cols-[1fr_1.4fr]">
               <div className="aspect-square w-full overflow-hidden rounded-card">
-                <PuppyImage variant="p1" />
+                <PuppyImage variant="p1" url={openNotice.image_url} />
               </div>
               <div>
                 <h3 className="text-[20px] font-bold tracking-[-0.018em] text-ink-900">
