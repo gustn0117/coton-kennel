@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import { Section } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
 import { supabasePublic, type Notice, type SiteImage } from "@/lib/supabase";
+import NoticeModal, { isNew } from "@/components/NoticeModal";
 import MapEmbed, { mapLink } from "@/components/MapEmbed";
 
 const STORE_ADDRESS = "서울 강동구 구천면로29길 23";
@@ -66,7 +67,7 @@ const FAQ = [
 
 export default function ContactPage() {
   const [notices, setNotices] = useState<Notice[]>([]);
-  const [openNotice, setOpenNotice] = useState<Notice | null>(null);
+  const [openNoticeId, setOpenNoticeId] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showWeChatQR, setShowWeChatQR] = useState(false);
   const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
@@ -350,85 +351,78 @@ export default function ContactPage() {
 
       {/* 공지사항 */}
       <Section className="pt-24 lg:pt-32">
-        <h2 className="text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
-          공지사항
-        </h2>
-        <table className="mt-8 w-full border-collapse text-[13.5px]">
-          <thead>
-            <tr className="border-y border-ink-900/15 bg-cream-50">
-              <th className="w-20 py-4 text-center font-semibold text-ink-500">No.</th>
-              <th className="py-4 text-left font-semibold text-ink-500">제목</th>
-              <th className="w-40 py-4 text-right pr-6 font-semibold text-ink-500">날짜</th>
-            </tr>
-          </thead>
-          <tbody>
-            {notices.map((n, i) => (
-              <tr
-                key={n.id}
-                onClick={() => setOpenNotice(n)}
-                className="cursor-pointer border-b border-cream-300/60 transition-colors hover:bg-cream-50"
-              >
-                <td className="tnum py-4 text-center text-ink-500">
-                  {notices.length - i}
-                </td>
-                <td className="py-4 text-ink-900">{n.title}</td>
-                <td className="tnum py-4 text-right pr-6 text-ink-500">
-                  {n.date}
-                </td>
-              </tr>
-            ))}
-            {notices.length === 0 && (
-              <tr>
-                <td colSpan={3} className="py-10 text-center text-[13px] text-ink-500">
-                  등록된 공지사항이 없습니다.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+        <div className="flex items-end justify-between gap-4">
+          <h2 className="text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
+            공지사항
+          </h2>
+          <span className="tnum text-[12.5px] text-ink-400">
+            총 {notices.length}건
+          </span>
+        </div>
+
+        {notices.length === 0 ? (
+          <div className="mt-8 rounded-card-lg border border-cream-300/60 bg-cream-50 px-6 py-14 text-center">
+            <p className="text-[14px] text-ink-500">등록된 공지사항이 없습니다.</p>
+          </div>
+        ) : (
+          <ul className="mt-8 overflow-hidden rounded-card-lg border border-cream-300/60 bg-white">
+            {notices.map((n, i) => {
+              const isFirst = i === 0;
+              const newBadge = isNew(n.date);
+              return (
+                <li
+                  key={n.id}
+                  className={!isFirst ? "border-t border-cream-200" : ""}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenNoticeId(n.id)}
+                    className="group flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-cream-50 sm:px-7 sm:py-5"
+                  >
+                    <span className="tnum hidden w-10 text-center text-[12.5px] text-ink-400 sm:block">
+                      {String(notices.length - i).padStart(2, "0")}
+                    </span>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-kennel-gold/12 text-[12px] font-semibold text-kennel-gold">
+                      N
+                    </span>
+                    <span className="flex-1 min-w-0">
+                      <span className="flex items-center gap-2">
+                        <span className="truncate text-[15px] font-medium text-ink-900 group-hover:text-kennel-dark">
+                          {n.title}
+                        </span>
+                        {newBadge && (
+                          <span className="shrink-0 rounded-full bg-red-500 px-1.5 py-[1px] text-[9.5px] font-semibold tracking-wide text-white">
+                            NEW
+                          </span>
+                        )}
+                      </span>
+                    </span>
+                    <span className="tnum hidden shrink-0 text-[12.5px] text-ink-500 sm:inline">
+                      {n.date}
+                    </span>
+                    <span
+                      aria-hidden
+                      className="shrink-0 text-ink-400 transition-transform group-hover:translate-x-0.5 group-hover:text-kennel-gold"
+                    >
+                      →
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </Section>
 
       <div className="pb-20" />
 
       {/* Notice modal */}
-      {openNotice && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 px-4 backdrop-blur-sm"
-          role="dialog"
-          aria-modal
-          onClick={() => setOpenNotice(null)}
-        >
-          <div
-            className="relative w-full max-w-2xl rounded-card-xl bg-white p-8 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => setOpenNotice(null)}
-              aria-label="닫기"
-              className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-100 hover:text-ink-900"
-            >
-              ✕
-            </button>
-            <div className="grid gap-6 md:grid-cols-[1fr_1.4fr]">
-              <div className="aspect-square w-full overflow-hidden rounded-card">
-                <PuppyImage variant="p1" url={openNotice.image_url} />
-              </div>
-              <div>
-                <h3 className="text-[20px] font-bold tracking-[-0.018em] text-ink-900">
-                  {openNotice.title}
-                </h3>
-                <p className="tnum mt-1 text-[12px] text-ink-400">
-                  {openNotice.date}
-                </p>
-                <p className="mt-5 whitespace-pre-line text-[13.5px] leading-[1.85] text-ink-700">
-                  {openNotice.body || "내용이 없습니다."}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <NoticeModal
+        notices={notices}
+        currentId={openNoticeId}
+        onClose={() => setOpenNoticeId(null)}
+        onChange={setOpenNoticeId}
+      />
 
       {/* WeChat QR modal */}
       {showWeChatQR && (

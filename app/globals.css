@@ -70,3 +70,15 @@ h1, h2, h3, h4 {
 
 img, svg { display: block; }
 [role="img"] { user-select: none; }
+
+/* Modal animations */
+@keyframes ckFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ckPopIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.ck-modal-fade { animation: ckFadeIn 0.18s ease-out; }
+.ck-modal-pop { animation: ckPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1); }
