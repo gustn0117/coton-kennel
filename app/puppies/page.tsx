@@ -8,6 +8,50 @@ import { supabasePublic, type Puppy, type SiteImage } from "@/lib/supabase";
 
 const PAGE_SIZE = 8;
 
+const BREED_SECTIONS: {
+  eyebrow: string;
+  title: string;
+  body: string[];
+  variant: string;
+}[] = [
+  {
+    eyebrow: "Heritage",
+    title: "꼬똥 드 툴레아의 혈통",
+    body: [
+      "꼬똥 드 툴레아 (Coton de Tulear) 는 마다가스카르 툴레아 지역에서 유래한 유서 깊은 견종으로, 17세기경 프랑스 귀족과 마다가스카르 왕족의 사랑을 받아 ‘귀족 견’이라는 별명을 얻었습니다.",
+      "꼬똥 켄넬은 이러한 혈통의 가치를 지키기 위해, FCI 공인 혈통서를 갖춘 챔피언 라인의 부모견만을 통해 자견을 선보입니다.",
+    ],
+    variant: "p7",
+  },
+  {
+    eyebrow: "Appearance",
+    title: "외모 · 분양 가능 시기",
+    body: [
+      "솜털 같은 새하얀 모질, 동그랗고 또렷한 눈, 작고 단단한 골격이 특징입니다. 평균 체중 4~6kg의 소형견으로, 성견이 되어도 사랑스러운 인형 같은 외모를 유지합니다.",
+      "분양은 생후 약 8주 ~ 12주 사이에 가능하며, 이유식·1차 접종·구충까지 완료된 상태에서 새 가족을 만나게 됩니다. 정확한 시기는 개별 자견의 컨디션에 따라 안내드립니다.",
+    ],
+    variant: "p3",
+  },
+  {
+    eyebrow: "Temperament",
+    title: "기질 · 성격",
+    body: [
+      "꼬똥 드 툴레아는 차분하면서도 사람을 좋아하는 사교적인 기질을 지녔습니다. 가족과의 유대감이 깊고, 다른 반려동물·아이들과도 잘 어울려 첫 반려견으로도 적합합니다.",
+      "꼬똥 켄넬에서는 출생 직후부터 다양한 사회화 자극을 통해 안정적이고 균형 잡힌 성격을 길러냅니다.",
+    ],
+    variant: "p9",
+  },
+  {
+    eyebrow: "Care",
+    title: "케어 가이드",
+    body: [
+      "장모 견종 특성상 매일의 빗질과 정기 미용이 모질 유지에 큰 영향을 줍니다. 분양 시 모질·피부 관리 매뉴얼과 추천 미용 주기를 함께 안내해드립니다.",
+      "분양 후에도 식단 · 건강 · 미용 등 모든 케어 관련 문의를 평생 지원하며, 필요 시 켄넬 내 미용 케어도 제공해드립니다.",
+    ],
+    variant: "p11",
+  },
+];
+
 export default function PuppiesPage() {
   const [PUPPIES, setPuppies] = useState<Puppy[]>([]);
   const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
@@ -45,6 +89,54 @@ export default function PuppiesPage() {
         withCarouselArrows
         images={heroImages}
       />
+
+      {/* Breed info sections - Heritage / Appearance / Temperament / Care */}
+      <Section className="pt-20 lg:pt-28">
+        <div className="space-y-16 md:space-y-20">
+          {BREED_SECTIONS.map((s, i) => (
+            <article
+              key={s.eyebrow}
+              className="grid items-center gap-10 md:grid-cols-[minmax(0,0.95fr)_1.05fr] md:gap-14"
+            >
+              <div className={`relative ${i % 2 === 1 ? "md:order-2" : ""}`}>
+                <div className="aspect-[5/4] w-full overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
+                  <PuppyImage variant={s.variant as never} />
+                </div>
+              </div>
+              <div className={i % 2 === 1 ? "md:order-1" : ""}>
+                <p className="font-serif text-[19px] font-semibold italic tracking-[0.04em] text-kennel-gold md:text-[22px]">
+                  {s.eyebrow}
+                </p>
+                <h2 className="mt-2 text-[24px] font-bold leading-[1.25] tracking-[-0.022em] text-ink-900 md:text-[32px] md:leading-[1.18]">
+                  {s.title}
+                </h2>
+                <div className="mt-6 space-y-4 text-[14.5px] leading-[1.85] text-ink-700">
+                  {s.body.map((p, j) => (
+                    <p key={j} className="whitespace-pre-line">
+                      {p}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      {/* Section divider before grid */}
+      <Section className="pt-24 lg:pt-32">
+        <div className="text-center">
+          <p className="font-serif text-[18px] font-medium italic tracking-[0.04em] text-kennel-gold md:text-[22px]">
+            Our Puppies
+          </p>
+          <h2 className="mt-2 text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
+            지금 만날 수 있는 아이들
+          </h2>
+          <p className="mx-auto mt-4 max-w-md text-[14px] leading-[1.8] text-ink-500">
+            아이를 클릭하면 상세 프로필을 확인할 수 있어요.
+          </p>
+        </div>
+      </Section>
 
       {/* Pagination dots above grid */}
       {totalPages > 1 && (
