@@ -2,6 +2,9 @@ import Hero from "@/components/Hero";
 import { Section, SectionHeading } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
 import { supabasePublic, type Review } from "@/lib/supabase";
+import MapEmbed, { mapLink } from "@/components/MapEmbed";
+
+const STORE_ADDRESS = "서울 강동구 구천면로29길 23";
 
 export const dynamic = "force-dynamic";
 
@@ -120,8 +123,20 @@ export default async function VisitorGuidePage() {
       {/* Visit info */}
       <Section className="pt-24 lg:pt-32">
         <div className="grid gap-8 md:grid-cols-2">
-          <div className="aspect-[4/3] w-full overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
-            <PuppyImage variant="p7" />
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
+            <MapEmbed query={STORE_ADDRESS} zoom={17} title="꼬똥켄넬 위치" />
+            <a
+              href={mapLink(STORE_ADDRESS)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-[12px] font-medium text-ink-900 shadow-soft ring-1 ring-cream-300/70 backdrop-blur transition-colors hover:bg-white"
+            >
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="#7A6347" strokeWidth="1.8" aria-hidden>
+                <path d="M12 21s-7-7-7-12a7 7 0 0114 0c0 5-7 12-7 12z" />
+                <circle cx="12" cy="9" r="2.5" />
+              </svg>
+              큰 지도
+            </a>
           </div>
           <div className="rounded-card-lg bg-cream-50 p-9 ring-1 ring-cream-300/50 md:p-10">
             <p className="font-serif text-[12px] uppercase tracking-[0.36em] text-kennel-gold">
@@ -141,7 +156,7 @@ export default async function VisitorGuidePage() {
               </li>
               <li className="flex items-baseline justify-between gap-4 border-b border-cream-300/70 pb-3">
                 <span className="font-medium text-ink-500">위치</span>
-                <span>서울특별시</span>
+                <span>{STORE_ADDRESS}</span>
               </li>
               <li className="flex items-baseline justify-between gap-4">
                 <span className="font-medium text-ink-500">주차</span>
