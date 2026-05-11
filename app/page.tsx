@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import { Section } from "@/components/Section";
 import PuppyImage from "@/components/PuppyImage";
 import ImageCarousel from "@/components/ImageCarousel";
+import { ArrowRight } from "@/components/icons";
 import {
   supabasePublic,
   type Puppy,
@@ -161,8 +162,9 @@ export default async function HomePage() {
       {/* Our Babies */}
       <Section className="pt-24 lg:pt-32">
         <Link href="/puppies" className="group inline-block">
-          <p className="font-serif text-[18px] font-medium italic tracking-[0.04em] text-kennel-gold md:text-[22px] group-hover:underline underline-offset-4">
-            {pick(lang, "우리 아이들 보러가기 →", "查看我们的宝贝 →")}
+          <p className="inline-flex items-center gap-1.5 font-serif text-[18px] font-medium italic tracking-[0.04em] text-kennel-gold md:text-[22px] group-hover:underline underline-offset-4">
+            {pick(lang, "우리 아이들 보러가기", "查看我们的宝贝")}
+            <ArrowRight className="h-[18px] w-[18px] not-italic" />
           </p>
           <h2 className="mt-2 text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[44px] md:leading-[1.14]">
             {pick(lang, "우리 아이들", "我们的宝贝")}
@@ -202,9 +204,10 @@ export default async function HomePage() {
           </div>
           <Link
             href="/visitor-guide"
-            className="text-sm font-medium text-kennel-gold underline-offset-4 hover:underline"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-kennel-gold underline-offset-4 hover:underline"
           >
-            {pick(lang, "모든 후기 보기 →", "查看全部评价 →")}
+            {pick(lang, "모든 후기 보기", "查看全部评价")}
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">

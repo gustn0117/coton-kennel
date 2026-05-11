@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import PuppyImage from "./PuppyImage";
+import { ChevronLeft, ChevronRight } from "./icons";
 
 type Slide = { image_url: string | null };
 
@@ -59,9 +60,9 @@ export default function ImageCarousel({
               setIdx((idx - 1 + total) % total);
             }}
             aria-label="이전 이미지"
-            className={`absolute ${arrowOffsetCls} top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-[18px] text-kennel-dark shadow-soft ring-1 ring-cream-300/70 transition-colors hover:bg-white`}
+            className={`absolute ${arrowOffsetCls} top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-kennel-dark shadow-soft ring-1 ring-cream-300/70 transition-colors hover:bg-white`}
           >
-            ‹
+            <ChevronLeft className="h-[18px] w-[18px]" />
           </button>
           <button
             type="button"
@@ -71,9 +72,9 @@ export default function ImageCarousel({
               setIdx((idx + 1) % total);
             }}
             aria-label="다음 이미지"
-            className={`absolute ${arrowOffsetClsR} top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-[18px] text-kennel-dark shadow-soft ring-1 ring-cream-300/70 transition-colors hover:bg-white`}
+            className={`absolute ${arrowOffsetClsR} top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-kennel-dark shadow-soft ring-1 ring-cream-300/70 transition-colors hover:bg-white`}
           >
-            ›
+            <ChevronRight className="h-[18px] w-[18px]" />
           </button>
         </>
       )}

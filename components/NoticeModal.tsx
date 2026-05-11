@@ -5,6 +5,7 @@ import PuppyImage from "./PuppyImage";
 import type { Notice } from "@/lib/supabase";
 import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
+import { ChevronLeft, ChevronRight, CloseIcon } from "./icons";
 
 type Props = {
   notices: Notice[];
@@ -89,7 +90,7 @@ export default function NoticeModal({
               aria-label={pick(lang, "닫기", "关闭")}
               className="ml-1 flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-100 hover:text-ink-900"
             >
-              ✕
+              <CloseIcon className="h-4 w-4" />
             </button>
           </div>
         </div>
@@ -134,7 +135,7 @@ export default function NoticeModal({
             disabled={!hasPrev}
             className="flex min-w-0 items-center gap-2 rounded-full px-3 py-2 text-[13px] font-medium text-ink-700 transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
           >
-            <span aria-hidden>‹</span>
+            <ChevronLeft className="h-4 w-4" />
             <span className="hidden sm:inline">
               {pick(lang, "이전 공지", "上一条")}
             </span>
@@ -158,7 +159,7 @@ export default function NoticeModal({
             <span className="hidden sm:inline">
               {pick(lang, "다음 공지", "下一条")}
             </span>
-            <span aria-hidden>›</span>
+            <ChevronRight className="h-4 w-4" />
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
+import { CloseIcon } from "./icons";
 
 function FauxQR({ size = 176 }: { size?: number }) {
   const N = 25;
@@ -183,10 +184,10 @@ export default function FloatingBar() {
             <button
               type="button"
               onClick={() => setShowWeChatQR(false)}
-              aria-label="닫기"
+              aria-label={pick(lang, "닫기", "关闭")}
               className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-ink-500 hover:bg-cream-100 hover:text-ink-900"
             >
-              ✕
+              <CloseIcon className="h-4 w-4" />
             </button>
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#07C160] text-white">
               {WECHAT}

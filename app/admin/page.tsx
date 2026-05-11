@@ -8,6 +8,7 @@ import type {
   SiteImage,
 } from "@/lib/supabase";
 import { SITE_IMAGE_GROUPS } from "@/lib/supabase";
+import { MapPinIcon } from "@/components/icons";
 
 type Tab = "site-images" | "notices" | "puppies" | "reviews";
 const STORAGE_KEY = "ck_admin_pw";
@@ -348,14 +349,17 @@ function SiteImagesTab({ pw }: { pw: string }) {
   return (
     <div className="space-y-12">
       <div className="rounded-card-lg border border-cream-300/70 bg-cream-50 p-5 text-[13.5px] leading-[1.8] text-ink-700">
-        <p className="font-semibold text-ink-900">📍 안내</p>
+        <p className="flex items-center gap-2 font-semibold text-ink-900">
+          <MapPinIcon className="h-4 w-4 text-kennel-gold" />
+          안내
+        </p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>
             <strong>한 장만 등록한 곳</strong>은 그 사진이 그대로 보입니다.
           </li>
           <li>
             <strong>여러 장 등록한 곳</strong>은 자동으로 캐러셀이 되어 사이트의
-            좌/우 화살표(‹ ›)와 점(●●●) 버튼으로 넘길 수 있습니다.
+            좌/우 화살표와 점 버튼으로 넘길 수 있습니다.
           </li>
           <li>
             이미지를 비워두면 빗금 무늬 자리표시자가 표시됩니다 (사진이 없을 때

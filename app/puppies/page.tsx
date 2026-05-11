@@ -7,6 +7,7 @@ import PuppyImage from "@/components/PuppyImage";
 import { supabasePublic, type Puppy, type SiteImage } from "@/lib/supabase";
 import { useLang } from "@/lib/LangProvider";
 import { pick, type Lang } from "@/lib/i18n";
+import { ChevronLeft, ChevronRight, CloseIcon, ArrowRight } from "@/components/icons";
 
 const PAGE_SIZE = 8;
 
@@ -115,11 +116,21 @@ function getBreedSections(lang: Lang) {
   ];
 }
 
+const BREED_KEYS = [
+  "puppies.breed.heritage",
+  "puppies.breed.appearance",
+  "puppies.breed.temperament",
+  "puppies.breed.care",
+];
+
 export default function PuppiesPage() {
   const lang = useLang();
   const BREED_SECTIONS = getBreedSections(lang);
   const [PUPPIES, setPuppies] = useState<Puppy[]>([]);
   const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
+  const [breedImages, setBreedImages] = useState<Record<string, string | null>>(
+    {}
+  );
   const [selected, setSelected] = useState<Puppy | null>(null);
   const [activeThumb, setActiveThumb] = useState(0);
   const [page, setPage] = useState(0);
@@ -136,6 +147,17 @@ export default function PuppiesPage() {
       .eq("key", "puppies.hero")
       .order("slot", { ascending: true })
       .then(({ data }) => setHeroImages((data ?? []) as SiteImage[]));
+    supabasePublic
+      .from("site_images")
+      .select("*")
+      .in("key", BREED_KEYS)
+      .then(({ data }) => {
+        const map: Record<string, string | null> = {};
+        ((data ?? []) as SiteImage[]).forEach((r) => {
+          map[r.key] = r.image_url;
+        });
+        setBreedImages(map);
+      });
   }, []);
 
   const totalPages = Math.max(1, Math.ceil(PUPPIES.length / PAGE_SIZE));
@@ -165,7 +187,10 @@ export default function PuppiesPage() {
             >
               <div className={`relative ${i % 2 === 1 ? "md:order-2" : ""}`}>
                 <div className="aspect-[5/4] w-full overflow-hidden rounded-card-lg shadow-soft ring-1 ring-cream-300/50">
-                  <PuppyImage variant={s.variant as never} />
+                  <PuppyImage
+                    variant={s.variant as never}
+                    url={breedImages[`puppies.breed.${s.eyebrow.toLowerCase()}`] ?? null}
+                  />
                 </div>
               </div>
               <div className={i % 2 === 1 ? "md:order-1" : ""}>
@@ -280,7 +305,7 @@ export default function PuppiesPage() {
               aria-label={pick(lang, "이전 페이지", "上一页")}
               className="flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-200 disabled:opacity-30 disabled:hover:bg-transparent"
             >
-              ‹
+              <ChevronLeft className="h-4 w-4" />
             </button>
             {Array.from({ length: totalPages }).map((_, i) => (
               <button
@@ -305,7 +330,7 @@ export default function PuppiesPage() {
               aria-label={pick(lang, "다음 페이지", "下一页")}
               className="flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-200 disabled:opacity-30 disabled:hover:bg-transparent"
             >
-              ›
+              <ChevronRight className="h-4 w-4" />
             </button>
           </div>
         </Section>
@@ -329,7 +354,7 @@ export default function PuppiesPage() {
               aria-label={pick(lang, "닫기", "关闭")}
               className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-100 hover:text-ink-900"
             >
-              ✕
+              <CloseIcon className="h-4 w-4" />
             </button>
 
             <div className="grid gap-8 md:grid-cols-[1fr_1fr]">

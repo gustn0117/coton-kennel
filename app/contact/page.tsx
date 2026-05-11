@@ -9,6 +9,7 @@ import NoticeModal, { isNew } from "@/components/NoticeModal";
 import MapEmbed, { mapLink } from "@/components/MapEmbed";
 import { useLang } from "@/lib/LangProvider";
 import { pick, type Lang } from "@/lib/i18n";
+import { ArrowRight, CloseIcon } from "@/components/icons";
 
 const STORE_ADDRESS = "서울 강동구 구천면로29길 23";
 const STORE_ADDRESS_ZH = "首尔江东区九泉面路29街23号";
@@ -156,6 +157,9 @@ export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showWeChatQR, setShowWeChatQR] = useState(false);
   const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
+  const [stepImages, setStepImages] = useState<Record<string, string | null>>(
+    {}
+  );
 
   useEffect(() => {
     supabasePublic
@@ -169,6 +173,23 @@ export default function ContactPage() {
       .eq("key", "contact.hero")
       .order("slot", { ascending: true })
       .then(({ data }) => setHeroImages((data ?? []) as SiteImage[]));
+    supabasePublic
+      .from("site_images")
+      .select("*")
+      .in("key", [
+        "contact.step.1",
+        "contact.step.2",
+        "contact.step.3",
+        "contact.step.4",
+        "contact.step.5",
+      ])
+      .then(({ data }) => {
+        const map: Record<string, string | null> = {};
+        ((data ?? []) as SiteImage[]).forEach((r) => {
+          map[r.key] = r.image_url;
+        });
+        setStepImages(map);
+      });
   }, []);
 
   return (
@@ -233,7 +254,10 @@ export default function ContactPage() {
                 }`}
               >
                 <div className="aspect-[5/3] w-full overflow-hidden rounded-card bg-cream-100 ring-1 ring-cream-300/50">
-                  <PuppyImage variant={(`p${(i + 1) * 2}` as `p${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10}`)} />
+                  <PuppyImage
+                    variant={(`p${(i + 1) * 2}` as `p${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10}`)}
+                    url={stepImages[`contact.step.${i + 1}`] ?? null}
+                  />
                 </div>
               </div>
             </li>
@@ -543,7 +567,7 @@ export default function ContactPage() {
                       aria-hidden
                       className="shrink-0 text-ink-400 transition-transform group-hover:translate-x-0.5 group-hover:text-kennel-gold"
                     >
-                      →
+                      <ArrowRight className="h-4 w-4" />
                     </span>
                   </button>
                 </li>
@@ -579,9 +603,9 @@ export default function ContactPage() {
               type="button"
               onClick={() => setShowWeChatQR(false)}
               aria-label={pick(lang, "닫기", "关闭")}
-              className="absolute right-4 top-4 text-ink-500 hover:text-ink-900"
+              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-ink-500 hover:bg-cream-100 hover:text-ink-900"
             >
-              ✕
+              <CloseIcon className="h-4 w-4" />
             </button>
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#07C160]">
               <svg viewBox="0 0 24 24" className="h-7 w-7" fill="white" aria-hidden>
