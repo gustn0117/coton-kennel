@@ -3,6 +3,8 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingBar from "@/components/FloatingBar";
+import { LangProvider } from "@/lib/LangProvider";
+import { getLang } from "@/lib/i18n-server";
 
 export const metadata: Metadata = {
   title: "꼬똥켄넬 | Coton Kennel - FCI 검증, 기준을 지키는 분양",
@@ -15,16 +17,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const lang = await getLang();
   return (
-    <html lang="ko">
+    <html lang={lang === "zh" ? "zh-CN" : "ko"}>
       <body className="bg-white min-h-screen">
-        <Header />
-        <main>{children}</main>
-        <FloatingBar />
-        <Footer />
+        <LangProvider lang={lang}>
+          <Header />
+          <main>{children}</main>
+          <FloatingBar />
+          <Footer />
+        </LangProvider>
       </body>
     </html>
   );

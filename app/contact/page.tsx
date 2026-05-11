@@ -7,65 +7,150 @@ import PuppyImage from "@/components/PuppyImage";
 import { supabasePublic, type Notice, type SiteImage } from "@/lib/supabase";
 import NoticeModal, { isNew } from "@/components/NoticeModal";
 import MapEmbed, { mapLink } from "@/components/MapEmbed";
+import { useLang } from "@/lib/LangProvider";
+import { pick, type Lang } from "@/lib/i18n";
 
 const STORE_ADDRESS = "서울 강동구 구천면로29길 23";
+const STORE_ADDRESS_ZH = "首尔江东区九泉面路29街23号";
 
-const STEPS = [
-  {
-    num: "01",
-    title: "아이들 확인",
-    desc: "꼬똥 켄넬 공식 홈페이지를 통해 현재 분양 가능한\n아이들의 상세 프로필을 확인하실 수 있습니다.\n각 아이의 성별, 모색 등을 꼼꼼히 살펴보세요.",
-  },
-  {
-    num: "02",
-    title: "사전 상담",
-    desc: "마음에 드는 아이가 있다면 카카오톡, 전화, WeChat으로\n상담을 요청해주세요. 분양 가능 시기, 절차 등을\n안내해드립니다.",
-  },
-  {
-    num: "03",
-    title: "방문 상담",
-    desc: "1:1 방문 예약을 통해 직접 켄넬을 방문하시고,\n부모견과 환경을 확인하실 수 있습니다.",
-  },
-  {
-    num: "04",
-    title: "분양",
-    desc: "건강 확인서, 혈통서, 케어 가이드를 함께 안내드리며,\n평생 사후 케어를 약속드립니다.",
-  },
-  {
-    num: "05",
-    title: "케어 가이드",
-    desc: "분양 후에도 케어 가이드, 미용, 건강 상담을\n평생 제공해드립니다.",
-  },
-];
+function getSteps(lang: Lang) {
+  if (lang === "zh") {
+    return [
+      {
+        num: "01",
+        title: "查看幼犬",
+        desc: "通过 Coton Kennel 官方网站,\n查看目前可分养幼犬的详细资料,\n仔细了解性别、毛色等信息。",
+      },
+      {
+        num: "02",
+        title: "提前咨询",
+        desc: "如有心仪的宝贝,请通过 KakaoTalk、电话或微信\n申请咨询。我们将向您介绍可分养时间、\n流程等详细信息。",
+      },
+      {
+        num: "03",
+        title: "参观咨询",
+        desc: "通过 1:1 预约亲临犬舍参观,\n确认父母犬与饲养环境。",
+      },
+      {
+        num: "04",
+        title: "分养",
+        desc: "我们会同时提供健康证明、血统证书及照护指南,\n并承诺终身售后照护。",
+      },
+      {
+        num: "05",
+        title: "照护指南",
+        desc: "分养之后,我们将持续提供\n照护指南、美容、健康咨询等终身服务。",
+      },
+    ];
+  }
+  return [
+    {
+      num: "01",
+      title: "아이들 확인",
+      desc: "꼬똥 켄넬 공식 홈페이지를 통해 현재 분양 가능한\n아이들의 상세 프로필을 확인하실 수 있습니다.\n각 아이의 성별, 모색 등을 꼼꼼히 살펴보세요.",
+    },
+    {
+      num: "02",
+      title: "사전 상담",
+      desc: "마음에 드는 아이가 있다면 카카오톡, 전화, WeChat으로\n상담을 요청해주세요. 분양 가능 시기, 절차 등을\n안내해드립니다.",
+    },
+    {
+      num: "03",
+      title: "방문 상담",
+      desc: "1:1 방문 예약을 통해 직접 켄넬을 방문하시고,\n부모견과 환경을 확인하실 수 있습니다.",
+    },
+    {
+      num: "04",
+      title: "분양",
+      desc: "건강 확인서, 혈통서, 케어 가이드를 함께 안내드리며,\n평생 사후 케어를 약속드립니다.",
+    },
+    {
+      num: "05",
+      title: "케어 가이드",
+      desc: "분양 후에도 케어 가이드, 미용, 건강 상담을\n평생 제공해드립니다.",
+    },
+  ];
+}
 
-const STORE_INFO: { label: string; value: string }[] = [
-  { label: "운영 시간", value: "매일 11:00 — 19:00" },
-  { label: "예약 방법", value: "카카오톡 · 전화 · WeChat" },
-  { label: "위치", value: "서울 강동구 구천면로29길 23" },
-  { label: "주차", value: "가능" },
-];
+function getStoreInfo(lang: Lang) {
+  if (lang === "zh") {
+    return [
+      { label: "营业时间", value: "每天 11:00 — 19:00" },
+      { label: "预约方式", value: "KakaoTalk · 电话 · 微信" },
+      { label: "位置", value: STORE_ADDRESS_ZH },
+      { label: "停车", value: "可" },
+    ];
+  }
+  return [
+    { label: "운영 시간", value: "매일 11:00 — 19:00" },
+    { label: "예약 방법", value: "카카오톡 · 전화 · WeChat" },
+    { label: "위치", value: STORE_ADDRESS },
+    { label: "주차", value: "가능" },
+  ];
+}
 
-// Notices are loaded from Supabase. Local fallback shape kept for typing convenience.
-
-const FAQ = [
-  {
-    q: "분양가는 어떻게 책정되나요?",
-    a: "혈통, 색상, 모질, 기질에 따라 차등 책정되며, 정확한 안내는 1:1 상담을 통해 도와드리고 있습니다.",
-  },
-  {
-    q: "분양 후 사후 관리는 어떻게 되나요?",
-    a: "분양 후에도 케어 가이드, 미용, 건강 상담을 평생 제공해드립니다.",
-  },
-  {
-    q: "해외 분양도 가능한가요?",
-    a: "WeChat 또는 이메일로 문의 주시면 절차를 안내해드립니다.",
-  },
-  { q: "방문 예약은 어떻게 하나요?", a: "전화 또는 카카오톡으로 1:1 사전 예약 후 방문 가능합니다." },
-  { q: "예약금이 있나요?", a: "예약금 안내는 1:1 상담을 통해 개별적으로 진행하고 있습니다." },
-  { q: "분양 절차는 어떻게 되나요?", a: "사전 상담 → 방문 → 매칭 → 분양 → 평생 케어 가이드 순으로 진행됩니다." },
-];
+function getFaq(lang: Lang) {
+  if (lang === "zh") {
+    return [
+      {
+        q: "分养价格如何确定?",
+        a: "价格依据血统、颜色、毛质、气质等因素分级,具体价格请通过 1:1 咨询了解。",
+      },
+      {
+        q: "分养后的售后服务如何?",
+        a: "分养之后,我们将持续提供照护指南、美容、健康咨询等终身服务。",
+      },
+      {
+        q: "可以海外分养吗?",
+        a: "请通过微信或邮件联系我们,我们会为您介绍具体流程。",
+      },
+      {
+        q: "如何预约参观?",
+        a: "通过电话或 KakaoTalk 进行 1:1 预约后即可参观。",
+      },
+      {
+        q: "是否需要预约金?",
+        a: "预约金相关信息我们通过 1:1 咨询单独说明。",
+      },
+      {
+        q: "分养流程是怎样的?",
+        a: "提前咨询 → 参观 → 匹配 → 分养 → 终身照护指南。",
+      },
+    ];
+  }
+  return [
+    {
+      q: "분양가는 어떻게 책정되나요?",
+      a: "혈통, 색상, 모질, 기질에 따라 차등 책정되며, 정확한 안내는 1:1 상담을 통해 도와드리고 있습니다.",
+    },
+    {
+      q: "분양 후 사후 관리는 어떻게 되나요?",
+      a: "분양 후에도 케어 가이드, 미용, 건강 상담을 평생 제공해드립니다.",
+    },
+    {
+      q: "해외 분양도 가능한가요?",
+      a: "WeChat 또는 이메일로 문의 주시면 절차를 안내해드립니다.",
+    },
+    {
+      q: "방문 예약은 어떻게 하나요?",
+      a: "전화 또는 카카오톡으로 1:1 사전 예약 후 방문 가능합니다.",
+    },
+    {
+      q: "예약금이 있나요?",
+      a: "예약금 안내는 1:1 상담을 통해 개별적으로 진행하고 있습니다.",
+    },
+    {
+      q: "분양 절차는 어떻게 되나요?",
+      a: "사전 상담 → 방문 → 매칭 → 분양 → 평생 케어 가이드 순으로 진행됩니다.",
+    },
+  ];
+}
 
 export default function ContactPage() {
+  const lang = useLang();
+  const STEPS = getSteps(lang);
+  const STORE_INFO = getStoreInfo(lang);
+  const FAQ = getFaq(lang);
   const [notices, setNotices] = useState<Notice[]>([]);
   const [openNoticeId, setOpenNoticeId] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -90,14 +175,20 @@ export default function ContactPage() {
     <>
       <Hero
         eyebrow="Contact us"
-        title="상담 및 문의"
-        description={
+        title={pick(lang, "상담 및 문의", "咨询 / 联系")}
+        description={pick(
+          lang,
           <>
             분양 / 예약 / 견적 관련 문의 환영합니다.
             <br />
             전화 상담 시 상세 안내 도와드립니다.
+          </>,
+          <>
+            欢迎咨询分养 / 预约 / 报价 等相关事宜。
+            <br />
+            电话咨询时我们会提供更详细的说明。
           </>
-        }
+        )}
         variant="p3"
         images={heroImages}
       />
@@ -107,6 +198,13 @@ export default function ContactPage() {
         <div>
           <p className="font-serif text-[19px] font-semibold italic tracking-[0.04em] text-kennel-gold md:text-[22px]">
             Vistor <span className="text-ink-900 not-italic">Guide</span>
+          </p>
+          <p className="mt-3 text-[14px] text-ink-500">
+            {pick(
+              lang,
+              "분양 안내와 절차를 5단계로 정리했습니다.",
+              "我们将分养指南与流程整理为 5 个步骤。"
+            )}
           </p>
         </div>
 
@@ -146,7 +244,11 @@ export default function ContactPage() {
       {/* Store map / location */}
       <Section className="pt-24 lg:pt-32">
         <div className="relative aspect-[16/7] w-full overflow-hidden rounded-card-lg bg-cream-100 ring-1 ring-cream-300/50 md:aspect-[16/6]">
-          <MapEmbed query={STORE_ADDRESS} zoom={17} title="꼬똥켄넬 위치" />
+          <MapEmbed
+            query={STORE_ADDRESS}
+            zoom={17}
+            title={pick(lang, "꼬똥켄넬 위치", "Coton Kennel 位置")}
+          />
           <a
             href={mapLink(STORE_ADDRESS)}
             target="_blank"
@@ -157,7 +259,7 @@ export default function ContactPage() {
               <path d="M12 21s-7-7-7-12a7 7 0 0114 0c0 5-7 12-7 12z" />
               <circle cx="12" cy="9" r="2.5" />
             </svg>
-            큰 지도로 보기
+            {pick(lang, "큰 지도로 보기", "查看大地图")}
           </a>
         </div>
 
@@ -178,10 +280,14 @@ export default function ContactPage() {
       {/* 바로 연결하기 - 3 cards */}
       <Section className="pt-24 lg:pt-32">
         <h2 className="text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
-          바로 연결하기
+          {pick(lang, "바로 연결하기", "立即联系")}
         </h2>
         <p className="mt-3 text-[14px] text-ink-500">
-          분양 문의, 방문 예약, 가격 상담 등 모든 문의를 받고 있습니다.
+          {pick(
+            lang,
+            "분양 문의, 방문 예약, 가격 상담 등 모든 문의를 받고 있습니다.",
+            "我们接受分养咨询、参观预约、价格咨询等各类问询。"
+          )}
         </p>
 
         <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -197,11 +303,11 @@ export default function ContactPage() {
               </svg>
             </div>
             <h3 className="mt-5 text-[17px] font-bold tracking-[-0.018em] text-ink-900">
-              카카오톡 상담
+              {pick(lang, "카카오톡 상담", "KakaoTalk 咨询")}
             </h3>
             <p className="mt-1 text-[13px] text-ink-500">@cotonkennel</p>
             <span className="mt-5 block w-full rounded-full bg-[#FEE500] px-4 py-2 text-center text-[12.5px] font-semibold text-ink-900">
-              상담 시작하기
+              {pick(lang, "상담 시작하기", "开始咨询")}
             </span>
           </a>
 
@@ -215,11 +321,11 @@ export default function ContactPage() {
               </svg>
             </div>
             <h3 className="mt-5 text-[17px] font-bold tracking-[-0.018em] text-ink-900">
-              전화 상담
+              {pick(lang, "전화 상담", "电话咨询")}
             </h3>
             <p className="mt-1 text-[13px] text-ink-500 tnum">02-472-9966</p>
             <span className="mt-5 block w-full rounded-full bg-kennel-btn px-4 py-2 text-center text-[12.5px] font-semibold text-cream-50">
-              지금 전화하기
+              {pick(lang, "지금 전화하기", "立即拨打")}
             </span>
           </a>
 
@@ -234,11 +340,11 @@ export default function ContactPage() {
               </svg>
             </div>
             <h3 className="mt-5 text-[17px] font-bold tracking-[-0.018em] text-ink-900">
-              위챗 (WeChat)
+              {pick(lang, "위챗 (WeChat)", "微信 (WeChat)")}
             </h3>
             <p className="mt-1 text-[13px] text-ink-500">cotonkennel</p>
             <span className="mt-5 block w-full rounded-full bg-[#07C160] px-4 py-2 text-center text-[12.5px] font-semibold text-white">
-              QR 코드 보기
+              {pick(lang, "QR 코드 보기", "查看二维码")}
             </span>
           </button>
         </div>
@@ -247,7 +353,7 @@ export default function ContactPage() {
       {/* SNS 채널 */}
       <Section className="pt-24 lg:pt-32">
         <h2 className="text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
-          SNS 채널
+          {pick(lang, "SNS 채널", "社交媒体")}
         </h2>
 
         <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -277,7 +383,7 @@ export default function ContactPage() {
               href: "https://youtube.com/",
             },
             {
-              name: "샤오홍슈 小红书",
+              name: pick(lang, "샤오홍슈 小红书", "小红书"),
               handle: "Coton Kennel",
               bg: "from-[#FF2442] to-[#E0162B]",
               btn: "bg-[#FF2442]",
@@ -306,7 +412,7 @@ export default function ContactPage() {
               <span
                 className={`mt-5 block w-full rounded-full ${s.btn} px-4 py-2 text-center text-[12.5px] font-semibold text-white`}
               >
-                채널 바로가기
+                {pick(lang, "채널 바로가기", "进入频道")}
               </span>
             </a>
           ))}
@@ -317,10 +423,10 @@ export default function ContactPage() {
       <Section className="pt-24 lg:pt-32">
         <div className="flex items-end justify-between gap-4">
           <h2 className="text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
-            자주 묻는 질문
+            {pick(lang, "자주 묻는 질문", "常见问题")}
           </h2>
           <span className="tnum text-[12.5px] text-ink-400">
-            총 {FAQ.length}개
+            {pick(lang, `총 ${FAQ.length}개`, `共 ${FAQ.length} 个`)}
           </span>
         </div>
         <ul className="mt-8 overflow-hidden rounded-card-lg border border-cream-300/60 bg-white">
@@ -384,16 +490,18 @@ export default function ContactPage() {
       <Section className="pt-24 lg:pt-32">
         <div className="flex items-end justify-between gap-4">
           <h2 className="text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
-            공지사항
+            {pick(lang, "공지사항", "公告")}
           </h2>
           <span className="tnum text-[12.5px] text-ink-400">
-            총 {notices.length}건
+            {pick(lang, `총 ${notices.length}건`, `共 ${notices.length} 条`)}
           </span>
         </div>
 
         {notices.length === 0 ? (
           <div className="mt-8 rounded-card-lg border border-cream-300/60 bg-cream-50 px-6 py-14 text-center">
-            <p className="text-[14px] text-ink-500">등록된 공지사항이 없습니다.</p>
+            <p className="text-[14px] text-ink-500">
+              {pick(lang, "등록된 공지사항이 없습니다.", "暂无公告。")}
+            </p>
           </div>
         ) : (
           <ul className="mt-8 overflow-hidden rounded-card-lg border border-cream-300/60 bg-white">
@@ -470,7 +578,7 @@ export default function ContactPage() {
             <button
               type="button"
               onClick={() => setShowWeChatQR(false)}
-              aria-label="닫기"
+              aria-label={pick(lang, "닫기", "关闭")}
               className="absolute right-4 top-4 text-ink-500 hover:text-ink-900"
             >
               ✕
@@ -481,10 +589,10 @@ export default function ContactPage() {
               </svg>
             </div>
             <h3 className="mt-4 text-[17px] font-bold text-ink-900">
-              위챗으로 상담하기
+              {pick(lang, "위챗으로 상담하기", "微信咨询")}
             </h3>
             <p className="mt-1 text-[12.5px] text-ink-500">
-              아래 QR 코드를 스캔해주세요
+              {pick(lang, "아래 QR 코드를 스캔해주세요", "请扫描下方二维码")}
             </p>
             <div className="mt-5 flex justify-center">
               <div className="rounded-card border border-cream-300 bg-white p-3">

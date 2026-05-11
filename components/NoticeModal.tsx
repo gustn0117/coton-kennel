@@ -3,6 +3,8 @@
 import { useEffect, useMemo } from "react";
 import PuppyImage from "./PuppyImage";
 import type { Notice } from "@/lib/supabase";
+import { useLang } from "@/lib/LangProvider";
+import { pick } from "@/lib/i18n";
 
 type Props = {
   notices: Notice[];
@@ -17,6 +19,7 @@ export default function NoticeModal({
   onClose,
   onChange,
 }: Props) {
+  const lang = useLang();
   const index = notices.findIndex((n) => n.id === currentId);
   const current = index >= 0 ? notices[index] : null;
   const hasPrev = index > 0;
@@ -68,7 +71,7 @@ export default function NoticeModal({
               N
             </span>
             <span className="text-[12.5px] font-medium tracking-[0.18em] text-kennel-gold uppercase">
-              Notice
+              {pick(lang, "Notice", "公告")}
             </span>
             {isNew(current.date) && (
               <span className="rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white">
@@ -83,7 +86,7 @@ export default function NoticeModal({
             <button
               type="button"
               onClick={onClose}
-              aria-label="닫기"
+              aria-label={pick(lang, "닫기", "关闭")}
               className="ml-1 flex h-9 w-9 items-center justify-center rounded-full text-ink-500 transition-colors hover:bg-cream-100 hover:text-ink-900"
             >
               ✕
@@ -117,7 +120,8 @@ export default function NoticeModal({
             <div className="mt-6 h-px w-12 bg-kennel-gold" />
 
             <div className="mt-6 whitespace-pre-line text-[14.5px] leading-[1.95] text-ink-700">
-              {current.body || "내용이 등록되지 않았습니다."}
+              {current.body ||
+                pick(lang, "내용이 등록되지 않았습니다.", "暂无内容。")}
             </div>
           </div>
         </div>
@@ -131,7 +135,9 @@ export default function NoticeModal({
             className="flex min-w-0 items-center gap-2 rounded-full px-3 py-2 text-[13px] font-medium text-ink-700 transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
           >
             <span aria-hidden>‹</span>
-            <span className="hidden sm:inline">이전 공지</span>
+            <span className="hidden sm:inline">
+              {pick(lang, "이전 공지", "上一条")}
+            </span>
             {hasPrev && (
               <span className="hidden truncate text-ink-500 md:inline">
                 · {notices[index - 1].title}
@@ -149,7 +155,9 @@ export default function NoticeModal({
                 {notices[index + 1].title} ·
               </span>
             )}
-            <span className="hidden sm:inline">다음 공지</span>
+            <span className="hidden sm:inline">
+              {pick(lang, "다음 공지", "下一条")}
+            </span>
             <span aria-hidden>›</span>
           </button>
         </div>

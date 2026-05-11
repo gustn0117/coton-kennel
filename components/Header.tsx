@@ -2,19 +2,34 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 import Logo from "./Logo";
+import { useLang, setLangCookie } from "@/lib/LangProvider";
 
-const NAV = [
-  { href: "/", label: "홈" },
-  { href: "/puppies", label: "강아지소개" },
-  { href: "/visitor-guide", label: "후기/방문 안내" },
-  { href: "/contact", label: "상담/문의" },
-];
+const NAV = {
+  ko: [
+    { href: "/", label: "홈" },
+    { href: "/puppies", label: "강아지소개" },
+    { href: "/visitor-guide", label: "후기/방문 안내" },
+    { href: "/contact", label: "상담/문의" },
+  ],
+  zh: [
+    { href: "/", label: "首页" },
+    { href: "/puppies", label: "幼犬介绍" },
+    { href: "/visitor-guide", label: "评价 / 参观指南" },
+    { href: "/contact", label: "咨询 / 联系" },
+  ],
+};
 
 export default function Header() {
   const pathname = usePathname();
-  const [lang, setLang] = useState<"ko" | "zh">("ko");
+  const lang = useLang();
+  const items = NAV[lang];
+
+  function switchTo(target: "ko" | "zh") {
+    if (target === lang) return;
+    setLangCookie(target);
+    window.location.reload();
+  }
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-cream-300/40 bg-white/85 backdrop-blur-md">
@@ -22,7 +37,7 @@ export default function Header() {
         <Logo />
 
         <nav className="hidden items-center gap-10 md:flex">
-          {NAV.map((item) => {
+          {items.map((item) => {
             const active =
               item.href === "/"
                 ? pathname === "/"
@@ -46,11 +61,11 @@ export default function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-1 rounded-full bg-cream-200 p-1 text-[13px]">
+        <div className="flex items-center gap-1 rounded-full bg-cream-200/80 p-1 text-[13px] ring-1 ring-cream-300">
           <button
             type="button"
-            onClick={() => setLang("ko")}
-            className={`rounded-full px-3.5 py-1.5 font-medium transition-colors ${
+            onClick={() => switchTo("ko")}
+            className={`rounded-full px-3 py-1.5 font-medium transition-colors ${
               lang === "ko"
                 ? "bg-white text-kennel-dark shadow-sm"
                 : "text-ink-500 hover:text-kennel-dark"
@@ -60,10 +75,10 @@ export default function Header() {
           </button>
           <button
             type="button"
-            onClick={() => setLang("zh")}
-            className={`rounded-full px-3.5 py-1.5 font-medium transition-colors ${
+            onClick={() => switchTo("zh")}
+            className={`rounded-full px-3 py-1.5 font-medium transition-colors ${
               lang === "zh"
-                ? "bg-kennel-btn text-white shadow-sm"
+                ? "bg-kennel-gold text-white shadow-sm"
                 : "text-ink-500 hover:text-kennel-dark"
             }`}
           >

@@ -9,6 +9,8 @@ import {
   type Review,
   type SiteImage,
 } from "@/lib/supabase";
+import { pick } from "@/lib/i18n";
+import { getLang } from "@/lib/i18n-server";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +28,7 @@ async function fetchSiteImages(key: string): Promise<SiteImage[]> {
 }
 
 export default async function HomePage() {
+  const lang = await getLang();
   const [
     { data: reviewsData },
     { data: puppiesData },
@@ -58,9 +61,16 @@ export default async function HomePage() {
   return (
     <>
       <Hero
-        title={`FCI검증,\n기준을 지키는 분양`}
-        description="평생을 함께할 아이를 준비합니다"
-        cta={{ href: "/puppies", label: "강아지 보러가기" }}
+        title={pick(lang, `FCI검증,\n기준을 지키는 분양`, `FCI 认证,\n严守标准的分养`)}
+        description={pick(
+          lang,
+          "평생을 함께할 아이를 준비합니다",
+          "为您准备相伴一生的宝贝"
+        )}
+        cta={{
+          href: "/puppies",
+          label: pick(lang, "강아지 보러가기", "查看幼犬"),
+        }}
         variant="hero"
         images={heroImages}
         withCarouselArrows
@@ -89,21 +99,45 @@ export default async function HomePage() {
               Premium Guide
             </h2>
             <p className="mt-6 text-[15px] leading-relaxed text-ink-700">
-              안녕하세요, 꼬똥 켄넬입니다.
-              <br />
-              평생을 함께할 소중한 가족을 맞이하시는 프리미엄 고객님께,
-              <br />꼬똥 드 툴레아에 대한 깊이 있는 안내를 드립니다.
+              {pick(
+                lang,
+                <>
+                  안녕하세요, 꼬똥 켄넬입니다.
+                  <br />
+                  평생을 함께할 소중한 가족을 맞이하시는 프리미엄 고객님께,
+                  <br />꼬똥 드 툴레아에 대한 깊이 있는 안내를 드립니다.
+                </>,
+                <>
+                  您好,这里是棉花面纱犬舍 (Coton Kennel)。
+                  <br />
+                  迎接陪伴您一生的珍贵家人的贵宾客户,
+                  <br />我们为您提供关于棉花面纱犬深入的介绍。
+                </>
+              )}
             </p>
             <h3 className="mt-10 text-[22px] font-bold text-kennel-gold md:text-[26px]">
-              Coton Kennel의 약속
+              {pick(lang, "Coton Kennel의 약속", "Coton Kennel 的承诺")}
             </h3>
             <p className="mt-4 text-[15px] leading-relaxed text-ink-700">
-              꼬똥 켄넬은 단순한 분양을 넘어, 건강하고 아름다운 반려견과 함께할
-              평생의 동반자를 찾아드립니다.
-              <br />
-              프리미엄 기준에 맞춘 건강한 개체, 투명한 정보 제공, 그리고 분양
-              직전까지 이어지는 따뜻한 케어까지 신뢰할 수 있는 선택이 되겠습니다.
-              감사합니다.
+              {pick(
+                lang,
+                <>
+                  꼬똥 켄넬은 단순한 분양을 넘어, 건강하고 아름다운 반려견과
+                  함께할 평생의 동반자를 찾아드립니다.
+                  <br />
+                  프리미엄 기준에 맞춘 건강한 개체, 투명한 정보 제공, 그리고
+                  분양 직전까지 이어지는 따뜻한 케어까지 신뢰할 수 있는 선택이
+                  되겠습니다. 감사합니다.
+                </>,
+                <>
+                  Coton Kennel 不只是单纯的分养,
+                  我们为您找到能与健康美丽的伴侣犬一生相伴的家人。
+                  <br />
+                  我们以高端标准培育的健康幼犬、透明的信息披露,
+                  以及一直延续到分养前的温馨照护,
+                  将成为您值得信赖的选择。谢谢。
+                </>
+              )}
             </p>
           </div>
         </div>
@@ -128,10 +162,10 @@ export default async function HomePage() {
       <Section className="pt-24 lg:pt-32">
         <Link href="/puppies" className="group inline-block">
           <p className="font-serif text-[18px] font-medium italic tracking-[0.04em] text-kennel-gold md:text-[22px] group-hover:underline underline-offset-4">
-            우리 아이들 보러가기 →
+            {pick(lang, "우리 아이들 보러가기 →", "查看我们的宝贝 →")}
           </p>
           <h2 className="mt-2 text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[44px] md:leading-[1.14]">
-            우리 아이들
+            {pick(lang, "우리 아이들", "我们的宝贝")}
           </h2>
         </Link>
       </Section>
@@ -151,17 +185,26 @@ export default async function HomePage() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="font-serif text-[18px] font-medium italic tracking-[0.04em] text-kennel-gold md:text-[22px]">
-              가족이 된 후기
+              {pick(lang, "가족이 된 후기", "成为家人的故事")}
             </p>
             <h2 className="mt-2 text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[44px] md:leading-[1.14]">
-              <span className="text-kennel-gold">행복한 가족</span>이 된 이야기
+              {pick(
+                lang,
+                <>
+                  <span className="text-kennel-gold">행복한 가족</span>이 된
+                  이야기
+                </>,
+                <>
+                  成为<span className="text-kennel-gold">幸福家庭</span>的故事
+                </>
+              )}
             </h2>
           </div>
           <Link
             href="/visitor-guide"
             className="text-sm font-medium text-kennel-gold underline-offset-4 hover:underline"
           >
-            모든 후기 보기 →
+            {pick(lang, "모든 후기 보기 →", "查看全部评价 →")}
           </Link>
         </div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -187,7 +230,7 @@ export default async function HomePage() {
           ))}
           {reviews.length === 0 && (
             <p className="col-span-3 rounded-card-lg bg-cream-50 p-10 text-center text-[14px] text-ink-500 ring-1 ring-cream-300/50">
-              아직 등록된 후기가 없습니다.
+              {pick(lang, "아직 등록된 후기가 없습니다.", "暂无评价。")}
             </p>
           )}
         </div>
@@ -200,16 +243,24 @@ export default async function HomePage() {
             Coton · Kennel
           </p>
           <h2 className="mt-5 text-[26px] font-bold leading-[1.25] tracking-[-0.018em] md:text-[40px] md:leading-[1.18]">
-            평생을 함께할 가족, 이제 만나러 가요.
+            {pick(
+              lang,
+              "평생을 함께할 가족, 이제 만나러 가요.",
+              "现在就来见见陪伴一生的家人。"
+            )}
           </h2>
           <p className="mx-auto mt-5 max-w-md text-[14.5px] leading-[1.8] text-cream-300/80">
-            방문 상담은 사전 예약제로 운영됩니다. 언제든 편하게 문의 주세요.
+            {pick(
+              lang,
+              "방문 상담은 사전 예약제로 운영됩니다. 언제든 편하게 문의 주세요.",
+              "参观咨询采用预约制,欢迎随时联系。"
+            )}
           </p>
           <Link
             href="/contact"
             className="mt-9 inline-flex items-center gap-3 rounded-full bg-kennel-btn px-7 py-3.5 text-[13.5px] font-medium tracking-wide text-cream-50 transition-all hover:-translate-y-0.5 hover:bg-kennel-dark"
           >
-            상담 / 문의하기
+            {pick(lang, "상담 / 문의하기", "咨询 / 联系")}
             <svg width="20" height="10" viewBox="0 0 20 10" fill="none" aria-hidden>
               <path d="M0 5h18m0 0L13 1m5 4L13 9" stroke="currentColor" strokeWidth="1.4" />
             </svg>
@@ -223,7 +274,7 @@ export default async function HomePage() {
 function fallbackPuppies(start: number): MarqueeItem[] {
   return FALLBACK_VARIANTS.slice(start, start + 5).map((v, i) => ({
     id: `fallback-${start}-${i}`,
-    name: "준비 중",
+    name: "",
     variant: v,
     image_url: null,
   }));

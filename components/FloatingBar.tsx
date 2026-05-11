@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useLang } from "@/lib/LangProvider";
+import { pick } from "@/lib/i18n";
 
 function FauxQR({ size = 176 }: { size?: number }) {
   const N = 25;
@@ -85,11 +87,12 @@ type Item = {
 };
 
 export default function FloatingBar() {
+  const lang = useLang();
   const [showWeChatQR, setShowWeChatQR] = useState(false);
 
   const items: Item[] = [
     {
-      label: "카카오톡 상담",
+      label: pick(lang, "카카오톡 상담", "KakaoTalk 咨询"),
       icon: KAKAO,
       href: "https://pf.kakao.com/",
       hoverClass: "hover:bg-[#FEE500] hover:text-black",
@@ -107,13 +110,13 @@ export default function FloatingBar() {
       hoverClass: "hover:bg-[#FF0000] hover:text-white",
     },
     {
-      label: "샤오홍슈 (小红书)",
+      label: pick(lang, "샤오홍슈 (小红书)", "小红书"),
       icon: XHS,
       href: "https://www.xiaohongshu.com/",
       hoverClass: "hover:bg-[#FF2442] hover:text-white",
     },
     {
-      label: "위챗 QR 보기",
+      label: pick(lang, "위챗 QR 보기", "微信二维码"),
       icon: WECHAT,
       onClick: () => setShowWeChatQR(true),
       hoverClass: "hover:bg-[#07C160] hover:text-white",
@@ -189,10 +192,10 @@ export default function FloatingBar() {
               {WECHAT}
             </div>
             <h3 className="mt-4 text-lg font-bold text-ink-900">
-              위챗으로 상담하기
+              {pick(lang, "위챗으로 상담하기", "微信咨询")}
             </h3>
             <p className="mt-1 text-sm text-ink-500">
-              아래 QR 코드를 스캔해주세요
+              {pick(lang, "아래 QR 코드를 스캔해주세요", "请扫描下方二维码")}
             </p>
             <div className="mt-5 flex justify-center">
               <div className="rounded-lg border border-cream-300 bg-white p-3">
