@@ -65,7 +65,9 @@ const YOUTUBE = (
 );
 
 const XHS = (
-  <span className="font-bold tracking-tight text-[11px] leading-none">小红书</span>
+  <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden fill="currentColor">
+    <path d="M6 3h10a2 2 0 012 2v15.2a.8.8 0 01-1.18.7L12 18.4l-4.82 2.5A.8.8 0 016 20.2V5a2 2 0 010-2z" />
+  </svg>
 );
 
 const WECHAT = (
