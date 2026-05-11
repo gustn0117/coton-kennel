@@ -4,15 +4,17 @@ export default function Logo() {
   return (
     <Link
       href="/"
-      className="group select-none"
+      className="group inline-flex select-none items-center"
       aria-label="Coton Kennel"
     >
-      <span className="font-serif leading-tight tracking-[0.26em] text-kennel-dark">
-        <span className="block text-[14px]">COTON</span>
-        <span className="block text-[11px] tracking-[0.44em] text-kennel-brown">
-          KENNEL
-        </span>
-      </span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/logo.png"
+        alt="Coton Kennel"
+        width={76}
+        height={100}
+        className="h-14 w-auto transition-transform group-hover:scale-[1.03]"
+      />
     </Link>
   );
 }

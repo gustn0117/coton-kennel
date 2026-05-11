@@ -45,13 +45,14 @@ export default function Footer() {
       <div className="mx-auto max-w-page px-6 py-14 lg:px-10">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
-            <div className="font-serif leading-tight tracking-[0.24em] text-cream-100">
-              COTON
-              <br />
-              <span className="text-[10.5px] tracking-[0.42em] text-cream-300/80">
-                KENNEL
-              </span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.png"
+              alt="Coton Kennel"
+              width={76}
+              height={100}
+              className="h-16 w-auto brightness-0 invert"
+            />
             <p className="mt-5 text-[13.5px] leading-[1.85] text-cream-300/75">
               {t.tagline}
             </p>
