@@ -16,6 +16,56 @@ import { getLang } from "@/lib/i18n-server";
 export const dynamic = "force-dynamic";
 
 const FALLBACK_VARIANTS = ["p1", "p2", "p7", "p9"];
+const MARQUEE_FALLBACK = [
+  "p1", "p2", "p3", "p7", "p9", "p11", "p5", "p10", "p8", "p12",
+];
+
+type MarqueeItem = { id: string; variant: string; image_url: string | null };
+
+function buildMarqueePool(puppies: Puppy[]): MarqueeItem[] {
+  const base: MarqueeItem[] = puppies.map((p) => ({
+    id: p.id,
+    variant: p.variant,
+    image_url: p.image_url,
+  }));
+  if (base.length >= 8) return base;
+  const pad = MARQUEE_FALLBACK.slice(0, 8 - base.length).map((v, i) => ({
+    id: `pad-${i}`,
+    variant: v,
+    image_url: null,
+  }));
+  return [...base, ...pad];
+}
+
+function PuppyMarquee({
+  items,
+  reverse = false,
+}: {
+  items: MarqueeItem[];
+  reverse?: boolean;
+}) {
+  const list = [...items, ...items];
+  return (
+    <div className="overflow-hidden">
+      <div
+        className={`marquee-track ${
+          reverse ? "animate-scroll-x-reverse" : "animate-scroll-x"
+        }`}
+      >
+        {list.map((p, i) => (
+          <Link
+            key={`${p.id}-${i}`}
+            href="/puppies"
+            aria-label="강아지소개로 이동"
+            className="block aspect-square w-[128px] shrink-0 overflow-hidden rounded-[14px] ring-1 ring-line-card transition-transform hover:scale-[1.03] sm:w-[150px] md:w-[170px] lg:w-[190px] lg:rounded-[18px]"
+          >
+            <PuppyImage variant={p.variant as never} url={p.image_url} />
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 async function fetchSiteImages(key: string): Promise<SiteImage[]> {
   const { data } = await supabasePublic
@@ -45,7 +95,7 @@ export default async function HomePage() {
       .select("*")
       .eq("status", "분양중")
       .order("order_index", { ascending: true })
-      .limit(4),
+      .limit(20),
     fetchSiteImages("home.hero"),
     fetchSiteImages("home.premium"),
     fetchSiteImages("home.highlight"),
@@ -104,43 +154,28 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 가족을 기다리는 아이들 - 4 cards 2x2 grid (Figma 642×645) */}
-      <section className="mx-auto w-full max-w-page-wide px-5 pb-16 sm:px-6 md:pb-20 lg:px-12 lg:pb-24 xl:px-20 2xl:px-[176px] 2xl:pb-[126px]">
-        <h2 className="text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[34px] xl:text-[44px] xl:leading-[64px] xl:tracking-[-0.55px]">
-          <span>{pick(lang, "가족을 기다리는 ", "正在等待家人的 ")}</span>
-          <span className="text-brand-brown">
-            {pick(lang, "아이들", "宝贝")}
-          </span>
-        </h2>
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-16 2xl:mt-[75px] lg:gap-6 2xl:gap-[27px]">
-          {(puppies.length > 0
-            ? puppies
-            : FALLBACK_VARIANTS.map((v, i) => ({
-                id: `f-${i}`,
-                name: "",
-                variant: v,
-                image_url: null,
-                status: "분양중" as const,
-              }))
-          )
-            .slice(0, 4)
-            .map((p) => (
-              <Link
-                key={p.id}
-                href="/puppies"
-                className="group relative block aspect-square w-full overflow-hidden rounded-[28px] ring-1 ring-line-card transition-all hover:-translate-y-1 hover:shadow-card lg:rounded-[40px]"
-              >
-                <PuppyImage variant={p.variant as never} url={p.image_url} />
-                {p.name && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/55 to-transparent p-6 pt-16">
-                    <p className="text-[18px] font-bold text-white lg:text-[22px]">
-                      {pick(lang, `${p.name}를 입양해주세요`, `请收养 ${p.name}`)}
-                    </p>
-                  </div>
-                )}
-              </Link>
-            ))}
+      {/* 가족을 기다리는 아이들 - two scrolling rows */}
+      <section className="pb-16 md:pb-20 lg:pb-24">
+        <div className="mx-auto w-full max-w-page-wide px-5 sm:px-6 lg:px-12 xl:px-20 2xl:px-[176px]">
+          <h2 className="text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[34px] xl:text-[44px] xl:leading-[64px] xl:tracking-[-0.55px]">
+            <span>{pick(lang, "가족을 기다리는 ", "正在等待家人的 ")}</span>
+            <span className="text-brand-brown">
+              {pick(lang, "아이들", "宝贝")}
+            </span>
+          </h2>
         </div>
+        {(() => {
+          const pool = buildMarqueePool(puppies);
+          const h = Math.ceil(pool.length / 2);
+          const rowA = pool;
+          const rowB = [...pool.slice(h), ...pool.slice(0, h)];
+          return (
+            <div className="mt-7 space-y-3.5 md:mt-9 lg:mt-12 lg:space-y-4">
+              <PuppyMarquee items={rowA} />
+              <PuppyMarquee items={rowB} />
+            </div>
+          );
+        })()}
       </section>
 
       {/* 가족이 된 후기 - 3 cards 481×615, 비대칭 라운드 + 별점 */}
