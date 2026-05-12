@@ -32,11 +32,15 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-cream-300/40 bg-white/85 backdrop-blur-md">
-      <div className="mx-auto flex h-20 max-w-page items-center justify-between gap-6 px-6 lg:px-10">
-        <Logo />
+    <header className="sticky top-0 z-40 w-full bg-white">
+      <div className="mx-auto flex h-[124px] w-full max-w-page-wide items-center justify-between px-6 lg:px-[159px]">
+        {/* Logo - Figma: 76x100, left 159 top 12 */}
+        <Link href="/" className="shrink-0">
+          <Logo />
+        </Link>
 
-        <nav className="hidden items-center gap-10 md:flex">
+        {/* Nav - Figma: text-[24px], gap roughly equal */}
+        <nav className="hidden flex-1 items-center justify-center gap-12 md:flex lg:gap-[60px]">
           {items.map((item) => {
             const active =
               item.href === "/"
@@ -46,41 +50,41 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative text-[14.5px] font-medium tracking-[-0.005em] transition-colors ${
+                className={`text-[18px] leading-none lg:text-[24px] ${
                   active
-                    ? "text-kennel-gold"
-                    : "text-ink-900 hover:text-kennel-gold"
+                    ? "font-bold text-brand-brown"
+                    : "font-normal text-ink-900 hover:text-brand-brown"
                 }`}
               >
                 {item.label}
-                {active && (
-                  <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] rounded bg-kennel-gold" />
-                )}
               </Link>
             );
           })}
         </nav>
 
-        <div className="flex items-center gap-1 rounded-full bg-cream-200/80 p-1 text-[13px] ring-1 ring-cream-300">
+        {/* Language toggle - Figma: two separate pills 116x45, rounded 22.5 */}
+        <div className="flex shrink-0 items-center gap-[9px]">
           <button
             type="button"
             onClick={() => switchTo("ko")}
-            className={`rounded-full px-3 py-1.5 font-medium transition-colors ${
+            className={`flex h-[45px] w-[116px] items-center justify-center text-[16px] transition-colors ${
               lang === "ko"
-                ? "bg-white text-kennel-dark shadow-sm"
-                : "text-ink-500 hover:text-kennel-dark"
+                ? "bg-brand-pink text-ink-900"
+                : "bg-white text-ink-500 ring-1 ring-brand-pink/60 hover:bg-brand-pink/40"
             }`}
+            style={{ borderRadius: "22.5px" }}
           >
             한국어
           </button>
           <button
             type="button"
             onClick={() => switchTo("zh")}
-            className={`rounded-full px-3 py-1.5 font-medium transition-colors ${
+            className={`flex h-[45px] w-[116px] items-center justify-center text-[16px] transition-colors ${
               lang === "zh"
-                ? "bg-kennel-gold text-white shadow-sm"
-                : "text-ink-500 hover:text-kennel-dark"
+                ? "bg-brand-brown text-white"
+                : "bg-white text-ink-500 ring-1 ring-brand-brown/40 hover:bg-brand-brown/10"
             }`}
+            style={{ borderRadius: "22.5px" }}
           >
             中文
           </button>

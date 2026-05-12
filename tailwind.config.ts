@@ -8,43 +8,64 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cream: {
-          50: "#FAF6EE",
-          100: "#F5EFE3",
-          200: "#EFE6D2",
-          300: "#E6D9BD",
-        },
-        kennel: {
-          gold: "#A48056",
-          brown: "#7A6347",
-          dark: "#3F3326",
-          accent: "#C9A878",
-          btn: "#705C42",
+        brand: {
+          brown: "#8E5E27",
+          beige: "#F9F6F0",
+          pink: "#ECDAD0",
+          tan: "#E8DCC3",
         },
         ink: {
-          900: "#1A1A1A",
-          700: "#3D3D3D",
-          500: "#6E6E6E",
-          400: "#9C9C9C",
+          900: "#000000",
+          800: "#2D2D2D",
+          700: "#383838",
+          500: "#707070",
+          300: "#D9D9D9",
+        },
+        line: {
+          card: "#E8E8E8",
+          tag: "#F3F4F6",
+          surface: "#F9F9F9",
+        },
+        social: {
+          kakao: "#FAE100",
+          insta: "#664CBF",
+          youtube: "#E21A20",
+          xhs: "#FF2742",
+          wechat: "#07C160",
         },
       },
       fontFamily: {
-        sans: ["Pretendard", "Apple SD Gothic Neo", "system-ui", "sans-serif"],
-        serif: ["'Playfair Display'", "Georgia", "serif"],
+        sans: [
+          "Noto Sans KR",
+          "Noto Sans",
+          "Apple SD Gothic Neo",
+          "system-ui",
+          "sans-serif",
+        ],
+        pretendard: ["Pretendard", "Noto Sans KR", "sans-serif"],
       },
       maxWidth: {
-        page: "1240px",
-        prose: "62ch",
+        page: "1574px",
+        "page-wide": "1920px",
+        "page-faq": "1562px",
       },
       borderRadius: {
-        card: "20px",
-        "card-lg": "28px",
-        "card-xl": "32px",
+        card: "29px",
+        "card-asym-tl": "32px",
+        "card-asym-tr": "36px",
+        "card-asym-b": "16px",
+        pill: "29.5px",
+        "pill-sm": "22.5px",
+        hero: "46px",
+        modal: "46px",
+        banner: "30px",
       },
       boxShadow: {
-        soft: "0 1px 2px rgba(122,99,71,0.04), 0 8px 24px -12px rgba(122,99,71,0.18)",
-        "soft-lg":
-          "0 2px 4px rgba(122,99,71,0.05), 0 18px 40px -16px rgba(122,99,71,0.22)",
+        card: "0px 4px 10px 0px rgba(0, 0, 0, 0.15)",
+      },
+      backgroundImage: {
+        "footer-glow":
+          "linear-gradient(239.479deg, rgba(255,166,0,0.05) 18.15%, rgba(133,121,97,0) 58.481%), linear-gradient(239.479deg, rgba(255,166,0,0.3) 18.15%, rgba(255,166,0,0) 58.481%)",
       },
       animation: {
         "scroll-x": "scroll-x 30s linear infinite",

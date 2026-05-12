@@ -21,8 +21,18 @@ type Props = {
   variant?: Variant;
   withCarouselArrows?: boolean;
   images?: Slide[] | null;
+  imageRadius?: number;
 };
 
+/**
+ * Figma 1920 디자인 매칭:
+ * - 배경 #F9F6F0
+ * - eyebrow 60px Bold #8E5E27
+ * - title 70px Bold leading-80 black
+ * - description 24px Regular #707070
+ * - CTA: 213×59 #8E5E27 rounded-29.5 / 텍스트 16 Regular white
+ * - 우측 이미지 805×668, radius 가변(46/51/68)
+ */
 export default function Hero({
   eyebrow = "Conton Kennel",
   title,
@@ -31,42 +41,55 @@ export default function Hero({
   variant = "hero",
   withCarouselArrows = false,
   images,
+  imageRadius = 46,
 }: Props) {
   return (
-    <section className="bg-white pt-8 md:pt-12">
-      <div className="mx-auto grid max-w-page items-center gap-10 px-6 pb-20 md:grid-cols-[1fr_minmax(0,1.15fr)] md:gap-16 md:px-10 md:pb-28">
+    <section className="w-full bg-brand-beige">
+      <div className="mx-auto grid w-full max-w-page-wide grid-cols-1 items-center gap-10 px-6 py-12 lg:grid-cols-[1fr_805px] lg:gap-[130px] lg:px-[179px] lg:py-[193px]">
+        {/* Left content */}
         <div>
-          <p className="font-serif text-[19px] font-semibold italic tracking-[0.04em] text-kennel-gold md:text-[24px]">
+          <p className="text-[36px] font-bold leading-none text-brand-brown lg:text-[60px]">
             {eyebrow}
           </p>
-          <h1 className="mt-2 whitespace-pre-line text-[40px] font-bold leading-[1.16] tracking-[-0.022em] text-ink-900 md:text-[56px] md:leading-[1.12]">
+          <h1 className="mt-4 whitespace-pre-line text-[40px] font-bold leading-[1.14] text-black lg:mt-[41px] lg:text-[70px] lg:leading-[80px]">
             {title}
           </h1>
           {description && (
-            <p className="mt-7 max-w-md text-[14.5px] leading-[1.85] text-ink-500 md:text-[15.5px]">
+            <p className="mt-6 text-[16px] leading-[1.5] text-ink-500 lg:mt-[49px] lg:text-[24px]">
               {description}
             </p>
           )}
           {cta && (
             <Link
               href={cta.href}
-              className="mt-10 inline-flex items-center gap-3 rounded-full bg-kennel-btn px-7 py-3.5 text-[13.5px] font-medium tracking-wide text-cream-50 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-kennel-dark"
+              className="mt-10 inline-flex h-[59px] w-[213px] items-center gap-3 bg-brand-brown px-[25px] text-[16px] text-white transition-transform hover:-translate-y-0.5 lg:mt-[67px]"
+              style={{ borderRadius: "29.5px" }}
             >
-              {cta.label}
-              <svg width="22" height="8" viewBox="0 0 22 8" fill="none" aria-hidden>
+              <span>{cta.label}</span>
+              <svg
+                width="28"
+                height="10"
+                viewBox="0 0 28 10"
+                fill="none"
+                aria-hidden
+                className="ml-auto"
+              >
                 <path
-                  d="M0 4h20m0 0L16 1m4 3l-4 3"
+                  d="M0 5h25m0 0L21 1m4 4l-4 4"
                   stroke="currentColor"
                   strokeWidth="1.2"
-                  strokeLinecap="round"
                 />
               </svg>
             </Link>
           )}
         </div>
 
-        <div className="relative">
-          <div className="aspect-[5/4] w-full overflow-hidden rounded-card-lg shadow-soft-lg ring-1 ring-cream-300/60">
+        {/* Right image - Figma 805×668 */}
+        <div className="relative w-full lg:h-[668px] lg:w-[805px]">
+          <div
+            className="aspect-[805/668] w-full overflow-hidden lg:h-full"
+            style={{ borderRadius: `${imageRadius}px` }}
+          >
             <ImageCarousel
               images={images}
               fallbackVariant={variant}

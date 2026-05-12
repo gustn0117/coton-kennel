@@ -3,108 +3,159 @@
 import Link from "next/link";
 import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
+import { ArrowRight } from "./icons";
 
 export default function Footer() {
   const lang = useLang();
-  const t = {
-    tagline: pick(
-      lang,
-      <>
-        꼬똥 드 툴레아를 전문적으로 브리딩하는 프리미엄 켄넬.
-        <br />
-        평생을 함께할 건강한 아이를 준비합니다.
-      </>,
-      <>
-        专业繁育棉花面纱犬的高端犬舍。
-        <br />
-        为您准备可以相伴一生的健康宝贝。
-      </>
-    ),
-    contactLabel: pick(lang, "Contact", "联系方式"),
-    phone: pick(lang, "전화", "电话"),
-    address: pick(lang, "주소", "地址"),
-    addressValue: pick(lang, "서울특별시", "韩国 首尔"),
-    menuLabel: pick(lang, "Menu", "菜单"),
-    menus: [
-      { href: "/", label: pick(lang, "홈", "首页") },
-      { href: "/puppies", label: pick(lang, "강아지소개", "幼犬介绍") },
-      { href: "/heritage", label: pick(lang, "Heritage", "传承") },
-      {
-        href: "/visitor-guide",
-        label: pick(lang, "후기/방문 안내", "评价 / 参观"),
-      },
-      { href: "/contact", label: pick(lang, "상담/문의", "咨询 / 联系") },
-    ],
-    rights: pick(lang, "All rights reserved.", "保留所有权利。"),
-    terms: pick(lang, "이용약관", "服务条款"),
-    privacy: pick(lang, "개인정보처리방침", "隐私政策"),
-  };
+
+  const terms = pick(lang, "이용약관", "服务条款");
+  const privacy = pick(lang, "개인정보처리방침", "隐私政策");
 
   return (
-    <footer className="mt-32 bg-[#1A1612] text-cream-200">
-      <div className="mx-auto max-w-page px-6 py-14 lg:px-10">
-        <div className="grid gap-10 md:grid-cols-3">
+    <footer className="relative w-full overflow-hidden bg-black text-white">
+      {/* Figma footer glow overlay (orange gradient 2-layer) */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(239.479deg, rgba(255,166,0,0.05) 18.15%, rgba(133,121,97,0) 58.481%), linear-gradient(239.479deg, rgba(255,166,0,0.3) 18.15%, rgba(255,166,0,0) 58.481%)",
+        }}
+        aria-hidden
+      />
+
+      <div className="relative mx-auto w-full max-w-page-wide px-6 pb-12 pt-[80px] lg:px-[159px] lg:pb-[58px] lg:pt-[107px]">
+        {/* Top row: Terms / Privacy outline pills */}
+        <div className="flex flex-wrap items-center gap-2 lg:gap-[13px]">
+          <Link
+            href="/policy"
+            className="inline-flex h-[49px] items-center gap-2 border border-white px-5 text-[15px] text-white transition-colors hover:bg-white/5"
+            style={{ borderRadius: "29.5px" }}
+          >
+            {terms}
+            <ArrowRight className="h-[6px] w-[17px]" />
+          </Link>
+          <Link
+            href="/policy"
+            className="inline-flex h-[49px] items-center gap-2 border border-white px-5 text-[15px] text-white transition-colors hover:bg-white/5"
+            style={{ borderRadius: "29.5px" }}
+          >
+            {privacy}
+            <ArrowRight className="h-[6px] w-[17px]" />
+          </Link>
+        </div>
+
+        {/* Middle row: 4-col business info + social icons */}
+        <div className="mt-10 grid grid-cols-1 gap-8 lg:mt-[68px] lg:grid-cols-[1fr_1fr_1.4fr_1.2fr_auto] lg:gap-10">
+          {/* Contact */}
           <div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo.png"
-              alt="Coton Kennel"
-              width={76}
-              height={100}
-              className="h-16 w-auto brightness-0 invert"
-            />
-            <p className="mt-5 text-[13.5px] leading-[1.85] text-cream-300/75">
-              {t.tagline}
+            <p className="text-[12px] font-bold uppercase tracking-[0.02em] text-white">
+              Contact
+            </p>
+            <p className="mt-4 text-[24px] font-bold tnum text-white">
+              02-472-9966
+            </p>
+            <p className="mt-2 text-[15px] font-bold text-white">
+              {pick(lang, "24시 방문 가능", "24小时可访问")}
             </p>
           </div>
 
-          <div className="text-[13.5px]">
-            <h4 className="mb-4 font-serif text-[12px] font-semibold uppercase tracking-[0.32em] text-cream-100">
-              {t.contactLabel}
-            </h4>
-            <ul className="space-y-2.5 leading-[1.7] text-cream-300/85">
-              <li>{t.phone} · 010-0000-0000</li>
-              <li>카카오톡 · @cotonkennel</li>
-              <li>WeChat · cotonkennel</li>
-              <li>
-                {t.address} · {t.addressValue}
-              </li>
-            </ul>
+          {/* Adress (Figma 원본 표기 — typo preserved) */}
+          <div>
+            <p className="text-[12px] font-bold uppercase tracking-[0.02em] text-white">
+              Adress
+            </p>
+            <p className="mt-4 text-[15px] font-bold leading-[1.6] text-white">
+              {pick(
+                lang,
+                "서울 강동구 구천면로29길 23 꼬똥켄넬",
+                "首尔江东区九泉面路29街23号 棉花面纱犬舍"
+              )}
+            </p>
           </div>
 
-          <div className="text-[13.5px]">
-            <h4 className="mb-4 font-serif text-[12px] font-semibold uppercase tracking-[0.32em] text-cream-100">
-              {t.menuLabel}
-            </h4>
-            <ul className="grid grid-cols-2 gap-y-2.5 text-cream-300/85">
-              {t.menus.map((m) => (
-                <li key={m.href}>
-                  <Link href={m.href} className="hover:text-cream-100">
-                    {m.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          {/* Info */}
+          <div>
+            <p className="text-[12px] font-bold uppercase tracking-[0.02em] text-white">
+              Info
+            </p>
+            <p className="mt-4 text-[15px] font-bold leading-[1.6] text-white">
+              {pick(
+                lang,
+                "대표자 : 김지혜 ㅣ 사업자 번호 : 554-02-01209",
+                "代表 : 金智慧 ㅣ 营业执照号 : 554-02-01209"
+              )}
+            </p>
+          </div>
+
+          {/* 동물판매업허가번호 */}
+          <div>
+            <p className="text-[12px] font-bold uppercase tracking-[0.02em] text-white">
+              {pick(lang, "동물판매업허가번호", "动物销售业许可证号")}
+            </p>
+            <p className="mt-4 text-[15px] font-bold tnum text-white">
+              3240000-045-2018-0033
+            </p>
+          </div>
+
+          {/* Social icons - 5 in a row */}
+          <div className="flex items-start gap-[9px] lg:flex-col lg:gap-2.5">
+            <FooterSocial href="https://www.instagram.com/" label="Instagram">
+              <svg viewBox="0 0 24 24" fill="white" aria-hidden className="h-5 w-5">
+                <rect x="3" y="3" width="18" height="18" rx="5" stroke="white" strokeWidth="1.6" fill="none" />
+                <circle cx="12" cy="12" r="4" stroke="white" strokeWidth="1.6" fill="none" />
+                <circle cx="17.5" cy="6.5" r="0.9" />
+              </svg>
+            </FooterSocial>
+            <FooterSocial href="https://www.youtube.com/" label="YouTube">
+              <svg viewBox="0 0 24 24" fill="white" aria-hidden className="h-5 w-5">
+                <path d="M23.5 6.2a3.02 3.02 0 00-2.13-2.14C19.49 3.5 12 3.5 12 3.5s-7.49 0-9.37.56A3.02 3.02 0 00.5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3.02 3.02 0 002.13 2.14c1.88.56 9.37.56 9.37.56s7.49 0 9.37-.56a3.02 3.02 0 002.13-2.14C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.6 15.6V8.4l6.24 3.6-6.24 3.6z" />
+              </svg>
+            </FooterSocial>
+            <FooterSocial href="https://www.xiaohongshu.com/" label="Xiaohongshu">
+              <svg viewBox="0 0 24 24" fill="white" aria-hidden className="h-5 w-5">
+                <path d="M6 3h12a2 2 0 012 2v15.2a.8.8 0 01-1.18.7L12 18.4l-6.82 2.5A.8.8 0 014 20.2V5a2 2 0 012-2z" />
+              </svg>
+            </FooterSocial>
+            <FooterSocial href="https://pf.kakao.com/" label="KakaoTalk">
+              <svg viewBox="0 0 32 32" fill="white" aria-hidden className="h-5 w-5">
+                <path d="M16 4C8.27 4 2 8.86 2 14.85c0 3.83 2.6 7.18 6.5 9.05l-1.4 4.94c-.13.45.36.82.76.58l5.84-3.62c.75.1 1.52.15 2.3.15 7.73 0 14-4.86 14-10.85S23.73 4 16 4z" />
+              </svg>
+            </FooterSocial>
+            <FooterSocial href="https://weixin.qq.com/" label="WeChat">
+              <svg viewBox="0 0 24 24" fill="white" aria-hidden className="h-5 w-5">
+                <path d="M8.69 3C4.55 3 1.2 5.7 1.2 9.04c0 1.93 1.13 3.66 2.88 4.78l-.72 2.16 2.52-1.26c.66.18 1.34.28 2.04.3-.1-.42-.16-.84-.16-1.28 0-3.34 3.36-6.04 7.5-6.04.18 0 .36 0 .54.02C15.06 4.6 12.18 3 8.69 3zm13.78 13.9c0-2.78-2.78-5.04-6.18-5.04s-6.18 2.26-6.18 5.04 2.78 5.04 6.18 5.04c.66 0 1.32-.06 1.92-.18l1.86.96-.6-1.74c1.74-.96 3-2.4 3-4.08z" />
+              </svg>
+            </FooterSocial>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col-reverse items-start justify-between gap-3 border-t border-cream-300/10 pt-6 text-xs text-cream-300/60 md:flex-row md:items-center">
-          <p>
-            © {new Date().getFullYear()} Coton Kennel. {t.rights}
-          </p>
-          <div className="flex items-center gap-5">
-            <Link href="/policy" className="hover:text-cream-100">
-              {t.terms}
-            </Link>
-            <Link href="/policy" className="hover:text-cream-100">
-              {t.privacy}
-            </Link>
-            <span className="font-serif tracking-[0.4em] text-kennel-accent">
-              FCI · KKF · KCI
-            </span>
-          </div>
-        </div>
+        {/* Bottom copyright */}
+        <p className="mt-12 text-[12px] text-ink-300 lg:mt-[60px]">
+          2026 COTON KENNEL COMPANY
+        </p>
       </div>
     </footer>
+  );
+}
+
+function FooterSocial({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="flex h-9 w-9 items-center justify-center rounded-full ring-1 ring-white/30 transition-colors hover:bg-white/10"
+    >
+      {children}
+    </a>
   );
 }
