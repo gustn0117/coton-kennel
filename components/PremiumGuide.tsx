@@ -259,7 +259,7 @@ export default function PremiumGuide({
         {/* Right content */}
         <div>
           {slide.eyebrow && (
-            <p className="font-serif text-[20px] font-medium italic tracking-[0.04em] text-brand-brown lg:text-[26px]">
+            <p className="text-[22px] font-bold leading-none text-brand-brown lg:text-[32px]">
               {slide.eyebrow}
             </p>
           )}

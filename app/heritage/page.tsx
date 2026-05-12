@@ -65,7 +65,7 @@ export default async function HeritagePage() {
       <Section className="pt-24 lg:pt-32">
         <div className="grid items-center gap-12 md:grid-cols-[1fr_minmax(0,1.05fr)] md:gap-16">
           <div>
-            <p className="font-serif text-[19px] font-semibold italic tracking-[0.04em] text-kennel-gold md:text-[22px]">
+            <p className="text-[19px] font-bold text-kennel-gold md:text-[22px]">
               Champion Line
             </p>
             <h2 className="mt-2 text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
@@ -134,7 +134,7 @@ export default async function HeritagePage() {
       <Section className="pt-24 lg:pt-32">
         <div className="grid items-center gap-12 md:grid-cols-[1fr_minmax(0,1.05fr)] md:gap-16">
           <div>
-            <p className="font-serif text-[19px] font-semibold italic tracking-[0.04em] text-kennel-gold md:text-[22px]">
+            <p className="text-[19px] font-bold text-kennel-gold md:text-[22px]">
               Premium Breeding
             </p>
             <h2 className="mt-2 text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">

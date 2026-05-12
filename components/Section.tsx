@@ -26,7 +26,7 @@ export function SectionHeading({
   return (
     <div className={align === "center" ? "text-center" : ""}>
       {eyebrow && (
-        <p className="mb-2.5 font-serif text-[17px] font-medium italic tracking-[0.04em] text-kennel-gold md:text-[20px]">
+        <p className="mb-2.5 text-[17px] font-bold text-kennel-gold md:text-[20px]">
           {eyebrow}
         </p>
       )}
