@@ -7,23 +7,26 @@ import type { Lang } from "@/lib/i18n";
 import type { SiteImage } from "@/lib/supabase";
 
 type Slide = {
+  eyebrow?: string;
   heading: ReactNode;
-  intro: ReactNode;
-  subTitle: string;
+  intro?: ReactNode;
+  subTitle?: string;
   body: ReactNode;
 };
 
 function getSlides(lang: Lang): Slide[] {
-  if (lang === "zh") {
-    return [
-      {
-        heading: (
-          <>
-            <span className="text-brand-brown">Coton Kennel</span>
-            <br />
-            <span className="text-black">Premium Guide</span>
-          </>
-        ),
+  const isZh = lang === "zh";
+  const headingCotonKennel = (text: string) => (
+    <>
+      <span className="text-brand-brown">Coton Kennel</span>
+      <br />
+      <span className="text-black">{text}</span>
+    </>
+  );
+
+  const premiumGuide: Slide = isZh
+    ? {
+        heading: headingCotonKennel("Premium Guide"),
         intro: (
           <>
             您好,这里是棉花面纱犬舍 (Coton Kennel)。
@@ -44,139 +47,185 @@ function getSlides(lang: Lang): Slide[] {
             温馨照护,将成为您值得信赖的选择。谢谢。
           </>
         ),
-      },
-      {
-        heading: (
-          <>
-            <span className="text-brand-brown">Coton Kennel</span>
-            <br />
-            <span className="text-black">Health Care</span>
-          </>
-        ),
+      }
+    : {
+        heading: headingCotonKennel("Premium Guide"),
         intro: (
           <>
-            从出生到分养前,所有幼犬都接受兽医的定期检查。
+            안녕하세요, 꼬똥 켄넬입니다.
             <br />
-            健康证明、接种记录、驱虫履历,我们均透明提供。
+            평생을 함께할 소중한 가족을 맞이하시는 프리미엄 고객님께,
+            <br />
+            꼬똥 드 툴레아에 대한 깊이 있는 안내를 드립니다.
           </>
         ),
-        subTitle: "关于健康的承诺",
+        subTitle: "Coton Kennel의 약속",
         body: (
           <>
-            我们只从通过遗传疾病筛查的父母犬孕育幼犬,
-            分养之后也通过健康保障条款负责到底。
+            꼬똥 켄넬은 단순한 분양을 넘어, 건강하고 아름다운 반려견과 함께할
+            평생의 동반자를 찾아드립니다.
             <br />
             <br />
-            同时提供终身健康咨询,让您安心陪伴。
+            프리미엄 기준에 맞춘 건강한 개체, 투명한 정보 제공, 그리고 분양
+            직전까지 이어지는 따뜻한 케어까지 신뢰할 수 있는 선택이 되겠습니다.
+            감사합니다.
           </>
         ),
-      },
-      {
-        heading: (
-          <>
-            <span className="text-brand-brown">Coton Kennel</span>
-            <br />
-            <span className="text-black">Lifetime Care</span>
-          </>
-        ),
-        intro: (
-          <>
-            分养不是终点,而是新缘分的开始。
-            <br />
-            照护指南、饮食、美容、社会化,我们陪伴一生。
-          </>
-        ),
-        subTitle: "终身照护",
-        body: (
-          <>
-            从初期适应指南到被毛护理、美容周期、行为咨询 ——
-            成为家人之后,无论何时联系我们,都会用心为您提供帮助。
-          </>
-        ),
-      },
-    ];
-  }
-  return [
+      };
+
+  const breedZh: Slide[] = [
     {
-      heading: (
-        <>
-          <span className="text-brand-brown">Coton Kennel</span>
-          <br />
-          <span className="text-black">Premium Guide</span>
-        </>
-      ),
-      intro: (
-        <>
-          안녕하세요, 꼬똥 켄넬입니다.
-          <br />
-          평생을 함께할 소중한 가족을 맞이하시는 프리미엄 고객님께,
-          <br />
-          꼬똥 드 툴레아에 대한 깊이 있는 안내를 드립니다.
-        </>
-      ),
-      subTitle: "Coton Kennel의 약속",
+      eyebrow: "Heritage",
+      heading: <span className="text-black">棉花面纱犬的珍贵起源</span>,
       body: (
         <>
-          꼬똥 켄넬은 단순한 분양을 넘어, 건강하고 아름다운 반려견과 함께할
-          평생의 동반자를 찾아드립니다.
+          棉花面纱犬是代表马达加斯加的犬种,自 16 世纪经由图莱亚港口传入后,
+          长期深受贵族与王室喜爱,是一种特别的伴侣犬。
           <br />
           <br />
-          프리미엄 기준에 맞춘 건강한 개체, 투명한 정보 제공, 그리고 분양
-          직전까지 이어지는 따뜻한 케어까지 신뢰할 수 있는 선택이 되겠습니다.
-          감사합니다.
+          曾一度只有王室才能饲养,其价值极为珍贵;如今已被国际犬业联盟 (FCI)
+          及世界主要犬业俱乐部正式登记,其品格备受认可。
         </>
       ),
     },
     {
-      heading: (
-        <>
-          <span className="text-brand-brown">Coton Kennel</span>
-          <br />
-          <span className="text-black">Health Care</span>
-        </>
-      ),
-      intro: (
-        <>
-          출생부터 분양 직전까지, 모든 자견은 수의사 정기 검진을 받습니다.
-          <br />
-          건강 확인서, 접종 기록, 구충 이력까지 투명하게 제공해드립니다.
-        </>
-      ),
-      subTitle: "건강에 대한 약속",
+      eyebrow: "Appearance",
+      heading: <span className="text-black">自然孕育的细腻之美</span>,
       body: (
         <>
-          유전 질환 스크리닝을 거친 부모견에서만 자견을 선보이며, 분양 후에도
-          건강 보증 조항을 통해 끝까지 책임집니다.
+          棉花面纱犬如其名 “Coton(棉花)” 一般,以柔软而蓬松的被毛为最大特征。
+          幼犬时期常以白色为基底带有多种 Point 色彩,在成长过程中,
+          色调会逐渐变得清亮明朗,完成属于自身的优雅气质。
           <br />
           <br />
-          평생 건강 상담을 지원해 안심하고 함께하실 수 있도록 돕습니다.
+          均衡的体型与温和的神情,无论置身何处都能自然融入,营造出高雅的氛围。
+          同时,几乎不含油脂的被毛结构使过敏反应极少,掉毛也几乎可以忽略,
+          在维持洁净的居家环境上拥有显著优势。
         </>
       ),
     },
     {
-      heading: (
-        <>
-          <span className="text-brand-brown">Coton Kennel</span>
-          <br />
-          <span className="text-black">Lifetime Care</span>
-        </>
-      ),
-      intro: (
-        <>
-          분양은 끝이 아니라 새로운 인연의 시작입니다.
-          <br />
-          케어 가이드, 식단, 미용, 사회화까지 평생 함께합니다.
-        </>
-      ),
-      subTitle: "평생 케어",
+      eyebrow: "Temperament",
+      heading: <span className="text-black">温暖而细腻的情感交流</span>,
       body: (
         <>
-          초기 적응 가이드부터 모질 관리, 미용 주기, 행동 상담까지 — 가족이 된
-          이후에도 언제든 연락 주시면 정성껏 도와드립니다.
+          棉花面纱犬性情温和、对人深度信赖,无论是孩子还是成年人,
+          都能与之建立稳定的情感交流。叫声较少,对陌生环境也能较快适应,
+          非常适合作为室内伴侣犬。
+          <br />
+          <br />
+          尤其因不会过度吠叫的特性,不会干扰孩子的专注力与学习环境;
+          同时也带来情绪上的安定感,被认为是能产生正面影响的伴侣犬。
+          <br />
+          <br />
+          不过,正因与主人的情感联系深厚,初期教育与独处时间之间的平衡尤为重要。
+          我们在分养时会就这一部分细致地为您介绍,帮助您建立稳定持久的陪伴生活。
+        </>
+      ),
+    },
+    {
+      eyebrow: "Care",
+      heading: <span className="text-black">被毛护理方式</span>,
+      body: (
+        <>
+          棉花面纱犬的护理并不繁琐,通过持续而稳定的照护,即可维持更健康、
+          美丽的状态。
+          <br />
+          <br />
+          运动 · 推荐对关节负担较小的轻度散步与游泳
+          <br />
+          耳部护理 · 每周 1 次定期清洁耳部为必需
+          <br />
+          被毛护理 · 规律梳理可防止打结,每月 1~2 次洗澡即可
+          <br />
+          <br />
+          由于掉毛少、几乎没有异味,即便在室内也能维持洁净舒适的环境。
         </>
       ),
     },
   ];
+
+  const breedKo: Slide[] = [
+    {
+      eyebrow: "Heritage",
+      heading: <span className="text-black">꼬똥 드 툴레아의 가치 있는 기원</span>,
+      body: (
+        <>
+          꼬똥 드 툴레아는 마다가스카르를 대표하는 견종으로, 16세기 툴레아 항구를
+          통해 유입된 이후 오랜 시간 동안 귀족과 왕실의 사랑을 받아온 특별한
+          반려견입니다.
+          <br />
+          <br />
+          한때는 왕실에서만 기를 수 있었을 정도로 그 가치가 높았으며, 현재는
+          국제애견연맹(FCI) 및 세계 주요 켄넬 클럽에 공식 등록된 품종으로 그
+          품격을 인정받고 있습니다.
+        </>
+      ),
+    },
+    {
+      eyebrow: "Appearance",
+      heading: <span className="text-black">자연이 만든 섬세한 아름다움</span>,
+      body: (
+        <>
+          꼬똥 드 툴레아는 ‘목화솜(Cotton)’이라는 이름처럼 부드럽고 풍성한 털을
+          가진 것이 가장 큰 특징입니다. 어린 시절에는 화이트를 바탕으로 다양한
+          포인트 컬러를 지니기도 하지만, 성장 과정에서 점차 맑고 밝은 색감으로
+          변화하며 고유의 우아함을 완성합니다.
+          <br />
+          <br />
+          균형 잡힌 체형과 부드러운 인상은 어떤 공간에서도 자연스럽게 어우러지는
+          고급스러운 분위기를 만들어냅니다. 또한 유분기가 거의 없는 털 구조로 인해
+          알러지 반응이 적으며, 털 빠짐이 거의 없어 쾌적한 실내 환경을 유지하는
+          데에도 큰 장점을 가지고 있습니다.
+        </>
+      ),
+    },
+    {
+      eyebrow: "Temperament",
+      heading: <span className="text-black">따뜻하고 섬세한 교감</span>,
+      body: (
+        <>
+          꼬똥 드 툴레아는 온화하고 사람을 깊이 신뢰하는 성격을 지니고 있어, 어린
+          아이부터 성인까지 모두와 안정적인 교감을 형성합니다. 짖음이 적고 낯선
+          환경에도 비교적 빠르게 적응하기 때문에, 실내 반려견으로 매우
+          적합합니다.
+          <br />
+          <br />
+          특히 과도하게 짖지 않는 특성 덕분에 아이들의 집중력과 학습 환경을
+          방해하지 않으며, 정서적으로도 안정감을 주어 긍정적인 영향을 줄 수 있는
+          반려견으로 평가받고 있습니다.
+          <br />
+          <br />
+          다만 보호자와의 유대가 깊은 만큼, 올바른 초기 교육과 독립 시간의 균형이
+          중요합니다. 저희는 분양 시 이러한 부분까지 세심하게 안내드려, 안정적인
+          반려 생활이 이어질 수 있도록 돕고 있습니다.
+        </>
+      ),
+    },
+    {
+      eyebrow: "Care",
+      heading: <span className="text-black">견모 케어 방식</span>,
+      body: (
+        <>
+          꼬똥 드 툴레아는 관리가 까다롭지 않으면서도, 꾸준한 케어를 통해 더욱
+          건강하고 아름다운 모습을 유지할 수 있습니다.
+          <br />
+          <br />
+          운동 · 관절에 무리가 가지 않는 가벼운 산책 및 수영 권장
+          <br />
+          귀 관리 · 주 1회 정기적인 귀 청결 관리 필수
+          <br />
+          피모 관리 · 규칙적인 빗질로 엉킴 방지, 월 1~2회 목욕으로 충분
+          <br />
+          <br />
+          특히 털 빠짐이 적고 냄새가 거의 없어, 실내에서도 쾌적한 환경을 유지할
+          수 있습니다.
+        </>
+      ),
+    },
+  ];
+
+  return [premiumGuide, ...(isZh ? breedZh : breedKo)];
 }
 
 export default function PremiumGuide({
@@ -203,21 +252,34 @@ export default function PremiumGuide({
             key={idx}
             images={currentImage ? [{ image_url: currentImage }] : null}
             fallbackVariant="p3"
-            alt="Premium Guide"
+            alt="Coton Kennel"
           />
         </div>
 
         {/* Right content */}
         <div>
-          <h2 className="text-[28px] font-bold leading-[1.1] lg:text-[40px]">
+          {slide.eyebrow && (
+            <p className="font-serif text-[20px] font-medium italic tracking-[0.04em] text-brand-brown lg:text-[26px]">
+              {slide.eyebrow}
+            </p>
+          )}
+          <h2
+            className={`text-[28px] font-bold leading-[1.1] lg:text-[40px] ${
+              slide.eyebrow ? "mt-2" : ""
+            }`}
+          >
             {slide.heading}
           </h2>
-          <p className="mt-6 text-[16px] leading-[1.55] text-ink-500 lg:mt-[33px] lg:text-[21px] lg:leading-[31px]">
-            {slide.intro}
-          </p>
-          <h3 className="mt-8 text-[24px] font-bold text-brand-brown lg:mt-[37px] lg:text-[40px]">
-            {slide.subTitle}
-          </h3>
+          {slide.intro && (
+            <p className="mt-6 text-[16px] leading-[1.55] text-ink-500 lg:mt-[33px] lg:text-[21px] lg:leading-[31px]">
+              {slide.intro}
+            </p>
+          )}
+          {slide.subTitle && (
+            <h3 className="mt-8 text-[24px] font-bold text-brand-brown lg:mt-[37px] lg:text-[40px]">
+              {slide.subTitle}
+            </h3>
+          )}
           <p className="mt-4 text-[16px] leading-[1.55] text-ink-500 lg:mt-[34px] lg:text-[21px] lg:leading-[31px]">
             {slide.body}
           </p>
