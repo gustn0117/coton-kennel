@@ -23,7 +23,7 @@ export default function Footer() {
         aria-hidden
       />
 
-      <div className="relative mx-auto w-full max-w-page-wide px-6 pb-12 pt-[80px] lg:px-[159px] lg:pb-[58px] lg:pt-[107px]">
+      <div className="relative mx-auto w-full max-w-page-wide px-6 pb-12 pt-[80px] lg:px-12 xl:px-20 2xl:px-[159px] lg:pb-[58px] lg:pt-20 xl:pt-28 2xl:pt-[107px]">
         {/* Top row: Terms / Privacy outline pills */}
         <div className="flex flex-wrap items-center gap-2 lg:gap-[13px]">
           <Link
@@ -45,7 +45,7 @@ export default function Footer() {
         </div>
 
         {/* Middle row: 4-col business info + social icons */}
-        <div className="mt-10 grid grid-cols-1 gap-8 lg:mt-[68px] lg:grid-cols-[1fr_1fr_1.4fr_1.2fr_auto] lg:gap-10">
+        <div className="mt-10 grid grid-cols-1 gap-8 lg:mt-14 2xl:mt-[68px] lg:grid-cols-[1fr_1fr_1.4fr_1.2fr_auto] lg:gap-10">
           {/* Contact */}
           <div>
             <p className="text-[12px] font-bold uppercase tracking-[0.02em] text-white">
@@ -130,7 +130,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom copyright */}
-        <p className="mt-12 text-[12px] text-ink-300 lg:mt-[60px]">
+        <p className="mt-12 text-[12px] text-ink-300 lg:mt-14 2xl:mt-[60px]">
           2026 COTON KENNEL COMPANY
         </p>
       </div>

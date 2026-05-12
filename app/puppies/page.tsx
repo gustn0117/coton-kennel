@@ -230,16 +230,16 @@ export default function PuppiesPage() {
 
       {/* Kennel intro slider: Heritage / Champion Line / Premium Breeding */}
       <section className="w-full bg-brand-beige">
-        <div className="mx-auto w-full max-w-page-wide px-6 py-20 lg:px-[272px] lg:py-[193px]">
-          <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[1fr_805px] lg:gap-[83px]">
-            <div className="lg:pt-[89px]">
+        <div className="mx-auto w-full max-w-page-wide px-6 py-20 lg:px-12 xl:px-20 2xl:px-[272px] lg:py-20 xl:py-28 2xl:py-[193px]">
+          <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[1fr_minmax(0,805px)] lg:gap-10 xl:gap-14 2xl:gap-[83px]">
+            <div className="lg:pt-20 xl:pt-28 2xl:pt-[89px]">
               <p className="text-[36px] font-bold leading-none text-brand-brown lg:text-[60px]">
                 {current.eyebrow}
               </p>
               <h2 className="mt-4 text-[36px] font-bold leading-[1.14] text-black lg:mt-[27px] lg:text-[70px] lg:leading-[80px]">
                 {current.title}
               </h2>
-              <div className="mt-8 space-y-5 text-[16px] leading-[1.65] text-ink-500 lg:mt-[67px] lg:text-[18px]">
+              <div className="mt-8 space-y-5 text-[16px] leading-[1.65] text-ink-500 lg:mt-14 2xl:mt-[67px] lg:text-[18px]">
                 {current.body.map((p, i) => (
                   <p key={i} className="whitespace-pre-line">
                     {p}
@@ -248,7 +248,7 @@ export default function PuppiesPage() {
               </div>
             </div>
 
-            <div className="relative w-full lg:h-[668px] lg:w-[805px]">
+            <div className="relative w-full lg:max-w-[805px] 2xl:h-[668px] 2xl:w-[805px]">
               <div className="aspect-[805/668] w-full overflow-hidden rounded-[24px] lg:h-full lg:rounded-[51px]">
                 <PuppyImage
                   variant={current.variant as never}
@@ -259,14 +259,14 @@ export default function PuppiesPage() {
           </div>
 
           {/* Slider controls */}
-          <div className="mt-8 flex items-center justify-center gap-3 lg:mt-[80px]">
+          <div className="mt-8 flex items-center justify-center gap-3 lg:mt-14 2xl:mt-[80px]">
             <button
               type="button"
               onClick={() =>
                 setSlideIndex((i) => (i === 0 ? slides.length - 1 : i - 1))
               }
               aria-label="Prev"
-              className="flex h-[59px] w-[59px] items-center justify-center rounded-full border border-brand-tan bg-white text-brand-brown transition-colors hover:bg-brand-tan/30 lg:h-[79px] lg:w-[79px]"
+              className="flex h-[59px] w-[59px] items-center justify-center rounded-full border border-brand-tan bg-white text-brand-brown transition-colors hover:bg-brand-tan/30 lg:max-w-[79px] 2xl:h-[79px] 2xl:w-[79px]"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -291,7 +291,7 @@ export default function PuppiesPage() {
                 setSlideIndex((i) => (i === slides.length - 1 ? 0 : i + 1))
               }
               aria-label="Next"
-              className="flex h-[59px] w-[59px] items-center justify-center rounded-full border border-brand-tan bg-white text-brand-brown transition-colors hover:bg-brand-tan/30 lg:h-[79px] lg:w-[79px]"
+              className="flex h-[59px] w-[59px] items-center justify-center rounded-full border border-brand-tan bg-white text-brand-brown transition-colors hover:bg-brand-tan/30 lg:max-w-[79px] 2xl:h-[79px] 2xl:w-[79px]"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -300,9 +300,9 @@ export default function PuppiesPage() {
       </section>
 
       {/* Filter row + Grid */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pb-20 pt-16 lg:px-[173px] lg:pb-[183px] lg:pt-[150px]">
+      <section className="mx-auto w-full max-w-page-wide px-6 pb-20 pt-16 lg:px-12 xl:px-20 2xl:px-[173px] lg:pb-20 xl:pb-28 2xl:pb-[183px] lg:pt-20 xl:pt-28 2xl:pt-[150px]">
         {/* 4 dropdown filters */}
-        <div className="mb-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-4 lg:mb-[97px] lg:gap-x-[91px]">
+        <div className="mb-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-4 lg:mb-14 2xl:mb-[97px] lg:gap-x-[91px]">
           <FilterSelect
             label={pick(lang, "색상", "颜色")}
             value={filters.color}
@@ -351,7 +351,7 @@ export default function PuppiesPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="mt-16 flex items-center justify-center gap-[15px] lg:mt-[100px]">
+          <div className="mt-16 flex items-center justify-center gap-[15px] lg:mt-14 2xl:mt-[100px]">
             <button
               type="button"
               onClick={() => setPage((p) => Math.max(0, p - 1))}
@@ -593,11 +593,11 @@ function PuppyCard({
           </p>
         </div>
 
-        <div className="mt-6 flex items-center justify-between gap-3 lg:mt-[83px]">
+        <div className="mt-6 flex items-center justify-between gap-3 lg:mt-14 2xl:mt-[83px]">
           <span className="text-[15px] font-medium text-black lg:text-[18px]">
             {pick(lang, "상세프로필 확인", "查看详细资料")}
           </span>
-          <span className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-brand-brown text-white transition-transform group-hover:translate-x-0.5 lg:h-[38px] lg:w-[38px]">
+          <span className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-brand-brown text-white transition-transform group-hover:translate-x-0.5 lg:max-w-[38px] 2xl:h-[38px] 2xl:w-[38px]">
             <svg width="7" height="15" viewBox="0 0 7 15" fill="none" aria-hidden>
               <path
                 d="M1 1l5 6.5L1 14"

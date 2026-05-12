@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import Logo from "./Logo";
 import { useLang, setLangCookie } from "@/lib/LangProvider";
+import { CloseIcon } from "./icons";
 
 const NAV = {
   ko: [
@@ -24,6 +26,7 @@ export default function Header() {
   const pathname = usePathname();
   const lang = useLang();
   const items = NAV[lang];
+  const [menuOpen, setMenuOpen] = useState(false);
 
   function switchTo(target: "ko" | "zh") {
     if (target === lang) return;
@@ -31,43 +34,41 @@ export default function Header() {
     window.location.reload();
   }
 
+  function isActive(href: string) {
+    return href === "/" ? pathname === "/" : pathname.startsWith(href);
+  }
+
   return (
     <header className="sticky top-0 z-40 w-full bg-white">
-      <div className="mx-auto flex h-[124px] w-full max-w-page-wide items-center justify-between px-6 lg:px-[159px]">
-        {/* Logo - Figma: 76x100, left 159 top 12 */}
+      <div className="mx-auto flex h-16 w-full max-w-page-wide items-center justify-between px-5 sm:px-6 md:h-20 lg:h-24 lg:px-12 xl:px-20 2xl:h-[124px] 2xl:px-[159px]">
+        {/* Logo */}
         <Link href="/" className="shrink-0">
           <Logo />
         </Link>
 
-        {/* Nav - Figma: text-[24px], gap roughly equal */}
-        <nav className="hidden flex-1 items-center justify-center gap-12 md:flex lg:gap-[60px]">
-          {items.map((item) => {
-            const active =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`text-[18px] leading-none lg:text-[24px] ${
-                  active
-                    ? "font-bold text-brand-brown"
-                    : "font-normal text-ink-900 hover:text-brand-brown"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+        {/* Desktop nav */}
+        <nav className="hidden flex-1 items-center justify-center gap-7 md:flex lg:gap-10 xl:gap-12 2xl:gap-[60px]">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`text-[14px] leading-none transition-colors lg:text-[16px] xl:text-[19px] 2xl:text-[24px] ${
+                isActive(item.href)
+                  ? "font-bold text-brand-brown"
+                  : "font-normal text-ink-900 hover:text-brand-brown"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
-        {/* Language toggle - Figma: two separate pills 116x45, rounded 22.5 */}
-        <div className="flex shrink-0 items-center gap-[9px]">
+        {/* Desktop language toggle */}
+        <div className="hidden shrink-0 items-center gap-2 md:flex 2xl:gap-[9px]">
           <button
             type="button"
             onClick={() => switchTo("ko")}
-            className={`flex h-[45px] w-[116px] items-center justify-center text-[16px] transition-colors ${
+            className={`flex h-9 items-center justify-center px-4 text-[13px] transition-colors lg:h-10 lg:w-[92px] lg:text-[14px] 2xl:h-[45px] 2xl:w-[116px] 2xl:text-[16px] ${
               lang === "ko"
                 ? "bg-brand-pink text-ink-900"
                 : "bg-white text-ink-500 ring-1 ring-brand-pink/60 hover:bg-brand-pink/40"
@@ -79,7 +80,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => switchTo("zh")}
-            className={`flex h-[45px] w-[116px] items-center justify-center text-[16px] transition-colors ${
+            className={`flex h-9 items-center justify-center px-4 text-[13px] transition-colors lg:h-10 lg:w-[92px] lg:text-[14px] 2xl:h-[45px] 2xl:w-[116px] 2xl:text-[16px] ${
               lang === "zh"
                 ? "bg-brand-brown text-white"
                 : "bg-white text-ink-500 ring-1 ring-brand-brown/40 hover:bg-brand-brown/10"
@@ -89,7 +90,69 @@ export default function Header() {
             中文
           </button>
         </div>
+
+        {/* Mobile: hamburger */}
+        <button
+          type="button"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label={menuOpen ? "메뉴 닫기" : "메뉴 열기"}
+          className="flex h-10 w-10 items-center justify-center rounded-full text-ink-900 transition-colors hover:bg-line-surface md:hidden"
+        >
+          {menuOpen ? (
+            <CloseIcon className="h-5 w-5" />
+          ) : (
+            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          )}
+        </button>
       </div>
+
+      {/* Mobile menu drawer */}
+      {menuOpen && (
+        <div className="border-t border-line-card bg-white md:hidden">
+          <nav className="flex flex-col px-5 py-1">
+            {items.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className={`border-b border-line-card py-3.5 text-[16px] last:border-b-0 ${
+                  isActive(item.href)
+                    ? "font-bold text-brand-brown"
+                    : "font-normal text-ink-900"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <div className="flex gap-2 px-5 pb-4 pt-3">
+            <button
+              type="button"
+              onClick={() => switchTo("ko")}
+              className={`flex-1 rounded-full py-2.5 text-[14px] ${
+                lang === "ko"
+                  ? "bg-brand-pink text-ink-900"
+                  : "bg-white text-ink-500 ring-1 ring-brand-pink/60"
+              }`}
+            >
+              한국어
+            </button>
+            <button
+              type="button"
+              onClick={() => switchTo("zh")}
+              className={`flex-1 rounded-full py-2.5 text-[14px] ${
+                lang === "zh"
+                  ? "bg-brand-brown text-white"
+                  : "bg-white text-ink-500 ring-1 ring-brand-brown/40"
+              }`}
+            >
+              中文
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

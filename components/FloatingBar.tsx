@@ -109,7 +109,7 @@ export default function FloatingBar() {
         <ul className="flex flex-col gap-2">
           {items.map((it, i) => {
             const inner = (
-              <span className="relative flex h-[52px] w-[52px] items-center justify-center rounded-full bg-white text-brand-brown ring-1 ring-brand-tan transition-all duration-200 hover:bg-brand-brown hover:text-white hover:shadow-card lg:h-[58px] lg:w-[58px]">
+              <span className="relative flex h-[52px] w-[52px] items-center justify-center rounded-full bg-white text-brand-brown ring-1 ring-brand-tan transition-all duration-200 hover:bg-brand-brown hover:text-white hover:shadow-card lg:max-w-[58px] 2xl:h-[58px] 2xl:w-[58px]">
                 <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-full bg-black px-3 py-1.5 text-[12px] font-medium text-white opacity-0 shadow-card transition-all duration-200 group-hover:-translate-x-0.5 group-hover:opacity-100">
                   {it.label}
                 </span>

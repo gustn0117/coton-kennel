@@ -82,11 +82,11 @@ export default async function HomePage() {
       <PremiumGuide lang={lang} images={premiumImages} />
 
       {/* Highlight: 큰 이미지 1332×615 + 재생 버튼 */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pb-20 lg:px-[293px] lg:pb-[270px]">
-        <h2 className="text-center text-[32px] font-bold leading-[1.1] text-black lg:text-[55px] lg:leading-[80px]">
+      <section className="mx-auto w-full max-w-page-wide px-5 pb-16 sm:px-6 md:pb-20 lg:px-12 lg:pb-24 xl:px-24 2xl:px-[293px] 2xl:pb-[270px]">
+        <h2 className="text-center text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[42px] xl:text-[55px] xl:leading-[80px]">
           Coton Kennel highlight
         </h2>
-        <div className="relative mx-auto mt-8 aspect-[1332/615] w-full max-w-[1332px] overflow-hidden rounded-[24px] lg:mt-[151px] lg:rounded-[40px]">
+        <div className="relative mx-auto mt-8 aspect-[1332/615] w-full max-w-[1332px] overflow-hidden rounded-[24px] lg:mt-16 2xl:mt-[151px] lg:rounded-[40px]">
           <PuppyImage variant="p7" url={highlightUrl} />
           {/* Play button overlay (Figma: 70×70 center) */}
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
@@ -105,14 +105,14 @@ export default async function HomePage() {
       </section>
 
       {/* 가족을 기다리는 아이들 - 4 cards 2x2 grid (Figma 642×645) */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pb-20 lg:px-[176px] lg:pb-[253px]">
-        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[55px] lg:leading-[80px] lg:tracking-[-0.55px]">
+      <section className="mx-auto w-full max-w-page-wide px-5 pb-16 sm:px-6 md:pb-20 lg:px-12 lg:pb-24 xl:px-20 2xl:px-[176px] 2xl:pb-[253px]">
+        <h2 className="text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[42px] xl:text-[55px] xl:leading-[80px] xl:tracking-[-0.55px]">
           <span>{pick(lang, "가족을 기다리는 ", "正在等待家人的 ")}</span>
           <span className="text-brand-brown">
             {pick(lang, "아이들", "宝贝")}
           </span>
         </h2>
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-[136px] lg:gap-[27px]">
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-16 2xl:mt-[136px] lg:gap-6 2xl:gap-[27px]">
           {(puppies.length > 0
             ? puppies
             : FALLBACK_VARIANTS.map((v, i) => ({
@@ -144,12 +144,12 @@ export default async function HomePage() {
       </section>
 
       {/* 가족이 된 후기 - 3 cards 481×615, 비대칭 라운드 + 별점 */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pb-24 lg:px-[180px] lg:pb-[243px]">
-        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[55px] lg:leading-[80px] lg:tracking-[-0.55px]">
+      <section className="mx-auto w-full max-w-page-wide px-5 pb-20 sm:px-6 md:pb-24 lg:px-12 lg:pb-24 xl:px-20 2xl:px-[180px] 2xl:pb-[243px]">
+        <h2 className="text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[42px] xl:text-[55px] xl:leading-[80px] xl:tracking-[-0.55px]">
           <span>{pick(lang, "가족이 된 ", "成为家人的 ")}</span>
           <span className="text-brand-brown">{pick(lang, "후기", "故事")}</span>
         </h2>
-        <p className="mt-4 text-[16px] text-ink-500 lg:mt-[44px] lg:text-[24px]">
+        <p className="mt-4 text-[15px] text-ink-500 sm:text-[16px] lg:mt-8 lg:text-[18px] xl:text-[22px] 2xl:mt-[44px] 2xl:text-[24px]">
           {pick(
             lang,
             "가족이 된 후기에 대한 설명 간략",
@@ -157,7 +157,7 @@ export default async function HomePage() {
           )}
         </p>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-[127px] lg:grid-cols-3 lg:gap-[60px]">
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 2xl:mt-[127px] lg:grid-cols-3 lg:gap-8 xl:gap-12 2xl:gap-[60px]">
           {reviews.length > 0
             ? reviews.map((r) => <ReviewCard key={r.id} review={r} />)
             : Array.from({ length: 3 }).map((_, i) => (
@@ -180,10 +180,10 @@ export default async function HomePage() {
               ))}
         </div>
 
-        <div className="mt-10 flex justify-center lg:mt-[80px]">
+        <div className="mt-10 flex justify-center lg:mt-12 2xl:mt-[80px]">
           <Link
             href="/visitor-guide"
-            className="inline-flex h-[59px] items-center gap-3 bg-brand-brown px-8 text-[16px] text-white transition-transform hover:-translate-y-0.5"
+            className="inline-flex h-[52px] items-center gap-3 bg-brand-brown px-7 text-[15px] text-white transition-transform hover:-translate-y-0.5 lg:h-[59px] lg:px-8 lg:text-[16px]"
             style={{ borderRadius: "29.5px" }}
           >
             {pick(lang, "모든 후기 보기", "查看全部评价")}
@@ -208,10 +208,10 @@ function ReviewCard({ review }: { review: Review }) {
       <div className="aspect-[481/342] w-full">
         <PuppyImage variant={review.variant as never} url={review.image_url} />
       </div>
-      <div className="px-[42px] pb-8 pt-10">
+      <div className="px-6 pb-7 pt-8 sm:px-8 lg:px-[42px] lg:pb-8 lg:pt-10">
         <StarRating rating={4} />
         <div className="mt-4 flex items-baseline gap-3">
-          <h3 className="text-[20px] font-bold leading-tight text-black lg:text-[30px] lg:tracking-[-0.3px]">
+          <h3 className="text-[18px] font-bold leading-tight text-black sm:text-[20px] lg:text-[24px] xl:text-[28px] 2xl:text-[30px] xl:tracking-[-0.3px]">
             {review.title || review.name}
           </h3>
           <span className="text-[14px] text-ink-500 lg:text-[16px]">

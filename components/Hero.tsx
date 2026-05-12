@@ -45,24 +45,24 @@ export default function Hero({
 }: Props) {
   return (
     <section className="w-full bg-brand-beige">
-      <div className="mx-auto grid w-full max-w-page-wide grid-cols-1 items-center gap-10 px-6 py-12 lg:grid-cols-[1fr_805px] lg:gap-[130px] lg:px-[179px] lg:py-[193px]">
+      <div className="mx-auto grid w-full max-w-page-wide grid-cols-1 items-center gap-10 px-5 py-10 sm:px-6 sm:py-14 md:gap-12 md:py-20 lg:grid-cols-[1fr_minmax(0,805px)] lg:gap-12 lg:px-12 lg:py-24 xl:gap-20 xl:px-20 2xl:gap-[130px] 2xl:px-[179px] 2xl:py-[193px]">
         {/* Left content */}
         <div>
-          <p className="text-[36px] font-bold leading-none text-brand-brown lg:text-[60px]">
+          <p className="text-[26px] font-bold leading-none text-brand-brown sm:text-[32px] md:text-[40px] lg:text-[48px] xl:text-[54px] 2xl:text-[60px]">
             {eyebrow}
           </p>
-          <h1 className="mt-4 whitespace-pre-line text-[40px] font-bold leading-[1.14] text-black lg:mt-[41px] lg:text-[70px] lg:leading-[80px]">
+          <h1 className="mt-3 whitespace-pre-line text-[30px] font-bold leading-[1.16] text-black sm:text-[36px] md:mt-5 md:text-[48px] lg:mt-7 lg:text-[54px] xl:text-[62px] 2xl:mt-[41px] 2xl:text-[70px] 2xl:leading-[80px]">
             {title}
           </h1>
           {description && (
-            <p className="mt-6 text-[16px] leading-[1.5] text-ink-500 lg:mt-[49px] lg:text-[24px]">
+            <p className="mt-5 text-[15px] leading-[1.55] text-ink-500 sm:text-[16px] md:mt-7 md:text-[18px] lg:text-[20px] xl:text-[22px] 2xl:mt-[49px] 2xl:text-[24px]">
               {description}
             </p>
           )}
           {cta && (
             <Link
               href={cta.href}
-              className="mt-10 inline-flex h-[59px] w-[213px] items-center gap-3 bg-brand-brown px-[25px] text-[16px] text-white transition-transform hover:-translate-y-0.5 lg:mt-[67px]"
+              className="mt-8 inline-flex h-[52px] w-[190px] items-center gap-3 bg-brand-brown px-6 text-[15px] text-white transition-transform hover:-translate-y-0.5 md:mt-10 lg:mt-12 lg:h-[59px] lg:w-[213px] lg:px-[25px] lg:text-[16px] 2xl:mt-[67px]"
               style={{ borderRadius: "29.5px" }}
             >
               <span>{cta.label}</span>
@@ -85,9 +85,9 @@ export default function Hero({
         </div>
 
         {/* Right image - Figma 805×668 */}
-        <div className="relative w-full lg:h-[668px] lg:w-[805px]">
+        <div className="relative w-full lg:max-w-[805px] 2xl:h-[668px] 2xl:w-[805px]">
           <div
-            className="aspect-[805/668] w-full overflow-hidden lg:h-full"
+            className="aspect-[805/668] w-full overflow-hidden 2xl:h-full"
             style={{ borderRadius: `${imageRadius}px` }}
           >
             <ImageCarousel

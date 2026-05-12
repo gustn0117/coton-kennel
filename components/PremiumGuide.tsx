@@ -244,10 +244,10 @@ export default function PremiumGuide({
     images.length > 0 ? images[idx % images.length]?.image_url ?? null : null;
 
   return (
-    <section className="mx-auto w-full max-w-page-wide px-6 py-20 lg:px-[180px] lg:py-[182px]">
-      <div className="relative grid grid-cols-1 items-center gap-12 lg:grid-cols-[733px_1fr] lg:gap-[102px]">
+    <section className="mx-auto w-full max-w-page-wide px-5 py-14 sm:px-6 md:py-20 lg:px-12 lg:py-24 xl:px-20 2xl:px-[180px] 2xl:py-[182px]">
+      <div className="relative grid grid-cols-1 items-center gap-10 md:gap-12 lg:grid-cols-[minmax(0,733px)_1fr] lg:gap-12 xl:gap-16 2xl:gap-[102px]">
         {/* Left image */}
-        <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[24px] lg:h-[626px] lg:w-[733px] lg:rounded-[32px]">
+        <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[20px] lg:max-w-[733px] lg:rounded-[28px] 2xl:h-[626px] 2xl:w-[733px] 2xl:rounded-[32px]">
           <ImageCarousel
             key={idx}
             images={currentImage ? [{ image_url: currentImage }] : null}
@@ -259,28 +259,28 @@ export default function PremiumGuide({
         {/* Right content */}
         <div>
           {slide.eyebrow && (
-            <p className="text-[22px] font-bold leading-none text-brand-brown lg:text-[32px]">
+            <p className="text-[20px] font-bold leading-none text-brand-brown sm:text-[24px] lg:text-[28px] xl:text-[32px]">
               {slide.eyebrow}
             </p>
           )}
           <h2
-            className={`text-[28px] font-bold leading-[1.1] lg:text-[40px] ${
+            className={`text-[24px] font-bold leading-[1.18] sm:text-[28px] lg:text-[34px] xl:text-[40px] ${
               slide.eyebrow ? "mt-2" : ""
             }`}
           >
             {slide.heading}
           </h2>
           {slide.intro && (
-            <p className="mt-6 text-[16px] leading-[1.55] text-ink-500 lg:mt-[33px] lg:text-[21px] lg:leading-[31px]">
+            <p className="mt-5 text-[15px] leading-[1.6] text-ink-500 sm:text-[16px] lg:mt-7 lg:text-[18px] xl:text-[21px] 2xl:mt-[33px] 2xl:leading-[31px]">
               {slide.intro}
             </p>
           )}
           {slide.subTitle && (
-            <h3 className="mt-8 text-[24px] font-bold text-brand-brown lg:mt-[37px] lg:text-[40px]">
+            <h3 className="mt-6 text-[20px] font-bold text-brand-brown sm:text-[22px] lg:mt-8 lg:text-[28px] xl:text-[34px] 2xl:mt-[37px] 2xl:text-[40px]">
               {slide.subTitle}
             </h3>
           )}
-          <p className="mt-4 text-[16px] leading-[1.55] text-ink-500 lg:mt-[34px] lg:text-[21px] lg:leading-[31px]">
+          <p className="mt-4 text-[15px] leading-[1.6] text-ink-500 sm:text-[16px] lg:text-[18px] xl:text-[21px] 2xl:mt-[34px] 2xl:leading-[31px]">
             {slide.body}
           </p>
         </div>
@@ -290,7 +290,7 @@ export default function PremiumGuide({
           type="button"
           onClick={() => setIdx((idx - 1 + total) % total)}
           aria-label="이전 섹션"
-          className="absolute left-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white text-brand-brown shadow-soft ring-1 ring-cream-300/70 transition-colors hover:bg-cream-50 lg:-left-6"
+          className="absolute left-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-line-surface md:h-11 md:w-11 lg:left-0 xl:-left-5"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
@@ -298,7 +298,7 @@ export default function PremiumGuide({
           type="button"
           onClick={() => setIdx((idx + 1) % total)}
           aria-label="다음 섹션"
-          className="absolute right-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white text-brand-brown shadow-soft ring-1 ring-cream-300/70 transition-colors hover:bg-cream-50 lg:-right-6"
+          className="absolute right-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-line-surface md:h-11 md:w-11 lg:right-0 xl:-right-5"
         >
           <ChevronRight className="h-5 w-5" />
         </button>
@@ -313,7 +313,7 @@ export default function PremiumGuide({
             onClick={() => setIdx(i)}
             aria-label={`${i + 1}번째 섹션`}
             className={`h-1.5 rounded-full transition-all ${
-              i === idx ? "w-6 bg-brand-brown" : "w-1.5 bg-cream-300 hover:bg-cream-300/70"
+              i === idx ? "w-6 bg-brand-brown" : "w-1.5 bg-ink-300 hover:bg-ink-300/70"
             }`}
           />
         ))}
