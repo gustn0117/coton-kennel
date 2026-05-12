@@ -46,8 +46,11 @@ body {
 
 .marquee-track {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.25rem;
   width: max-content;
+}
+@media (min-width: 1024px) {
+  .marquee-track { gap: 2rem; }
 }
 
 :focus-visible {

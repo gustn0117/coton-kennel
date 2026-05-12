@@ -68,8 +68,8 @@ const config: Config = {
           "linear-gradient(239.479deg, rgba(255,166,0,0.05) 18.15%, rgba(133,121,97,0) 58.481%), linear-gradient(239.479deg, rgba(255,166,0,0.3) 18.15%, rgba(255,166,0,0) 58.481%)",
       },
       animation: {
-        "scroll-x": "scroll-x 30s linear infinite",
-        "scroll-x-reverse": "scroll-x-reverse 35s linear infinite",
+        "scroll-x": "scroll-x 70s linear infinite",
+        "scroll-x-reverse": "scroll-x-reverse 80s linear infinite",
       },
       keyframes: {
         "scroll-x": {

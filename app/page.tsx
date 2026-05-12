@@ -57,7 +57,7 @@ function PuppyMarquee({
             key={`${p.id}-${i}`}
             href="/puppies"
             aria-label="강아지소개로 이동"
-            className="block aspect-square w-[128px] shrink-0 overflow-hidden rounded-[14px] ring-1 ring-line-card transition-transform hover:scale-[1.03] sm:w-[150px] md:w-[170px] lg:w-[190px] lg:rounded-[18px]"
+            className="block aspect-square w-[200px] shrink-0 overflow-hidden rounded-[18px] ring-1 ring-line-card transition-transform hover:scale-[1.03] sm:w-[240px] md:w-[280px] lg:w-[320px] lg:rounded-[24px]"
           >
             <PuppyImage variant={p.variant as never} url={p.image_url} />
           </Link>
