@@ -137,11 +137,17 @@ export default function ContactPage() {
                 i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
               }`}
             >
-              <div className={`aspect-[5/3] w-full overflow-hidden rounded-[24px] lg:rounded-[40px] ${i % 2 === 0 ? "" : "lg:order-1"}`}>
-                <PuppyImage
-                  variant={`p${(i + 1) * 2}` as never}
-                  url={stepImages[`contact.step.${i + 1}`] ?? null}
-                />
+              <div className={`relative aspect-[16/10] w-full overflow-hidden rounded-[24px] bg-brand-beige lg:rounded-[32px] ${i % 2 === 0 ? "" : "lg:order-1"}`}>
+                {stepImages[`contact.step.${i + 1}`] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={stepImages[`contact.step.${i + 1}`] as string}
+                    alt={s.title}
+                    className="absolute inset-0 h-full w-full object-contain p-4 sm:p-6 lg:p-8"
+                  />
+                ) : (
+                  <PuppyImage variant={`p${(i + 1) * 2}` as never} />
+                )}
               </div>
               <div className={i % 2 === 0 ? "" : "lg:order-2"}>
                 <p className="text-[28px] font-bold leading-none tracking-[-0.4px] text-brand-brown lg:text-[32px]">
