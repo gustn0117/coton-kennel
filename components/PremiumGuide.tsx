@@ -123,8 +123,8 @@ export default function PremiumGuide({
     images.length > 0 ? images[idx % images.length]?.image_url ?? null : null;
 
   return (
-    <section className="mx-auto w-full max-w-page-wide px-5 py-14 sm:px-6 md:py-20 lg:px-12 lg:py-24 xl:px-20 2xl:px-[180px] 2xl:py-[182px]">
-      <div className="relative grid grid-cols-1 items-stretch gap-10 md:gap-12 lg:grid-cols-[minmax(0,733px)_1fr] lg:gap-12 xl:gap-16 2xl:gap-[102px]">
+    <section className="mx-auto w-full max-w-page-wide px-5 py-14 sm:px-6 md:py-20 lg:px-12 lg:py-24 xl:px-20 2xl:px-[180px] 2xl:py-[91px]">
+      <div className="relative grid grid-cols-1 items-stretch gap-10 md:gap-12 lg:grid-cols-[minmax(0,733px)_1fr] lg:gap-12 xl:gap-16 2xl:gap-[61px]">
         {/* Left image — fixed aspect */}
         <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[20px] lg:max-w-[733px] lg:rounded-[28px] 2xl:rounded-[32px]">
           <ImageCarousel
@@ -136,11 +136,11 @@ export default function PremiumGuide({
         </div>
 
         {/* Right content — same vertical box on every slide */}
-        <div className="flex flex-col justify-center lg:min-h-[480px] xl:min-h-[560px] 2xl:min-h-[626px]">
+        <div className="flex flex-col justify-center lg:min-h-[336px] xl:min-h-[392px] 2xl:min-h-[438px]">
           <p className="text-[20px] font-bold leading-none text-brand-brown sm:text-[24px] lg:text-[28px] xl:text-[32px]">
             {slide.eyebrow}
           </p>
-          <h2 className="mt-2 text-[24px] font-bold leading-[1.18] text-black sm:text-[28px] lg:text-[32px] xl:text-[40px]">
+          <h2 className="mt-2 text-[24px] font-bold leading-[1.18] text-black sm:text-[28px] lg:text-[32px] xl:text-[32px]">
             {slide.title}
           </h2>
           <div className="mt-5 space-y-4 lg:mt-7 2xl:mt-8">

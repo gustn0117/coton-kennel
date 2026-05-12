@@ -15,7 +15,7 @@ export default function PolicyPage() {
           <span className="inline-block rounded-full bg-kennel-gold/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-kennel-gold">
             꼬똥켄넬 공식 문서
           </span>
-          <h1 className="mt-4 font-serif text-3xl font-bold text-ink-900 md:text-[40px] md:leading-[1.2]">
+          <h1 className="mt-4 font-serif text-3xl font-bold text-ink-900 md:text-[32px] md:leading-[1.2]">
             {tab === "terms" ? "이용약관" : "개인정보처리방침"}
           </h1>
           <p className="mt-2 text-sm text-ink-400">

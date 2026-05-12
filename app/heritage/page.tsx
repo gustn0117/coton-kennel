@@ -68,7 +68,7 @@ export default async function HeritagePage() {
             <p className="text-[19px] font-bold text-kennel-gold md:text-[22px]">
               Champion Line
             </p>
-            <h2 className="mt-2 text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
+            <h2 className="mt-2 text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[32px] md:leading-[1.16]">
               {pick(lang, "도그쇼 수상 경력", "犬展获奖经历")}
             </h2>
             <p className="mt-7 text-[14.5px] leading-[1.85] text-ink-700">
@@ -137,7 +137,7 @@ export default async function HeritagePage() {
             <p className="text-[19px] font-bold text-kennel-gold md:text-[22px]">
               Premium Breeding
             </p>
-            <h2 className="mt-2 text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[40px] md:leading-[1.16]">
+            <h2 className="mt-2 text-[28px] font-bold leading-[1.2] tracking-[-0.022em] text-ink-900 md:text-[32px] md:leading-[1.16]">
               {pick(lang, "자체 브리딩 시스템", "自有繁育体系")}
             </h2>
             <p className="mt-7 text-[14.5px] leading-[1.85] text-ink-700">

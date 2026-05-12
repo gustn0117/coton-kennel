@@ -116,8 +116,8 @@ export default function ContactPage() {
       />
 
       {/* Vistor Guide intro + 5단계 프로세스 */}
-      <section className="mx-auto w-full max-w-page-wide px-6 py-16 lg:px-12 xl:px-20 2xl:px-[180px] lg:pt-20 xl:pt-28 2xl:pt-[218px]">
-        <h2 className="text-[32px] font-bold leading-[1.1] lg:text-[55px] lg:leading-[80px] lg:tracking-[-0.55px]">
+      <section className="mx-auto w-full max-w-page-wide px-6 py-16 lg:px-12 xl:px-20 2xl:px-[180px] lg:pt-20 xl:pt-28 2xl:pt-[109px]">
+        <h2 className="text-[32px] font-bold leading-[1.1] lg:text-[44px] lg:leading-[64px] lg:tracking-[-0.55px]">
           <span>Vistor </span>
           <span className="text-brand-brown">Guide</span>
         </h2>
@@ -129,11 +129,11 @@ export default function ContactPage() {
           )}
         </p>
 
-        <div className="mt-12 space-y-16 lg:mt-14 2xl:mt-[100px] lg:space-y-[100px]">
+        <div className="mt-12 space-y-16 lg:mt-14 2xl:mt-[55px] lg:space-y-[100px]">
           {STEPS.map((s, i) => (
             <article
               key={i}
-              className={`grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-14 2xl:gap-[97px] ${
+              className={`grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-14 2xl:gap-[58px] ${
                 i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
               }`}
             >
@@ -144,7 +144,7 @@ export default function ContactPage() {
                 />
               </div>
               <div className={i % 2 === 0 ? "" : "lg:order-2"}>
-                <p className="text-[28px] font-bold leading-none tracking-[-0.4px] text-brand-brown lg:text-[40px]">
+                <p className="text-[28px] font-bold leading-none tracking-[-0.4px] text-brand-brown lg:text-[32px]">
                   {s.num}
                 </p>
                 <h3 className="mt-3 text-[24px] font-bold leading-[1.2] tracking-[-0.32px] text-black lg:mt-[14px] lg:text-[32px]">
@@ -160,7 +160,7 @@ export default function ContactPage() {
       </section>
 
       {/* 방문 안내 4 카드 (Figma 365×212 #f9f9f9) */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pt-16 lg:px-12 xl:px-20 2xl:px-[182px] lg:pt-20 xl:pt-28 2xl:pt-[177px]">
+      <section className="mx-auto w-full max-w-page-wide px-6 pt-16 lg:px-12 xl:px-20 2xl:px-[182px] lg:pt-20 xl:pt-28 2xl:pt-[88px]">
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-[37px]">
           <VisitCard
             label={pick(lang, "주소", "地址")}
@@ -229,8 +229,8 @@ export default function ContactPage() {
       </section>
 
       {/* 바로 연결하기 - 카카오/전화/위챗 3 cards 481×615 */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pt-20 lg:px-12 xl:px-20 2xl:px-[180px] lg:pt-20 xl:pt-28 2xl:pt-[200px]">
-        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[55px] lg:leading-[80px] lg:tracking-[-0.55px]">
+      <section className="mx-auto w-full max-w-page-wide px-6 pt-20 lg:px-12 xl:px-20 2xl:px-[180px] lg:pt-20 xl:pt-28 2xl:pt-[100px]">
+        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[44px] lg:leading-[64px] lg:tracking-[-0.55px]">
           {pick(lang, "바로 연결하기", "立即联系")}
         </h2>
         <p className="mt-4 text-[15px] text-ink-500 lg:mt-[44px] lg:text-[18px]">
@@ -241,7 +241,7 @@ export default function ContactPage() {
           )}
         </p>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 lg:mt-14 2xl:mt-[80px] lg:grid-cols-3 lg:gap-10 xl:gap-14 2xl:gap-[60px]">
+        <div className="mt-10 grid grid-cols-1 gap-6 lg:mt-14 2xl:mt-[44px] lg:grid-cols-3 lg:gap-10 xl:gap-14 2xl:gap-[36px]">
           {/* 카카오톡 */}
           <ContactCard
             icon={
@@ -301,8 +301,8 @@ export default function ContactPage() {
       </section>
 
       {/* SNS 채널 - 인스타/유튜브/샤오홍슈 3 cards 481×432 */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pt-20 lg:px-12 xl:px-20 2xl:px-[180px] lg:pt-20 xl:pt-28 2xl:pt-[200px]">
-        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[55px] lg:leading-[80px] lg:tracking-[-0.55px]">
+      <section className="mx-auto w-full max-w-page-wide px-6 pt-20 lg:px-12 xl:px-20 2xl:px-[180px] lg:pt-20 xl:pt-28 2xl:pt-[100px]">
+        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[44px] lg:leading-[64px] lg:tracking-[-0.55px]">
           {pick(lang, "SNS 채널", "社交媒体")}
         </h2>
         <p className="mt-4 text-[15px] text-ink-500 lg:mt-[44px] lg:text-[18px]">
@@ -313,7 +313,7 @@ export default function ContactPage() {
           )}
         </p>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 lg:mt-14 2xl:mt-[80px] lg:grid-cols-3 lg:gap-10 xl:gap-14 2xl:gap-[60px]">
+        <div className="mt-10 grid grid-cols-1 gap-6 lg:mt-14 2xl:mt-[44px] lg:grid-cols-3 lg:gap-10 xl:gap-14 2xl:gap-[36px]">
           <SnsCard
             icon={
               <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" aria-hidden className="h-6 w-6">
@@ -358,7 +358,7 @@ export default function ContactPage() {
       </section>
 
       {/* Premium Pet 배너 (Figma 1563×477 #f9f6f0) */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pt-20 lg:px-12 xl:px-20 2xl:px-[179px] lg:pt-20 xl:pt-28 2xl:pt-[155px]">
+      <section className="mx-auto w-full max-w-page-wide px-6 pt-20 lg:px-12 xl:px-20 2xl:px-[179px] lg:pt-20 xl:pt-28 2xl:pt-[78px]">
         <div className="flex flex-col items-center rounded-[24px] bg-brand-beige px-8 py-12 text-center lg:rounded-[30px] lg:px-8 lg:py-[52px]">
           <div className="relative h-[130px] w-[280px] overflow-hidden lg:max-w-[420px] 2xl:h-[193px] 2xl:w-[420px]">
             <PuppyImage variant="p10" />
@@ -390,8 +390,8 @@ export default function ContactPage() {
       </section>
 
       {/* 자주 묻는 질문 FAQ */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pt-20 lg:px-12 xl:px-20 2xl:px-[179px] lg:pt-20 xl:pt-28 2xl:pt-[164px]">
-        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[55px] lg:leading-[80px] lg:tracking-[-0.55px]">
+      <section className="mx-auto w-full max-w-page-wide px-6 pt-20 lg:px-12 xl:px-20 2xl:px-[179px] lg:pt-20 xl:pt-28 2xl:pt-[82px]">
+        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[44px] lg:leading-[64px] lg:tracking-[-0.55px]">
           {pick(lang, "자주 묻는 질문", "常见问题")}
         </h2>
         <p className="mt-4 max-w-[1047px] text-[14px] text-ink-500 lg:mt-[51px] lg:text-[18px] lg:leading-[28.785px]">
@@ -461,8 +461,8 @@ export default function ContactPage() {
       </section>
 
       {/* 공지사항 테이블 (Figma 1555×58 헤더, NO/제목/날짜) */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pb-24 pt-20 lg:px-12 xl:px-20 2xl:px-[181px] lg:pb-20 xl:pb-28 2xl:pb-[200px] lg:pt-20 xl:pt-28 2xl:pt-[164px]">
-        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[55px] lg:leading-[80px] lg:tracking-[-0.55px]">
+      <section className="mx-auto w-full max-w-page-wide px-6 pb-24 pt-20 lg:px-12 xl:px-20 2xl:px-[181px] lg:pb-20 xl:pb-28 2xl:pb-[100px] lg:pt-20 xl:pt-28 2xl:pt-[82px]">
+        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[44px] lg:leading-[64px] lg:tracking-[-0.55px]">
           {pick(lang, "공지사항", "公告")}
         </h2>
 
@@ -474,7 +474,7 @@ export default function ContactPage() {
           </div>
         ) : (
           <>
-            <div className="mt-8 overflow-hidden rounded-[16px] border border-line-card lg:mt-14 2xl:mt-[110px]">
+            <div className="mt-8 overflow-hidden rounded-[16px] border border-line-card lg:mt-14 2xl:mt-[61px]">
               {/* Header row */}
               <div className="hidden bg-brand-beige sm:grid sm:grid-cols-[80px_1fr_140px] lg:h-[58px]">
                 <div className="font-pretendard flex items-center justify-center text-[14px] font-bold text-black lg:text-[18px] lg:leading-[28.785px]">

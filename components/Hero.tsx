@@ -45,13 +45,13 @@ export default function Hero({
 }: Props) {
   return (
     <section className="w-full bg-brand-beige">
-      <div className="mx-auto grid w-full max-w-page-wide grid-cols-1 items-center gap-10 px-5 py-10 sm:px-6 sm:py-14 md:gap-12 md:py-20 lg:grid-cols-[1fr_minmax(0,805px)] lg:gap-12 lg:px-12 lg:py-24 xl:gap-20 xl:px-20 2xl:gap-[130px] 2xl:px-[179px] 2xl:py-[193px]">
+      <div className="mx-auto grid w-full max-w-page-wide grid-cols-1 items-center gap-10 px-5 py-10 sm:px-6 sm:py-14 md:gap-12 md:py-20 lg:grid-cols-[1fr_minmax(0,805px)] lg:gap-12 lg:px-12 lg:py-24 xl:gap-20 xl:px-20 2xl:gap-[78px] 2xl:px-[179px] 2xl:py-[96px]">
         {/* Left content */}
         <div>
-          <p className="text-[26px] font-bold leading-none text-brand-brown sm:text-[32px] md:text-[40px] lg:text-[48px] xl:text-[54px] 2xl:text-[60px]">
+          <p className="text-[26px] font-bold leading-none text-brand-brown sm:text-[32px] md:text-[32px] lg:text-[38px] xl:text-[43px] 2xl:text-[48px]">
             {eyebrow}
           </p>
-          <h1 className="mt-3 whitespace-pre-line text-[30px] font-bold leading-[1.16] text-black sm:text-[36px] md:mt-5 md:text-[48px] lg:mt-7 lg:text-[54px] xl:text-[62px] 2xl:mt-[41px] 2xl:text-[70px] 2xl:leading-[80px]">
+          <h1 className="mt-3 whitespace-pre-line text-[30px] font-bold leading-[1.16] text-black sm:text-[29px] md:mt-5 md:text-[38px] lg:mt-7 lg:text-[43px] xl:text-[50px] 2xl:mt-[41px] 2xl:text-[56px] 2xl:leading-[64px]">
             {title}
           </h1>
           {description && (

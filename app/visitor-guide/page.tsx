@@ -62,13 +62,13 @@ export default function VisitorGuidePage() {
       />
 
       {/* 가족이 된 후기 - 6 cards 2x3 grid */}
-      <section className="mx-auto w-full max-w-page-wide px-6 py-16 lg:px-12 xl:px-20 2xl:px-[180px] lg:py-20 xl:py-28 2xl:py-[233px]">
-        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[55px] lg:leading-[80px] lg:tracking-[-0.55px]">
+      <section className="mx-auto w-full max-w-page-wide px-6 py-16 lg:px-12 xl:px-20 2xl:px-[180px] lg:py-20 xl:py-28 2xl:py-[116px]">
+        <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[44px] lg:leading-[64px] lg:tracking-[-0.55px]">
           <span>{pick(lang, "가족이 된 ", "成为家人的 ")}</span>
           <span className="text-brand-brown">{pick(lang, "후기", "评价")}</span>
         </h2>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:mt-14 2xl:mt-[140px] lg:grid-cols-3 lg:gap-10 xl:gap-14 2xl:gap-[60px]">
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:mt-14 2xl:mt-[77px] lg:grid-cols-3 lg:gap-10 xl:gap-14 2xl:gap-[36px]">
           {visible.length > 0
             ? visible.map((r) => <FigmaReviewCard key={r.id} review={r} />)
             : Array.from({ length: 6 }).map((_, i) => (
@@ -93,7 +93,7 @@ export default function VisitorGuidePage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="mt-16 flex items-center justify-center gap-[15px] lg:mt-14 2xl:mt-[100px]">
+          <div className="mt-16 flex items-center justify-center gap-[15px] lg:mt-14 2xl:mt-[55px]">
             <button
               type="button"
               onClick={() => setPage((p) => Math.max(0, p - 1))}

@@ -82,11 +82,11 @@ export default async function HomePage() {
       <PremiumGuide lang={lang} images={premiumImages} />
 
       {/* Highlight: 큰 이미지 1332×615 + 재생 버튼 */}
-      <section className="mx-auto w-full max-w-page-wide px-5 pb-16 sm:px-6 md:pb-20 lg:px-12 lg:pb-24 xl:px-24 2xl:px-[293px] 2xl:pb-[270px]">
-        <h2 className="text-center text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[42px] xl:text-[55px] xl:leading-[80px]">
+      <section className="mx-auto w-full max-w-page-wide px-5 pb-16 sm:px-6 md:pb-20 lg:px-12 lg:pb-24 xl:px-24 2xl:px-[293px] 2xl:pb-[135px]">
+        <h2 className="text-center text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[34px] xl:text-[44px] xl:leading-[64px]">
           Coton Kennel highlight
         </h2>
-        <div className="relative mx-auto mt-8 aspect-[1332/615] w-full max-w-[1332px] overflow-hidden rounded-[24px] lg:mt-16 2xl:mt-[151px] lg:rounded-[40px]">
+        <div className="relative mx-auto mt-8 aspect-[1332/615] w-full max-w-[1332px] overflow-hidden rounded-[24px] lg:mt-16 2xl:mt-[83px] lg:rounded-[40px]">
           <PuppyImage variant="p7" url={highlightUrl} />
           {/* Play button overlay (Figma: 70×70 center) */}
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
@@ -105,14 +105,14 @@ export default async function HomePage() {
       </section>
 
       {/* 가족을 기다리는 아이들 - 4 cards 2x2 grid (Figma 642×645) */}
-      <section className="mx-auto w-full max-w-page-wide px-5 pb-16 sm:px-6 md:pb-20 lg:px-12 lg:pb-24 xl:px-20 2xl:px-[176px] 2xl:pb-[253px]">
-        <h2 className="text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[42px] xl:text-[55px] xl:leading-[80px] xl:tracking-[-0.55px]">
+      <section className="mx-auto w-full max-w-page-wide px-5 pb-16 sm:px-6 md:pb-20 lg:px-12 lg:pb-24 xl:px-20 2xl:px-[176px] 2xl:pb-[126px]">
+        <h2 className="text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[34px] xl:text-[44px] xl:leading-[64px] xl:tracking-[-0.55px]">
           <span>{pick(lang, "가족을 기다리는 ", "正在等待家人的 ")}</span>
           <span className="text-brand-brown">
             {pick(lang, "아이들", "宝贝")}
           </span>
         </h2>
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-16 2xl:mt-[136px] lg:gap-6 2xl:gap-[27px]">
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-16 2xl:mt-[75px] lg:gap-6 2xl:gap-[27px]">
           {(puppies.length > 0
             ? puppies
             : FALLBACK_VARIANTS.map((v, i) => ({
@@ -144,8 +144,8 @@ export default async function HomePage() {
       </section>
 
       {/* 가족이 된 후기 - 3 cards 481×615, 비대칭 라운드 + 별점 */}
-      <section className="mx-auto w-full max-w-page-wide px-5 pb-20 sm:px-6 md:pb-24 lg:px-12 lg:pb-24 xl:px-20 2xl:px-[180px] 2xl:pb-[243px]">
-        <h2 className="text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[42px] xl:text-[55px] xl:leading-[80px] xl:tracking-[-0.55px]">
+      <section className="mx-auto w-full max-w-page-wide px-5 pb-20 sm:px-6 md:pb-24 lg:px-12 lg:pb-24 xl:px-20 2xl:px-[180px] 2xl:pb-[122px]">
+        <h2 className="text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[34px] xl:text-[44px] xl:leading-[64px] xl:tracking-[-0.55px]">
           <span>{pick(lang, "가족이 된 ", "成为家人的 ")}</span>
           <span className="text-brand-brown">{pick(lang, "후기", "故事")}</span>
         </h2>
@@ -157,7 +157,7 @@ export default async function HomePage() {
           )}
         </p>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 2xl:mt-[127px] lg:grid-cols-3 lg:gap-8 xl:gap-12 2xl:gap-[60px]">
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 2xl:mt-[70px] lg:grid-cols-3 lg:gap-8 xl:gap-12 2xl:gap-[36px]">
           {reviews.length > 0
             ? reviews.map((r) => <ReviewCard key={r.id} review={r} />)
             : Array.from({ length: 3 }).map((_, i) => (
@@ -180,7 +180,7 @@ export default async function HomePage() {
               ))}
         </div>
 
-        <div className="mt-10 flex justify-center lg:mt-12 2xl:mt-[80px]">
+        <div className="mt-10 flex justify-center lg:mt-12 2xl:mt-[44px]">
           <Link
             href="/visitor-guide"
             className="inline-flex h-[52px] items-center gap-3 bg-brand-brown px-7 text-[15px] text-white transition-transform hover:-translate-y-0.5 lg:h-[59px] lg:px-8 lg:text-[16px]"

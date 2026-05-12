@@ -23,7 +23,7 @@ export default function Footer() {
         aria-hidden
       />
 
-      <div className="relative mx-auto w-full max-w-page-wide px-6 pb-12 pt-[80px] lg:px-12 xl:px-20 2xl:px-[159px] lg:pb-[58px] lg:pt-20 xl:pt-28 2xl:pt-[107px]">
+      <div className="relative mx-auto w-full max-w-page-wide px-6 pb-12 pt-[80px] lg:px-12 xl:px-20 2xl:px-[159px] lg:pb-[58px] lg:pt-20 xl:pt-28 2xl:pt-[54px]">
         {/* Top row: Terms / Privacy outline pills */}
         <div className="flex flex-wrap items-center gap-2 lg:gap-[13px]">
           <Link
