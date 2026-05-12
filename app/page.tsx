@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import PuppyImage from "@/components/PuppyImage";
 import ImageCarousel from "@/components/ImageCarousel";
 import StarRating from "@/components/StarRating";
+import PremiumGuide from "@/components/PremiumGuide";
 import {
   supabasePublic,
   type Puppy,
@@ -77,77 +78,8 @@ export default async function HomePage() {
         imageRadius={46}
       />
 
-      {/* Premium Guide: 좌측 image 733×626 / 우측 텍스트 */}
-      <section className="mx-auto w-full max-w-page-wide px-6 py-20 lg:px-[180px] lg:py-[182px]">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[733px_1fr] lg:gap-[102px]">
-          <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[24px] lg:h-[626px] lg:w-[733px] lg:rounded-[32px]">
-            <ImageCarousel
-              images={premiumImages}
-              fallbackVariant="p3"
-              showArrows
-              showDots
-              alt="Premium Guide"
-            />
-          </div>
-
-          <div>
-            <h2 className="text-[28px] font-bold leading-[1.1] lg:text-[40px]">
-              <span className="text-brand-brown">Coton Kennel</span>
-              <br />
-              <span className="text-black">Premium Guide</span>
-            </h2>
-            <p className="mt-6 text-[16px] leading-[1.55] text-ink-500 lg:mt-[33px] lg:text-[21px] lg:leading-[31px]">
-              {pick(
-                lang,
-                <>
-                  안녕하세요, 꼬똥 켄넬입니다.
-                  <br />
-                  평생을 함께할 소중한 가족을 맞이하시는 프리미엄 고객님께,
-                  <br />
-                  꼬똥 드 툴레아에 대한 깊이 있는 안내를 드립니다.
-                </>,
-                <>
-                  您好,这里是棉花面纱犬舍 (Coton Kennel)。
-                  <br />
-                  迎接陪伴您一生的珍贵家人的贵宾客户,
-                  <br />
-                  我们为您提供关于棉花面纱犬深入的介绍。
-                </>
-              )}
-            </p>
-            <h3 className="mt-8 text-[24px] font-bold text-brand-brown lg:mt-[37px] lg:text-[40px]">
-              {pick(lang, "Coton Kennel의 약속", "Coton Kennel 的承诺")}
-            </h3>
-            <p className="mt-4 text-[16px] leading-[1.55] text-ink-500 lg:mt-[34px] lg:text-[21px] lg:leading-[31px]">
-              {pick(
-                lang,
-                <>
-                  꼬똥 켄넬은 단순한 분양을 넘어, 건강하고 아름다운 반려견과
-                  함께할
-                  <br />
-                  평생의 동반자를 찾아드립니다.
-                  <br />
-                  <br />
-                  프리미엄 기준에 맞춘 건강한 개체, 투명한 정보 제공, 그리고
-                  분양 직전까지
-                  <br />
-                  이어지는 따뜻한 케어까지 신뢰할 수 있는 선택이 되겠습니다.
-                  감사합니다.
-                </>,
-                <>
-                  Coton Kennel 不只是单纯的分养,
-                  我们为您找到能与健康美丽的伴侣犬一生相伴的家人。
-                  <br />
-                  <br />
-                  我们以高端标准培育的健康幼犬、透明的信息披露,
-                  以及一直延续到分养前的温馨照护,
-                  将成为您值得信赖的选择。谢谢。
-                </>
-              )}
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Premium Guide — slide carousel: arrows swap the whole section */}
+      <PremiumGuide lang={lang} images={premiumImages} />
 
       {/* Highlight: 큰 이미지 1332×615 + 재생 버튼 */}
       <section className="mx-auto w-full max-w-page-wide px-6 pb-20 lg:px-[293px] lg:pb-[270px]">
