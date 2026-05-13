@@ -294,7 +294,7 @@ export default function ContactPage() {
           )}
         </p>
 
-        <div className="mx-auto mt-10 grid max-w-[1120px] grid-cols-1 gap-5 sm:grid-cols-3 lg:mt-14 lg:gap-8 xl:gap-10">
+        <div className="mt-10 grid grid-cols-1 gap-6 lg:mt-14 2xl:mt-[44px] lg:grid-cols-3 lg:gap-10 xl:gap-14 2xl:gap-[36px]">
           {/* 카카오톡 */}
           <ContactCard
             icon={
@@ -338,16 +338,16 @@ export default function ContactPage() {
           <button
             type="button"
             onClick={() => setShowWeChatQR(true)}
-            className="card-asym group flex min-h-[320px] flex-col items-center border border-line-card bg-white p-7 text-center shadow-card transition-all hover:-translate-y-1 sm:min-h-[340px] lg:min-h-[380px] lg:p-9"
+            className="card-asym group flex flex-col items-center border border-line-card bg-white p-10 text-center shadow-card transition-all hover:-translate-y-1"
           >
-            <h3 className="text-[19px] font-bold tracking-[-0.3px] text-black lg:text-[24px]">
+            <h3 className="mt-2 text-[22px] font-bold tracking-[-0.3px] text-black lg:text-[30px]">
               {pick(lang, "위챗 (WeChat)", "微信 (WeChat)")}
             </h3>
-            <div className="mx-auto mt-4 flex w-[140px] items-center justify-center lg:mt-5 lg:w-[160px]">
+            <div className="mt-6 flex h-[260px] w-[260px] items-center justify-center rounded-[20px] border border-line-card bg-white lg:max-w-[312px] 2xl:h-[312px] 2xl:w-[312px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={WECHAT_QR} alt="WeChat QR" className="block w-full" />
+              <img src={WECHAT_QR} alt="WeChat QR" className="block h-full w-full object-contain" />
             </div>
-            <p className="mt-auto pt-3 text-[12px] font-bold tracking-[-0.12px] text-black lg:text-[13px]">
+            <p className="mt-4 text-[12px] font-bold tracking-[-0.12px] text-black lg:text-[14px]">
               wechat id : cotonkennel
             </p>
           </button>
@@ -716,23 +716,23 @@ function ContactCard({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="card-asym group flex min-h-[320px] flex-col items-center border border-line-card bg-white p-7 text-center shadow-card transition-all hover:-translate-y-1 sm:min-h-[340px] lg:min-h-[380px] lg:p-9"
+      className="card-asym group flex flex-col items-center border border-line-card bg-white p-10 text-center shadow-card transition-all hover:-translate-y-1"
     >
-      <div className={`flex h-12 w-12 items-center justify-center rounded-full lg:h-14 lg:w-14 ${iconBg}`}>
+      <div className={`flex h-[58px] w-[58px] items-center justify-center rounded-full ${iconBg}`}>
         {icon}
       </div>
-      <h3 className="mt-5 text-[19px] font-bold tracking-[-0.3px] text-black lg:mt-6 lg:text-[24px]">
+      <h3 className="mt-6 text-[22px] font-bold tracking-[-0.3px] text-black lg:text-[30px]">
         {title}
       </h3>
-      <p className="mt-2 text-[14px] font-medium text-brand-brown lg:text-[16px]">
+      <p className="mt-3 text-[16px] font-medium text-brand-brown lg:text-[20px]">
         {highlight}
       </p>
-      <p className="mt-3 max-w-[320px] break-keep text-[12.5px] leading-[1.6] text-ink-500 lg:mt-4 lg:text-[14px]">
+      <p className="mt-6 max-w-[326px] text-[14px] leading-[1.65] text-ink-500 lg:mt-[37px] lg:text-[16px]">
         {desc}
       </p>
       <span
-        className={`mt-auto inline-flex h-[48px] w-full items-center justify-between gap-2 px-6 text-[13.5px] lg:h-[52px] lg:text-[15px] ${ctaBg} ${ctaText}`}
-        style={{ borderRadius: "26px", marginTop: "auto" }}
+        className={`mt-8 inline-flex h-[59px] w-full max-w-[326px] items-center justify-between gap-2 px-8 text-[15px] lg:mt-14 2xl:mt-[63px] lg:text-[16px] ${ctaBg} ${ctaText}`}
+        style={{ borderRadius: "29.5px" }}
       >
         <span className="flex-1 text-center">{ctaLabel}</span>
         <svg width="22" height="8" viewBox="0 0 22 8" fill="none" aria-hidden>
