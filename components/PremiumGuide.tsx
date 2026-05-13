@@ -9,6 +9,8 @@ import type { SiteImage } from "@/lib/supabase";
 type Slide = {
   eyebrow: string;
   title: string;
+  intro?: string[];
+  subtitle?: string;
   body: string[];
 };
 
@@ -16,12 +18,15 @@ function getSlides(lang: Lang): Slide[] {
   if (lang === "zh") {
     return [
       {
-        eyebrow: "Premium Guide",
-        title: "Coton Kennel 的承诺",
+        eyebrow: "Coton Kennel Premium Guide",
+        title: "Premium Guide",
+        intro: [
+          "您好,这里是棉花面纱犬舍 (Coton Kennel)。\n迎接陪伴您一生的珍贵家人的贵宾客户,我们为您提供关于棉花面纱犬深入的介绍。",
+        ],
+        subtitle: "Coton Kennel 的承诺",
         body: [
-          "您好,这里是棉花面纱犬舍 (Coton Kennel)。迎接陪伴您一生的珍贵家人的贵宾客户,我们为您提供关于棉花面纱犬深入的介绍。",
-          "Coton Kennel 不只是单纯的分养,我们为您找到能与健康美丽的伴侣犬一生相伴的家人。",
-          "我们以高端标准培育的健康幼犬、透明的信息披露,以及一直延续到分养前的温馨照护,将成为您值得信赖的选择。谢谢。",
+          "Coton Kennel 不只是单纯的分养,\n我们为您找到能与健康美丽的伴侣犬一生相伴的家人。",
+          "我们以高端标准培育的健康幼犬、透明的信息披露,以及一直延续到分养前的\n温馨照护,将成为您值得信赖的选择。谢谢。",
         ],
       },
       {
@@ -62,12 +67,15 @@ function getSlides(lang: Lang): Slide[] {
   }
   return [
     {
-      eyebrow: "Premium Guide",
-      title: "Coton Kennel의 약속",
+      eyebrow: "Coton Kennel Premium Guide",
+      title: "Premium Guide",
+      intro: [
+        "안녕하세요, 꼬똥 켄넬입니다.\n평생을 함께할 소중한 가족을 맞이하시는 프리미엄 고객님께, 꼬똥 드 툴레아에 대한 깊이 있는 안내를 드립니다.",
+      ],
+      subtitle: "Coton Kennel의 약속",
       body: [
-        "안녕하세요, 꼬똥 켄넬입니다. 평생을 함께할 소중한 가족을 맞이하시는 프리미엄 고객님께, 꼬똥 드 툴레아에 대한 깊이 있는 안내를 드립니다.",
-        "꼬똥 켄넬은 단순한 분양을 넘어, 건강하고 아름다운 반려견과 함께할 평생의 동반자를 찾아드립니다.",
-        "프리미엄 기준에 맞춘 건강한 개체, 투명한 정보 제공, 그리고 분양 직전까지 이어지는 따뜻한 케어까지 신뢰할 수 있는 선택이 되겠습니다. 감사합니다.",
+        "꼬똥 켄넬은 단순한 분양을 넘어,\n건강하고 아름다운 반려견과 함께할 평생의 동반자를 찾아드립니다.",
+        "프리미엄 기준에 맞춘 건강한 개체, 투명한 정보 제공, 그리고 분양 직전까지 이어지는\n따뜻한 케어까지 신뢰할 수 있는 선택이 되겠습니다. 감사합니다.",
       ],
     },
     {
@@ -143,11 +151,33 @@ export default function PremiumGuide({
           <h2 className="mt-2 text-[24px] font-bold leading-[1.18] text-black sm:text-[28px] lg:text-[32px] xl:text-[32px]">
             {slide.title}
           </h2>
-          <div className="mt-5 space-y-4 lg:mt-7 2xl:mt-8">
+
+          {slide.intro && (
+            <div className="mt-5 space-y-4 lg:mt-7 2xl:mt-8">
+              {slide.intro.map((p, i) => (
+                <p
+                  key={i}
+                  className="whitespace-pre-line text-[15px] leading-[1.6] text-ink-500 sm:text-[16px] lg:text-[18px] xl:text-[21px] 2xl:leading-[31px]"
+                >
+                  {p}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {slide.subtitle && (
+            <h3 className="mt-7 text-[22px] font-bold leading-[1.18] text-brand-brown sm:text-[26px] lg:text-[28px] xl:text-[30px] 2xl:mt-9">
+              {slide.subtitle}
+            </h3>
+          )}
+
+          <div className={`${slide.subtitle ? "mt-4 lg:mt-5" : "mt-5 lg:mt-7 2xl:mt-8"} space-y-4`}>
             {slide.body.map((p, i) => (
               <p
                 key={i}
-                className="whitespace-pre-line text-[15px] leading-[1.6] text-ink-500 sm:text-[16px] lg:text-[18px] xl:text-[21px] 2xl:leading-[31px]"
+                className={`whitespace-pre-line text-[15px] leading-[1.6] sm:text-[16px] lg:text-[18px] xl:text-[21px] 2xl:leading-[31px] ${
+                  slide.subtitle ? "text-ink-700" : "text-ink-500"
+                }`}
               >
                 {p}
               </p>
