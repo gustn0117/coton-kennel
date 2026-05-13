@@ -158,7 +158,11 @@ export default function ContactPage() {
                     </div>
                   )}
                 </div>
-                <div className={imgRight ? "lg:order-1" : ""}>
+                <div
+                  className={`lg:max-w-[460px] ${
+                    imgRight ? "lg:order-1 lg:ml-auto lg:pr-4" : "lg:pl-4"
+                  }`}
+                >
                   <p className="text-[26px] font-bold leading-none tracking-[-0.4px] text-brand-brown lg:text-[30px]">
                     {s.num}
                   </p>
