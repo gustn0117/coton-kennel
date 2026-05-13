@@ -16,16 +16,27 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "file required" }, { status: 400 });
   }
 
-  const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
-  const safeExt = ext || "jpg";
-  const path = `uploads/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${safeExt}`;
+  const mime = (file.type || "").toLowerCase();
+  const isVideo = mime.startsWith("video/");
+  const isImage = mime.startsWith("image/") || mime === "";
+
+  if (!isVideo && !isImage) {
+    return NextResponse.json({ error: `unsupported mime: ${mime}` }, { status: 400 });
+  }
+
+  const ext = (file.name.split(".").pop() || (isVideo ? "mp4" : "jpg"))
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+  const safeExt = ext || (isVideo ? "mp4" : "jpg");
+  const folder = isVideo ? "videos" : "uploads";
+  const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${safeExt}`;
 
   const buf = Buffer.from(await file.arrayBuffer());
 
   const { error } = await supabaseAdmin()
     .storage.from(STORAGE_BUCKET)
     .upload(path, buf, {
-      contentType: file.type || "image/jpeg",
+      contentType: file.type || (isVideo ? "video/mp4" : "image/jpeg"),
       upsert: false,
     });
 

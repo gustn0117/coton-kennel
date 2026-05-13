@@ -60,6 +60,15 @@ export type SiteImage = {
   updated_at: string;
 };
 
+export type SiteVideo = {
+  key: string;
+  slot: number;
+  video_url: string | null;
+  poster_url: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type SiteImageGroup = {
   key: string;
   label: string;

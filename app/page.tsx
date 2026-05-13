@@ -1,14 +1,15 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
 import PuppyImage from "@/components/PuppyImage";
-import ImageCarousel from "@/components/ImageCarousel";
 import StarRating from "@/components/StarRating";
 import PremiumGuide from "@/components/PremiumGuide";
+import HighlightVideos from "@/components/HighlightVideos";
 import {
   supabasePublic,
   type Puppy,
   type Review,
   type SiteImage,
+  type SiteVideo,
 } from "@/lib/supabase";
 import { pick } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
@@ -76,6 +77,15 @@ async function fetchSiteImages(key: string): Promise<SiteImage[]> {
   return (data ?? []) as SiteImage[];
 }
 
+async function fetchSiteVideos(key: string): Promise<SiteVideo[]> {
+  const { data } = await supabasePublic
+    .from("site_videos")
+    .select("*")
+    .eq("key", key)
+    .order("slot", { ascending: true });
+  return (data ?? []) as SiteVideo[];
+}
+
 export default async function HomePage() {
   const lang = await getLang();
   const [
@@ -83,7 +93,7 @@ export default async function HomePage() {
     { data: puppiesData },
     heroImages,
     premiumImages,
-    highlightImages,
+    highlightVideos,
   ] = await Promise.all([
     supabasePublic
       .from("reviews")
@@ -98,12 +108,11 @@ export default async function HomePage() {
       .limit(20),
     fetchSiteImages("home.hero"),
     fetchSiteImages("home.premium"),
-    fetchSiteImages("home.highlight"),
+    fetchSiteVideos("home.highlight"),
   ]);
 
   const reviews = (reviewsData ?? []) as Review[];
   const puppies = (puppiesData ?? []) as Puppy[];
-  const highlightUrl = highlightImages[0]?.image_url ?? null;
 
   return (
     <>
@@ -124,33 +133,20 @@ export default async function HomePage() {
           label: pick(lang, "강아지 보러가기", "查看幼犬"),
         }}
         variant="hero"
-        images={heroImages}
+        images={heroImages.slice(0, 1)}
         imageRadius={46}
       />
 
       {/* Premium Guide — slide carousel: arrows swap the whole section */}
       <PremiumGuide lang={lang} images={premiumImages} />
 
-      {/* Highlight: 큰 이미지 1332×615 + 재생 버튼 */}
+      {/* Highlight: 영상 슬라이더 (최대 3개) */}
       <section className="mx-auto w-full max-w-page-wide px-5 pb-16 sm:px-6 md:pb-20 lg:px-12 lg:pb-24 xl:px-24 2xl:px-[293px] 2xl:pb-[135px]">
         <h2 className="text-center text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[34px] xl:text-[44px] xl:leading-[64px]">
           Coton Kennel highlight
         </h2>
-        <div className="relative mx-auto mt-8 aspect-[1332/615] w-full max-w-[1332px] overflow-hidden rounded-[24px] lg:mt-16 2xl:mt-[83px] lg:rounded-[40px]">
-          <PuppyImage variant="p7" url={highlightUrl} />
-          {/* Play button overlay (Figma: 70×70 center) */}
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <div className="flex h-[56px] w-[56px] items-center justify-center rounded-full bg-white/90 shadow-card lg:h-[70px] lg:w-[70px]">
-              <svg
-                viewBox="0 0 24 24"
-                fill="#8E5E27"
-                aria-hidden
-                className="ml-1 h-6 w-6 lg:h-8 lg:w-8"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </div>
-          </div>
+        <div className="mx-auto mt-8 w-full max-w-[1332px] lg:mt-16 2xl:mt-[83px]">
+          <HighlightVideos videos={highlightVideos} />
         </div>
       </section>
 

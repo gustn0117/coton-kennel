@@ -6,11 +6,12 @@ import type {
   Puppy,
   Review,
   SiteImage,
+  SiteVideo,
 } from "@/lib/supabase";
 import { SITE_IMAGE_GROUPS } from "@/lib/supabase";
 import { MapPinIcon } from "@/components/icons";
 
-type Tab = "site-images" | "notices" | "puppies" | "reviews";
+type Tab = "site-images" | "site-videos" | "notices" | "puppies" | "reviews";
 const STORAGE_KEY = "ck_admin_pw";
 const VARIANTS = [
   "p1", "p2", "p3", "p4", "p5", "p6",
@@ -112,6 +113,7 @@ export default function AdminPage() {
         {(
           [
             ["site-images", "사이트 이미지"],
+            ["site-videos", "Highlight 영상"],
             ["notices", "공지사항"],
             ["puppies", "강아지"],
             ["reviews", "후기"],
@@ -134,6 +136,7 @@ export default function AdminPage() {
 
       <div className="mt-8">
         {tab === "site-images" && <SiteImagesTab pw={pw} />}
+        {tab === "site-videos" && <SiteVideosTab pw={pw} />}
         {tab === "notices" && <NoticesTab pw={pw} />}
         {tab === "puppies" && <PuppiesTab pw={pw} />}
         {tab === "reviews" && <ReviewsTab pw={pw} />}
@@ -189,6 +192,26 @@ async function uploadImage(pw: string, file: File): Promise<string> {
     body: fd,
   });
   if (!r.ok) throw new Error("upload failed");
+  const j = await r.json();
+  return j.url as string;
+}
+
+async function uploadVideo(pw: string, file: File): Promise<string> {
+  const fd = new FormData();
+  fd.append("file", file);
+  const r = await fetch("/api/admin/upload", {
+    method: "POST",
+    headers: { "x-admin-password": pw },
+    body: fd,
+  });
+  if (!r.ok) {
+    let msg = "업로드 실패";
+    try {
+      const j = await r.json();
+      msg = j.error || msg;
+    } catch {}
+    throw new Error(msg);
+  }
   const j = await r.json();
   return j.url as string;
 }
@@ -469,6 +492,237 @@ function SiteImagesTab({ pw }: { pw: string }) {
           </div>
         </section>
       ))}
+    </div>
+  );
+}
+
+/* ---------------- SITE VIDEOS (Highlight) ---------------- */
+const VIDEO_KEY = "home.highlight";
+const MAX_VIDEO_SLOTS = 3;
+
+function SiteVideosTab({ pw }: { pw: string }) {
+  const [items, setItems] = useState<SiteVideo[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  async function load() {
+    const r = await fetch("/api/admin/site-videos", { cache: "no-store" });
+    setItems(await r.json());
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function patchSlot(slot: number, video_url: string | null) {
+    await fetch("/api/admin/site-videos", {
+      method: "PATCH",
+      headers: authHeaders(pw),
+      body: JSON.stringify({ key: VIDEO_KEY, slot, video_url }),
+    });
+    await load();
+  }
+
+  async function patchPoster(slot: number, poster_url: string | null) {
+    await fetch("/api/admin/site-videos", {
+      method: "PATCH",
+      headers: authHeaders(pw),
+      body: JSON.stringify({ key: VIDEO_KEY, slot, poster_url }),
+    });
+    await load();
+  }
+
+  async function addSlot() {
+    const r = await fetch("/api/admin/site-videos", {
+      method: "POST",
+      headers: authHeaders(pw),
+      body: JSON.stringify({ key: VIDEO_KEY, video_url: null }),
+    });
+    if (!r.ok) {
+      const j = await r.json().catch(() => ({}));
+      alert(j.error || "추가 실패");
+      return;
+    }
+    await load();
+  }
+
+  async function removeSlot(slot: number) {
+    if (!confirm("이 영상 슬롯을 삭제할까요?")) return;
+    await fetch(`/api/admin/site-videos?key=${VIDEO_KEY}&slot=${slot}`, {
+      method: "DELETE",
+      headers: authHeaders(pw),
+    });
+    await load();
+  }
+
+  const slots = items
+    .filter((i) => i.key === VIDEO_KEY)
+    .sort((a, b) => a.slot - b.slot);
+
+  if (loading) {
+    return <p className="py-10 text-center text-[14px] text-ink-500">불러오는 중...</p>;
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="rounded-card-lg border border-cream-300/70 bg-cream-50 p-5 text-[13.5px] leading-[1.8] text-ink-700">
+        <p className="flex items-center gap-2 font-semibold text-ink-900">
+          <MapPinIcon className="h-4 w-4 text-kennel-gold" />
+          안내 — 메인 홈 ‘Coton Kennel highlight’ 섹션
+        </p>
+        <ul className="mt-2 list-disc space-y-1 pl-5">
+          <li>
+            최대 <strong>3개</strong>의 영상을 등록할 수 있습니다. 좌/우 화살표로 슬라이드됩니다.
+          </li>
+          <li>
+            MP4 등 영상 파일을 직접 업로드합니다. 업로드 직후부터 메인 페이지에 반영됩니다.
+          </li>
+          <li>
+            <strong>썸네일 이미지(포스터)</strong>를 선택적으로 등록하면 재생 전 화면으로 표시됩니다. 없으면 영상 첫 프레임이 사용됩니다.
+          </li>
+          <li>
+            대용량 영상은 Storage 한도(약 10MB)를 초과하면 업로드가 실패할 수 있습니다. 1080p 짧은 클립 권장.
+          </li>
+        </ul>
+      </div>
+
+      <div className="rounded-card-lg border border-cream-300/60 bg-white p-6 shadow-soft">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h4 className="text-[15.5px] font-semibold text-ink-900">홈 — Highlight 영상 슬라이더</h4>
+            <p className="mt-1.5 text-[13px] leading-[1.7] text-ink-500">
+              메인 홈 중간 ‘Coton Kennel highlight’ 섹션에 노출되는 가로 슬라이더 영상입니다.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={addSlot}
+            disabled={slots.length >= MAX_VIDEO_SLOTS}
+            className={primaryBtn}
+          >
+            + 영상 슬롯 추가 ({slots.length}/{MAX_VIDEO_SLOTS})
+          </button>
+        </div>
+
+        {slots.length === 0 && (
+          <p className="mt-6 rounded-md border border-dashed border-cream-300 p-6 text-center text-[13px] text-ink-500">
+            아직 등록된 영상이 없습니다. 위의 ‘+ 영상 슬롯 추가’를 눌러 시작하세요.
+          </p>
+        )}
+
+        <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {slots.map((s) => (
+            <VideoSlotCard
+              key={s.slot}
+              pw={pw}
+              slot={s.slot}
+              videoUrl={s.video_url}
+              posterUrl={s.poster_url}
+              onChangeVideo={(url) => patchSlot(s.slot, url)}
+              onChangePoster={(url) => patchPoster(s.slot, url)}
+              onRemove={() => removeSlot(s.slot)}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function VideoSlotCard({
+  pw,
+  slot,
+  videoUrl,
+  posterUrl,
+  onChangeVideo,
+  onChangePoster,
+  onRemove,
+}: {
+  pw: string;
+  slot: number;
+  videoUrl: string | null;
+  posterUrl: string | null;
+  onChangeVideo: (url: string | null) => void;
+  onChangePoster: (url: string | null) => void;
+  onRemove: () => void;
+}) {
+  const [busy, setBusy] = useState(false);
+
+  async function onVideoFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    setBusy(true);
+    try {
+      const url = await uploadVideo(pw, f);
+      onChangeVideo(url);
+    } catch (err) {
+      alert("업로드 실패: " + (err as Error).message);
+    } finally {
+      setBusy(false);
+      e.target.value = "";
+    }
+  }
+
+  return (
+    <div className="rounded-md border border-cream-300 bg-cream-50 p-3">
+      <p className="mb-2 text-[12px] font-semibold tracking-wide text-ink-700">
+        슬라이드 {slot + 1}
+      </p>
+
+      <div className="relative aspect-video w-full overflow-hidden rounded border border-cream-300 bg-black">
+        {videoUrl ? (
+          <video
+            src={videoUrl}
+            poster={posterUrl || undefined}
+            controls
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-[11px] text-white/80">
+            영상 없음
+          </div>
+        )}
+        {busy && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white/80 text-[12px] font-medium text-ink-700">
+            업로드 중...
+          </div>
+        )}
+      </div>
+
+      <div className="mt-2 flex flex-col gap-1.5">
+        <label className="cursor-pointer rounded-md border border-cream-300 bg-white px-3 py-1.5 text-center text-[12px] font-medium text-ink-700 hover:bg-cream-100">
+          {videoUrl ? "영상 변경" : "영상 선택 (MP4)"}
+          <input type="file" accept="video/*" onChange={onVideoFile} className="hidden" />
+        </label>
+        {videoUrl && (
+          <button
+            type="button"
+            onClick={() => onChangeVideo(null)}
+            className="rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-[12px] font-medium text-red-600 hover:bg-red-100"
+          >
+            영상 비우기
+          </button>
+        )}
+      </div>
+
+      <div className="mt-3 border-t border-cream-200 pt-3">
+        <ImageInput
+          pw={pw}
+          label="포스터 이미지 (선택)"
+          value={posterUrl}
+          onChange={onChangePoster}
+          size="aspect-video w-full"
+          layout="stack"
+        />
+      </div>
+
+      <button
+        type="button"
+        onClick={onRemove}
+        className="mt-3 w-full rounded-md border border-red-200 bg-red-50 px-2 py-1 text-[11.5px] font-medium text-red-600 hover:bg-red-100"
+      >
+        이 슬롯 삭제
+      </button>
     </div>
   );
 }
