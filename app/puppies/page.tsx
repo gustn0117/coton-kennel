@@ -7,7 +7,7 @@ import { useLang } from "@/lib/LangProvider";
 import { pick, type Lang } from "@/lib/i18n";
 import { ChevronLeft, ChevronRight, CloseIcon } from "@/components/icons";
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 8;
 
 function translateGender(lang: Lang, v: string) {
   if (lang !== "zh") return v;
@@ -137,8 +137,8 @@ function KennelIntro({
   return (
     <section className="w-full bg-brand-beige">
       <div className="mx-auto w-full max-w-page-wide px-5 py-14 sm:px-6 md:py-20 lg:px-12 lg:py-24 xl:px-20 2xl:px-[180px] 2xl:py-[91px]">
-        <div className="grid grid-cols-1 items-center gap-10 md:gap-12 lg:grid-cols-[minmax(0,733px)_1fr] lg:gap-12 xl:gap-16 2xl:gap-[61px]">
-        <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[20px] lg:max-w-[733px] lg:rounded-[28px] 2xl:rounded-[32px]">
+        <div className="grid grid-cols-1 items-center gap-10 md:gap-12 lg:grid-cols-[1fr_minmax(0,733px)] lg:gap-12 xl:gap-16 2xl:gap-[61px]">
+        <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[20px] lg:order-2 lg:max-w-[733px] lg:justify-self-end lg:rounded-[28px] 2xl:rounded-[32px]">
           <PuppyImage
             key={idx}
             variant={(["p11", "p3", "p7", "p9"][idx] ?? "p3") as never}
@@ -162,7 +162,7 @@ function KennelIntro({
           </button>
         </div>
 
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center lg:order-1">
           <p className="text-[20px] font-bold leading-none text-brand-brown sm:text-[24px] lg:text-[28px] xl:text-[32px]">
             {slide.eyebrow}
           </p>
@@ -544,16 +544,16 @@ function PuppyCard({
         <PuppyImage variant={puppy.variant as never} url={puppy.image_url} />
       </div>
 
-      <div className="mt-6 lg:mt-[36px]">
+      <div className="mt-4 lg:mt-5">
         <div className="flex items-center justify-between gap-3">
-          <h3 className="text-[20px] font-bold leading-tight tracking-[-0.26px] text-black lg:text-[26px]">
+          <h3 className="text-[19px] font-bold leading-tight tracking-[-0.26px] text-black lg:text-[22px]">
             {pick(lang, `${puppy.name}를 입양해주세요`, `请收养 ${puppy.name}`)}
           </h3>
           <span className="shrink-0 rounded-[10px] bg-line-tag px-2.5 py-1 text-[12px] text-ink-500">
             {translateGender(lang, puppy.gender)}, {translateMonths(lang, puppy.months)}
           </span>
         </div>
-        <div className="mt-3 space-y-1 text-[15px] leading-[1.5] text-ink-500 lg:mt-[47px] lg:text-[18px] lg:leading-[24px]">
+        <div className="mt-2 space-y-0.5 text-[14px] leading-[1.5] text-ink-500 lg:mt-2.5 lg:text-[15px] lg:leading-[1.55]">
           <p>
             {pick(lang, "색상 : ", "颜色 : ")}
             {translateColor(lang, puppy.color)}
@@ -564,8 +564,8 @@ function PuppyCard({
           </p>
         </div>
 
-        <div className="mt-6 flex items-center justify-between gap-3 lg:mt-14 2xl:mt-[46px]">
-          <span className="text-[15px] font-medium text-black lg:text-[18px]">
+        <div className="mt-4 flex items-center justify-between gap-3 lg:mt-5">
+          <span className="text-[14px] font-medium text-black lg:text-[16px]">
             {pick(lang, "상세프로필 확인", "查看详细资料")}
           </span>
           <span className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-brand-brown text-white transition-transform group-hover:translate-x-0.5 lg:max-w-[38px] 2xl:h-[38px] 2xl:w-[38px]">
