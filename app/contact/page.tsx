@@ -14,6 +14,8 @@ import { ChevronLeft, ChevronRight, CloseIcon } from "@/components/icons";
 const STORE_ADDRESS = "서울 강동구 구천면로29길 23";
 const STORE_ADDRESS_ZH = "首尔江东区九泉面路29街23号";
 const NOTICE_PAGE_SIZE = 5;
+const WECHAT_QR = "https://api.hsweb.pics/storage/v1/object/public/coton-kennel/guide/wechat-qr.png";
+const PREMIUM_PET_IMG = "https://api.hsweb.pics/storage/v1/object/public/coton-kennel/guide/premiumpet.png";
 
 function getSteps(lang: Lang) {
   if (lang === "zh") {
@@ -342,7 +344,8 @@ export default function ContactPage() {
               {pick(lang, "위챗 (WeChat)", "微信 (WeChat)")}
             </h3>
             <div className="mt-6 flex h-[260px] w-[260px] items-center justify-center rounded-[20px] border border-line-card bg-white lg:max-w-[312px] 2xl:h-[312px] 2xl:w-[312px]">
-              <FauxQR size={240} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={WECHAT_QR} alt="WeChat QR" className="block h-full w-full object-contain" />
             </div>
             <p className="mt-4 text-[12px] font-bold tracking-[-0.12px] text-black lg:text-[14px]">
               wechat id : cotonkennel
@@ -511,6 +514,34 @@ export default function ContactPage() {
         </ul>
       </section>
 
+      {/* Premium Pet 안내 배너 */}
+      <section className="mx-auto w-full max-w-page-wide px-6 pt-16 lg:px-12 xl:px-20 2xl:px-[181px] lg:pt-20">
+        <div className="rounded-[24px] border border-line-card bg-line-surface px-6 py-10 text-center sm:px-10 lg:px-16 lg:py-14">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={PREMIUM_PET_IMG}
+            alt="Premium Pet"
+            className="mx-auto h-auto w-full max-w-[360px]"
+          />
+          <p className="mx-auto mt-6 max-w-[640px] break-keep text-[15px] leading-[1.7] text-ink-700 lg:text-[16px]">
+            {pick(
+              lang,
+              "꼬똥 드 툴레아 외에도 일반 견종 등 추가 견종이 궁금하신 경우, 아래 전용 페이지에서 추가적으로 다양한 아이들을 확인하실 수 있습니다.",
+              "除棉花面纱犬外,如您还想了解普通犬种等其他犬种,可在下方专属页面查看更多宝贝。"
+            )}
+          </p>
+          <a
+            href="#"
+            className="mt-6 inline-flex h-[48px] items-center gap-2 rounded-full bg-brand-brown px-7 text-[14px] text-white transition-colors hover:bg-black lg:h-[52px] lg:text-[15px]"
+          >
+            {pick(lang, "Premium Pet 방문하기", "访问 Premium Pet")}
+            <svg width="20" height="8" viewBox="0 0 22 8" fill="none" aria-hidden>
+              <path d="M0 4h20m0 0L16 1m4 3l-4 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+            </svg>
+          </a>
+        </div>
+      </section>
+
       {/* 공지사항 테이블 (Figma 1555×58 헤더, NO/제목/날짜) */}
       <section className="mx-auto w-full max-w-page-wide px-6 pb-24 pt-20 lg:px-12 xl:px-20 2xl:px-[181px] lg:pb-20 xl:pb-28 2xl:pb-[100px] lg:pt-20 xl:pt-28 2xl:pt-[82px]">
         <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[44px] lg:leading-[64px] lg:tracking-[-0.55px]">
@@ -648,7 +679,8 @@ export default function ContactPage() {
             </h3>
             <div className="mt-5 flex justify-center">
               <div className="rounded-[20px] border border-line-card bg-white p-3">
-                <FauxQR size={200} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={WECHAT_QR} alt="WeChat QR" className="block h-full w-full object-contain" />
               </div>
             </div>
             <p className="tnum mt-5 text-[12px] text-ink-500">
@@ -796,44 +828,3 @@ function SnsCard({
   );
 }
 
-function FauxQR({ size = 176 }: { size?: number }) {
-  const N = 25;
-  const cell = size / N;
-  const isFinder = (r: number, c: number) => {
-    const inFinder = (br: number, bc: number) =>
-      r >= br && r < br + 7 && c >= bc && c < bc + 7;
-    const onRing = (br: number, bc: number) => {
-      if (!inFinder(br, bc)) return false;
-      const dr = r - br;
-      const dc = c - bc;
-      return (
-        dr === 0 ||
-        dr === 6 ||
-        dc === 0 ||
-        dc === 6 ||
-        (dr >= 2 && dr <= 4 && dc >= 2 && dc <= 4)
-      );
-    };
-    return onRing(0, 0) || onRing(0, N - 7) || onRing(N - 7, 0);
-  };
-  const inFinderArea = (r: number, c: number) =>
-    (r < 8 && c < 8) || (r < 8 && c >= N - 8) || (r >= N - 8 && c < 8);
-  const cells = [];
-  for (let r = 0; r < N; r++) {
-    for (let c = 0; c < N; c++) {
-      let on = false;
-      if (isFinder(r, c)) on = true;
-      else if (!inFinderArea(r, c)) {
-        const v = (r * 31 + c * 17 + r * c * 5) % 7;
-        on = v < 3;
-      }
-      if (on) cells.push(<rect key={`${r}-${c}`} x={c * cell} y={r * cell} width={cell} height={cell} fill="#1A1A1A" />);
-    }
-  }
-  return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden>
-      <rect width={size} height={size} fill="white" />
-      {cells}
-    </svg>
-  );
-}

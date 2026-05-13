@@ -5,47 +5,7 @@ import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
 import { CloseIcon } from "./icons";
 
-function FauxQR({ size = 176 }: { size?: number }) {
-  const N = 25;
-  const cell = size / N;
-  const isFinder = (r: number, c: number) => {
-    const inFinder = (br: number, bc: number) =>
-      r >= br && r < br + 7 && c >= bc && c < bc + 7;
-    const onRing = (br: number, bc: number) => {
-      if (!inFinder(br, bc)) return false;
-      const dr = r - br;
-      const dc = c - bc;
-      return (
-        dr === 0 ||
-        dr === 6 ||
-        dc === 0 ||
-        dc === 6 ||
-        (dr >= 2 && dr <= 4 && dc >= 2 && dc <= 4)
-      );
-    };
-    return onRing(0, 0) || onRing(0, N - 7) || onRing(N - 7, 0);
-  };
-  const inFinderArea = (r: number, c: number) =>
-    (r < 8 && c < 8) || (r < 8 && c >= N - 8) || (r >= N - 8 && c < 8);
-  const cells = [];
-  for (let r = 0; r < N; r++) {
-    for (let c = 0; c < N; c++) {
-      let on = false;
-      if (isFinder(r, c)) on = true;
-      else if (!inFinderArea(r, c)) {
-        const v = (r * 31 + c * 17 + r * c * 5) % 7;
-        on = v < 3;
-      }
-      if (on) cells.push(<rect key={`${r}-${c}`} x={c * cell} y={r * cell} width={cell} height={cell} fill="#1A1A1A" />);
-    }
-  }
-  return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden>
-      <rect width={size} height={size} fill="white" />
-      {cells}
-    </svg>
-  );
-}
+const WECHAT_QR = "https://api.hsweb.pics/storage/v1/object/public/coton-kennel/guide/wechat-qr.png";
 
 const KAKAO = (
   <svg viewBox="0 0 32 32" className="h-5 w-5" aria-hidden fill="currentColor">
@@ -174,7 +134,8 @@ export default function FloatingBar() {
             </p>
             <div className="mt-5 flex justify-center">
               <div className="rounded-[16px] border border-line-card bg-white p-3">
-                <FauxQR size={176} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={WECHAT_QR} alt="WeChat QR" className="block w-44" />
               </div>
             </div>
             <p className="mt-5 text-[12px] text-ink-500">WeChat ID · cotonkennel</p>
