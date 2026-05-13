@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Hero from "@/components/Hero";
 import PuppyImage from "@/components/PuppyImage";
 import { supabasePublic, type Puppy, type SiteImage } from "@/lib/supabase";
 import { useLang } from "@/lib/LangProvider";
@@ -44,6 +43,12 @@ function getIntroSlides(lang: Lang): IntroSlide[] {
   if (lang === "zh") {
     return [
       {
+        eyebrow: "Conton Kennel",
+        title: "Introduce Puppies",
+        imgKey: "puppies.hero",
+        body: ["为您介绍我们的幼犬!"],
+      },
+      {
         eyebrow: "Heritage",
         title: "Conton Kennel",
         imgKey: "puppies.breed.heritage",
@@ -77,6 +82,12 @@ function getIntroSlides(lang: Lang): IntroSlide[] {
     ];
   }
   return [
+    {
+      eyebrow: "Conton Kennel",
+      title: "Introduce Puppies",
+      imgKey: "puppies.hero",
+      body: ["강아지를 소개해드립니다 !"],
+    },
     {
       eyebrow: "Heritage",
       title: "Conton Kennel",
@@ -129,7 +140,7 @@ function KennelIntro({
         <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[20px] lg:max-w-[733px] lg:rounded-[28px] 2xl:rounded-[32px]">
           <PuppyImage
             key={idx}
-            variant={(["p3", "p7", "p9"][idx] ?? "p3") as never}
+            variant={(["p11", "p3", "p7", "p9"][idx] ?? "p3") as never}
             url={images[slide.imgKey] ?? null}
           />
         </div>
@@ -191,7 +202,6 @@ function KennelIntro({
 export default function PuppiesPage() {
   const lang = useLang();
   const [PUPPIES, setPuppies] = useState<Puppy[]>([]);
-  const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
   const [introImages, setIntroImages] = useState<Record<string, string | null>>(
     {}
   );
@@ -214,21 +224,17 @@ export default function PuppiesPage() {
     supabasePublic
       .from("site_images")
       .select("*")
-      .eq("key", "puppies.hero")
-      .order("slot", { ascending: true })
-      .then(({ data }) => setHeroImages((data ?? []) as SiteImage[]));
-    supabasePublic
-      .from("site_images")
-      .select("*")
       .in("key", [
+        "puppies.hero",
         "puppies.breed.heritage",
         "puppies.breed.appearance",
         "puppies.breed.temperament",
       ])
+      .order("slot", { ascending: true })
       .then(({ data }) => {
         const map: Record<string, string | null> = {};
         ((data ?? []) as SiteImage[]).forEach((r) => {
-          map[r.key] = r.image_url;
+          if (!(r.key in map)) map[r.key] = r.image_url; // first slot wins
         });
         setIntroImages(map);
       });
@@ -260,21 +266,7 @@ export default function PuppiesPage() {
 
   return (
     <>
-      <Hero
-        eyebrow="Conton Kennel"
-        title={`Introduce\nPuppies`}
-        description={pick(
-          lang,
-          "강아지를 소개해드립니다 !",
-          "为您介绍我们的幼犬!"
-        )}
-        variant="p11"
-        withCarouselArrows
-        images={heroImages}
-        imageRadius={46}
-      />
-
-      {/* Kennel intro slider: arrows swap the whole section */}
+      {/* 4-slide carousel: Introduce Puppies / Heritage / Champion Line / Premium Breeding */}
       <KennelIntro lang={lang} images={introImages} />
 
       {/* Filter row + Grid */}
