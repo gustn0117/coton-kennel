@@ -122,12 +122,14 @@ export default function Footer() {
         <div className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:mt-16 lg:grid-cols-[200px_repeat(4,minmax(0,1fr))] lg:gap-8 xl:gap-12">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo.png"
-              alt="Coton Kennel"
-              className="h-16 w-auto brightness-0 invert"
-            />
+            <div className="leading-[1.05]">
+              <p className="font-serif text-[28px] font-bold tracking-[0.02em] text-white lg:text-[30px]">
+                COTON
+              </p>
+              <p className="font-serif text-[28px] font-bold tracking-[0.02em] text-white lg:text-[30px]">
+                KENNEL
+              </p>
+            </div>
             <p className="mt-3 text-[11.5px] font-medium tracking-[0.18em] text-white/70">
               2026 COTON KENNEL COMPANY
             </p>
