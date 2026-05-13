@@ -5,15 +5,71 @@ import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
 import { ArrowRight } from "./icons";
 
+/* small footer SNS tiles (brand-colored, rounded square) */
+const KakaoTile = (
+  <svg viewBox="0 0 48 48" className="h-full w-full" aria-hidden>
+    <rect width="48" height="48" rx="12" fill="#FAE100" />
+    <path
+      d="M24 11.5c-7.18 0-13 4.4-13 9.83 0 3.5 2.4 6.57 6.02 8.3l-1.3 4.66c-.12.43.34.78.72.55l5.43-3.5c.69.1 1.4.14 2.13.14 7.18 0 13-4.4 13-9.83S31.18 11.5 24 11.5z"
+      fill="#3B1E1E"
+    />
+    <text x="24" y="23" textAnchor="middle" dominantBaseline="middle" fontFamily="'Pretendard',sans-serif" fontSize="8" fontWeight="800" fill="#fff" letterSpacing="0.4">TALK</text>
+  </svg>
+);
+const InstaTile = (
+  <svg viewBox="0 0 48 48" className="h-full w-full" aria-hidden>
+    <defs>
+      <radialGradient id="ft-ig" cx="30%" cy="107%" r="150%">
+        <stop offset="0%" stopColor="#FDF497" />
+        <stop offset="5%" stopColor="#FDF497" />
+        <stop offset="45%" stopColor="#FD5949" />
+        <stop offset="60%" stopColor="#D6249F" />
+        <stop offset="90%" stopColor="#285AEB" />
+      </radialGradient>
+    </defs>
+    <rect width="48" height="48" rx="12" fill="url(#ft-ig)" />
+    <rect x="14" y="14" width="20" height="20" rx="6" fill="none" stroke="#fff" strokeWidth="2.6" />
+    <circle cx="24" cy="24" r="5.4" fill="none" stroke="#fff" strokeWidth="2.6" />
+    <circle cx="30.6" cy="17.4" r="1.7" fill="#fff" />
+  </svg>
+);
+const YoutubeTile = (
+  <svg viewBox="0 0 48 48" className="h-full w-full" aria-hidden>
+    <rect width="48" height="48" rx="12" fill="#FF0000" />
+    <path d="M21 18l9 6-9 6z" fill="#fff" />
+  </svg>
+);
+const XhsTile = (
+  <svg viewBox="0 0 48 48" className="h-full w-full" aria-hidden>
+    <rect width="48" height="48" rx="12" fill="#FF2442" />
+    <text x="24" y="25" textAnchor="middle" dominantBaseline="middle" fontFamily="'Noto Sans SC','PingFang SC',sans-serif" fontSize="11" fontWeight="800" fill="#fff">小红书</text>
+  </svg>
+);
+const WechatTile = (
+  <svg viewBox="0 0 48 48" className="h-full w-full" aria-hidden>
+    <rect width="48" height="48" rx="12" fill="#07C160" />
+    <g fill="#fff">
+      <path d="M19 12.5c-5.7 0-10.3 3.8-10.3 8.5 0 2.7 1.55 5.05 3.95 6.6l-.98 2.95 3.45-1.73c.92.25 1.85.38 2.78.4-.15-.58-.23-1.17-.23-1.78 0-4.55 4.57-8.22 10.2-8.22.25 0 .5.01.74.03C27.65 15.75 23.75 12.5 19 12.5zm-3.2 6.35a1.33 1.33 0 110-2.66 1.33 1.33 0 010 2.66zm6.4 0a1.33 1.33 0 110-2.66 1.33 1.33 0 010 2.66z" />
+      <path d="M40.3 27.6c0-3.78-3.78-6.85-8.45-6.85s-8.45 3.07-8.45 6.85 3.78 6.85 8.45 6.85c.93 0 1.82-.13 2.65-.35l2.5 1.3-.8-2.35c2-1.27 4.1-3.07 4.1-5.45zm-11.2-1.3a1.07 1.07 0 110-2.14 1.07 1.07 0 010 2.14zm5.6 0a1.07 1.07 0 110-2.14 1.07 1.07 0 010 2.14z" />
+    </g>
+  </svg>
+);
+
+const SOCIAL: { href: string; label: string; tile: React.ReactNode }[] = [
+  { href: "https://pf.kakao.com/", label: "KakaoTalk", tile: KakaoTile },
+  { href: "https://www.instagram.com/", label: "Instagram", tile: InstaTile },
+  { href: "https://www.youtube.com/", label: "YouTube", tile: YoutubeTile },
+  { href: "https://www.xiaohongshu.com/", label: "Xiaohongshu", tile: XhsTile },
+  { href: "https://weixin.qq.com/", label: "WeChat", tile: WechatTile },
+];
+
 export default function Footer() {
   const lang = useLang();
-
   const terms = pick(lang, "이용약관", "服务条款");
   const privacy = pick(lang, "개인정보처리방침", "隐私政策");
 
   return (
     <footer className="relative w-full overflow-hidden bg-black text-white">
-      {/* Figma footer glow overlay (orange gradient 2-layer) */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -23,139 +79,113 @@ export default function Footer() {
         aria-hidden
       />
 
-      <div className="relative mx-auto w-full max-w-page-wide px-6 pb-12 pt-[80px] lg:px-12 xl:px-20 2xl:px-[159px] lg:pb-[58px] lg:pt-20 xl:pt-28 2xl:pt-[54px]">
-        {/* Top row: Terms / Privacy outline pills */}
-        <div className="flex flex-wrap items-center gap-2 lg:gap-[13px]">
-          <Link
-            href="/policy"
-            className="inline-flex h-[49px] items-center gap-2 border border-white px-5 text-[15px] text-white transition-colors hover:bg-white/5"
-            style={{ borderRadius: "29.5px" }}
-          >
-            {terms}
-            <ArrowRight className="h-[6px] w-[17px]" />
-          </Link>
-          <Link
-            href="/policy"
-            className="inline-flex h-[49px] items-center gap-2 border border-white px-5 text-[15px] text-white transition-colors hover:bg-white/5"
-            style={{ borderRadius: "29.5px" }}
-          >
-            {privacy}
-            <ArrowRight className="h-[6px] w-[17px]" />
-          </Link>
+      <div className="relative mx-auto w-full max-w-page-wide px-6 pb-12 pt-16 lg:px-12 lg:pb-14 lg:pt-20 xl:px-20 2xl:px-[159px]">
+        {/* Top row: policy pills + brand SNS tiles */}
+        <div className="flex flex-wrap items-center justify-between gap-y-6">
+          <div className="flex flex-wrap gap-2 lg:gap-3">
+            <Link
+              href="/policy"
+              className="inline-flex h-[44px] items-center gap-2.5 border border-white/80 px-5 text-[14px] text-white transition-colors hover:bg-white/5 lg:h-[49px] lg:text-[15px]"
+              style={{ borderRadius: "29.5px" }}
+            >
+              {terms}
+              <ArrowRight className="h-[6px] w-[17px]" />
+            </Link>
+            <Link
+              href="/policy"
+              className="inline-flex h-[44px] items-center gap-2.5 border border-white/80 px-5 text-[14px] text-white transition-colors hover:bg-white/5 lg:h-[49px] lg:text-[15px]"
+              style={{ borderRadius: "29.5px" }}
+            >
+              {privacy}
+              <ArrowRight className="h-[6px] w-[17px]" />
+            </Link>
+          </div>
+
+          <ul className="flex items-center gap-2.5 lg:gap-3">
+            {SOCIAL.map((s) => (
+              <li key={s.label}>
+                <a
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className="block h-9 w-9 overflow-hidden rounded-xl shadow-md transition-transform hover:scale-105 sm:h-10 sm:w-10"
+                >
+                  {s.tile}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        {/* Middle row: 4-col business info + social icons */}
-        <div className="mt-10 grid grid-cols-1 gap-8 lg:mt-14 2xl:mt-[68px] lg:grid-cols-[1fr_1fr_1.4fr_1.2fr_auto] lg:gap-10">
-          {/* Contact */}
-          <div>
-            <p className="text-[12px] font-bold uppercase tracking-[0.02em] text-white">
-              Contact
-            </p>
-            <p className="mt-4 text-[24px] font-bold tnum text-white">
-              02-472-9966
-            </p>
-            <p className="mt-2 text-[15px] font-bold text-white">
-              {pick(lang, "24시 방문 가능", "24小时可访问")}
+        {/* Middle row: logo column + 4 info columns */}
+        <div className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:mt-16 lg:grid-cols-[200px_repeat(4,minmax(0,1fr))] lg:gap-8 xl:gap-12">
+          {/* Brand */}
+          <div className="sm:col-span-2 lg:col-span-1">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.png"
+              alt="Coton Kennel"
+              className="h-16 w-auto brightness-0 invert"
+            />
+            <p className="mt-3 text-[11.5px] font-medium tracking-[0.18em] text-white/70">
+              2026 COTON KENNEL COMPANY
             </p>
           </div>
 
-          {/* Adress (Figma 원본 표기 — typo preserved) */}
-          <div>
-            <p className="text-[12px] font-bold uppercase tracking-[0.02em] text-white">
-              Adress
+          <Col label="Contact">
+            <p className="tnum text-[20px] font-bold text-white lg:text-[22px]">
+              02-472-9966
             </p>
-            <p className="mt-4 text-[15px] font-bold leading-[1.6] text-white">
+            <p className="mt-2 text-[13px] font-medium text-white/85 lg:text-[14px]">
+              {pick(lang, "24시 방문 가능", "24小时可参观")}
+            </p>
+          </Col>
+
+          <Col label="Adress">
+            <p className="text-[13px] leading-[1.65] text-white/85 lg:text-[14px]">
               {pick(
                 lang,
                 "서울 강동구 구천면로29길 23 꼬똥켄넬",
                 "首尔江东区九泉面路29街23号 棉花面纱犬舍"
               )}
             </p>
-          </div>
+          </Col>
 
-          {/* Info */}
-          <div>
-            <p className="text-[12px] font-bold uppercase tracking-[0.02em] text-white">
-              Info
-            </p>
-            <p className="mt-4 text-[15px] font-bold leading-[1.6] text-white">
+          <Col label="Info">
+            <p className="text-[13px] leading-[1.65] text-white/85 lg:text-[14px]">
               {pick(
                 lang,
                 "대표자 : 김지혜 ㅣ 사업자 번호 : 554-02-01209",
                 "代表 : 金智慧 ㅣ 营业执照号 : 554-02-01209"
               )}
             </p>
-          </div>
+          </Col>
 
-          {/* 동물판매업허가번호 */}
-          <div>
-            <p className="text-[12px] font-bold uppercase tracking-[0.02em] text-white">
-              {pick(lang, "동물판매업허가번호", "动物销售业许可证号")}
-            </p>
-            <p className="mt-4 text-[15px] font-bold tnum text-white">
+          <Col label={pick(lang, "동물판매업허가번호", "动物销售许可证号")}>
+            <p className="tnum text-[13px] text-white/85 lg:text-[14px]">
               3240000-045-2018-0033
             </p>
-          </div>
-
-          {/* Social icons - 5 in a row */}
-          <div className="flex items-start gap-[9px] lg:flex-col lg:gap-2.5">
-            <FooterSocial href="https://www.instagram.com/" label="Instagram">
-              <svg viewBox="0 0 24 24" fill="white" aria-hidden className="h-5 w-5">
-                <rect x="3" y="3" width="18" height="18" rx="5" stroke="white" strokeWidth="1.6" fill="none" />
-                <circle cx="12" cy="12" r="4" stroke="white" strokeWidth="1.6" fill="none" />
-                <circle cx="17.5" cy="6.5" r="0.9" />
-              </svg>
-            </FooterSocial>
-            <FooterSocial href="https://www.youtube.com/" label="YouTube">
-              <svg viewBox="0 0 24 24" fill="white" aria-hidden className="h-5 w-5">
-                <path d="M23.5 6.2a3.02 3.02 0 00-2.13-2.14C19.49 3.5 12 3.5 12 3.5s-7.49 0-9.37.56A3.02 3.02 0 00.5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3.02 3.02 0 002.13 2.14c1.88.56 9.37.56 9.37.56s7.49 0 9.37-.56a3.02 3.02 0 002.13-2.14C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.6 15.6V8.4l6.24 3.6-6.24 3.6z" />
-              </svg>
-            </FooterSocial>
-            <FooterSocial href="https://www.xiaohongshu.com/" label="Xiaohongshu">
-              <svg viewBox="0 0 24 24" fill="white" aria-hidden className="h-5 w-5">
-                <path d="M6 3h12a2 2 0 012 2v15.2a.8.8 0 01-1.18.7L12 18.4l-6.82 2.5A.8.8 0 014 20.2V5a2 2 0 012-2z" />
-              </svg>
-            </FooterSocial>
-            <FooterSocial href="https://pf.kakao.com/" label="KakaoTalk">
-              <svg viewBox="0 0 32 32" fill="white" aria-hidden className="h-5 w-5">
-                <path d="M16 4C8.27 4 2 8.86 2 14.85c0 3.83 2.6 7.18 6.5 9.05l-1.4 4.94c-.13.45.36.82.76.58l5.84-3.62c.75.1 1.52.15 2.3.15 7.73 0 14-4.86 14-10.85S23.73 4 16 4z" />
-              </svg>
-            </FooterSocial>
-            <FooterSocial href="https://weixin.qq.com/" label="WeChat">
-              <svg viewBox="0 0 24 24" fill="white" aria-hidden className="h-5 w-5">
-                <path d="M8.69 3C4.55 3 1.2 5.7 1.2 9.04c0 1.93 1.13 3.66 2.88 4.78l-.72 2.16 2.52-1.26c.66.18 1.34.28 2.04.3-.1-.42-.16-.84-.16-1.28 0-3.34 3.36-6.04 7.5-6.04.18 0 .36 0 .54.02C15.06 4.6 12.18 3 8.69 3zm13.78 13.9c0-2.78-2.78-5.04-6.18-5.04s-6.18 2.26-6.18 5.04 2.78 5.04 6.18 5.04c.66 0 1.32-.06 1.92-.18l1.86.96-.6-1.74c1.74-.96 3-2.4 3-4.08z" />
-              </svg>
-            </FooterSocial>
-          </div>
+          </Col>
         </div>
-
-        {/* Bottom copyright */}
-        <p className="mt-12 text-[12px] text-ink-300 lg:mt-14 2xl:mt-[60px]">
-          2026 COTON KENNEL COMPANY
-        </p>
       </div>
     </footer>
   );
 }
 
-function FooterSocial({
-  href,
+function Col({
   label,
   children,
 }: {
-  href: string;
   label: string;
   children: React.ReactNode;
 }) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={label}
-      className="flex h-9 w-9 items-center justify-center rounded-full ring-1 ring-white/30 transition-colors hover:bg-white/10"
-    >
-      {children}
-    </a>
+    <div>
+      <p className="text-[12px] font-bold uppercase tracking-[0.05em] text-white">
+        {label}
+      </p>
+      <div className="mt-3 lg:mt-4">{children}</div>
+    </div>
   );
 }
