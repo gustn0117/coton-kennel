@@ -19,18 +19,31 @@ function getSteps(lang: Lang) {
   if (lang === "zh") {
     return [
       { num: "01", title: "查看幼犬", desc: "通过 Coton Kennel 官方网站, 查看目前可分养幼犬的详细资料, 仔细了解性别、毛色等信息。" },
-      { num: "02", title: "提前咨询", desc: "如有心仪的宝贝,请通过 KakaoTalk、电话或微信 申请咨询。我们将向您介绍可分养时间、流程等详细信息。" },
-      { num: "03", title: "参观咨询", desc: "通过 1:1 预约亲临犬舍参观, 确认父母犬与饲养环境。" },
-      { num: "04", title: "分养", desc: "我们会同时提供健康证明、血统证书及照护指南, 并承诺终身售后照护。" },
-      { num: "05", title: "预约指南", desc: "棉花面纱犬采用预约制分养。 如希望预约,可通过 1:1 咨询另行说明预约金事宜。" },
+      { num: "02", title: "咨询", desc: "如有疑问,请通过电话咨询、KakaoTalk 频道或 WeChat 便捷地咨询我们。专业咨询师将亲切地为您介绍分养可否及相关信息(血统、健康状态、性格等多种信息)。" },
+      { num: "03", title: "参观与咨询", desc: "您可以亲临犬舍,亲眼确认幼犬的状态与生活环境,并通过与专业人员的充分咨询,帮助您慎重做出决定。" },
+      { num: "04", title: "分养", desc: "我们会与您一同确认国内外分养、繁育或宠物用途等符合您情况的细节后,为您提供最优的定制说明。" },
+      { num: "05", title: "预约指南", desc: "棉花面纱犬分养速度较快,若有心仪的幼犬,建议提前预约。如希望参观咨询或分养,请先电话预约并接收预约金说明。确认预约金到账后,将按对应时间进行专业咨询。" },
     ];
   }
   return [
     { num: "01", title: "아이들 확인", desc: "꼬똥 켄넬 공식 홈페이지를 통해 현재 분양 가능한 아이들의 상세 프로필을 확인하실 수 있습니다. 각 아이의 성별, 모색 등을 꼼꼼히 살펴보세요." },
-    { num: "02", title: "문의", desc: "궁금하신 사항은 카카오톡, 전화, WeChat으로 상담을 요청해주세요. 분양 가능 시기, 절차 등을 안내해드립니다." },
-    { num: "03", title: "방문 및 상담", desc: "직접 방문하셔서 1:1 상담을 통해 켄넬을 둘러보시고, 부모견과 환경을 확인하실 수 있습니다." },
-    { num: "04", title: "분양", desc: "국내외 분양 여부에 따라 절차가 다르며, 건강 확인서, 혈통서, 케어 가이드를 함께 안내드립니다." },
-    { num: "05", title: "예약 안내", desc: "꼬똥 드 툴레아는 예약제로 분양됩니다. 예약 희망 시, 예약금 안내는 1:1 상담으로 별도로 진행됩니다." },
+    { num: "02", title: "문의", desc: "궁금하신 사항은 전화 상담, 카카오톡 채널, 또는 WeChat을 통해 편리하게 문의해 주시기 바랍니다. 전문 상담사가 분양 가능 여부 및 관련 정보(혈통, 건강 상태, 성격 등 다양한 정보)를 친절하게 안내해 드립니다." },
+    { num: "03", title: "방문 및 상담", desc: "직접 방문하셔서 아이의 컨디션과 생활 환경을 눈으로 확인하시고, 전문가와의 충분한 상담을 통해 신중하게 결정하실 수 있도록 도와드립니다." },
+    { num: "04", title: "분양", desc: "국내외 분양 여부, 브리딩 또는 펫 목적 등 고객님의 상황에 맞는 세부 사항을 함께 확인한 후, 최적의 맞춤 안내를 제공해 드립니다." },
+    { num: "05", title: "예약 안내", desc: "꼬똥 드 툴레아는 분양이 빠르게 이루어지는 특성이 있어, 원하시는 아이가 있으실 경우 사전 예약을 권장드립니다. 방문 상담 또는 분양을 원하시는 경우, 먼저 전화로 예약 후 예약금 안내를 받아보세요. 예약금 입금이 확인된 후 해당 시간에 맞춰 전문 상담이 진행됩니다." },
+  ];
+}
+
+function getRefund(lang: Lang) {
+  if (lang === "zh") {
+    return [
+      { label: "国内分养", body: "如参观后不希望分养,预约金将全额退还。我们会尽最大努力,让您可以毫无负担地慎重做出决定。" },
+      { label: "海外分养", body: "海外发货开始前可全额退还预约金。但海外发货开始后会产生航空运费,可能无法全额退还,敬请谅解。" },
+    ];
+  }
+  return [
+    { label: "국내 분양", body: "방문 후 분양을 원하지 않으실 경우, 예약금은 전액 환불 됩니다. 고객님께서 부담 없이 신중하게 결정하실 수 있도록 최대한 배려하겠습니다." },
+    { label: "해외 분양", body: "해외 발송이 시작되기 전까지는 예약금 전액 환불이 가능합니다. 단, 해외 발송이 시작된 이후에는 항공 운송료가 발생하여 전액 환불이 어려울 수 있는 점 양해 부탁드립니다." },
   ];
 }
 
@@ -54,6 +67,7 @@ function getFaq(lang: Lang) {
 export default function ContactPage() {
   const lang = useLang();
   const STEPS = getSteps(lang);
+  const REFUND = getRefund(lang);
   const FAQ = getFaq(lang);
   const [notices, setNotices] = useState<Notice[]>([]);
   const [openNoticeId, setOpenNoticeId] = useState<string | null>(null);
@@ -176,6 +190,23 @@ export default function ContactPage() {
               </article>
             );
           })}
+        </div>
+
+        {/* 예약금 환불 안내 */}
+        <div className="mt-12 space-y-6 border-t border-line-card pt-10 lg:mt-16 lg:space-y-8 lg:pt-12">
+          {REFUND.map((r) => (
+            <div
+              key={r.label}
+              className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:gap-8 lg:gap-12"
+            >
+              <p className="shrink-0 text-[16px] font-bold text-brand-brown sm:w-[110px] lg:text-[18px]">
+                {r.label}
+              </p>
+              <p className="break-keep text-[15px] leading-[1.7] text-ink-700 lg:text-[16px]">
+                {r.body}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
