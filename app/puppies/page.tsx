@@ -272,8 +272,8 @@ export default function PuppiesPage() {
 
       {/* Filter row + Grid */}
       <section className="mx-auto w-full max-w-page-wide px-6 pb-20 pt-16 lg:px-12 xl:px-20 2xl:px-[173px] lg:pb-20 xl:pb-28 2xl:pb-[92px] lg:pt-20 xl:pt-28 2xl:pt-[75px]">
-        {/* 4 dropdown filters */}
-        <div className="mb-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-4 lg:mb-14 2xl:mb-[53px] lg:gap-x-[91px]">
+        {/* 4 dropdown filters — mobile: 4-col single row (compact), lg: spaced inline */}
+        <div className="mb-10 grid grid-cols-4 items-end gap-2 lg:mb-14 2xl:mb-[53px] lg:flex lg:flex-wrap lg:items-center lg:justify-center lg:gap-x-[91px] lg:gap-y-4">
           <FilterSelect
             label={pick(lang, "색상", "颜色")}
             value={filters.color}
@@ -362,26 +362,26 @@ export default function PuppiesPage() {
       {/* Detail modal */}
       {selected && (
         <div
-          className="ck-modal-fade fixed inset-0 z-50 flex items-center justify-center bg-black/55 px-4 backdrop-blur-sm"
+          className="ck-modal-fade fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/55 px-3 py-6 backdrop-blur-sm sm:items-center sm:px-4"
           role="dialog"
           aria-modal
           onClick={() => setSelected(null)}
         >
           <div
-            className="ck-modal-pop relative w-full max-w-3xl rounded-[40px] border border-line-card bg-white p-6 shadow-card md:p-10"
+            className="ck-modal-pop relative my-auto w-full max-w-3xl rounded-[24px] border border-line-card bg-white p-4 shadow-card sm:rounded-[40px] sm:p-6 md:p-10"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               type="button"
               onClick={() => setSelected(null)}
               aria-label={pick(lang, "닫기", "关闭")}
-              className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full text-ink-500 hover:bg-line-tag hover:text-black"
+              className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-ink-500 backdrop-blur hover:bg-line-tag hover:text-black sm:right-5 sm:top-5 sm:bg-transparent sm:backdrop-blur-0"
             >
               <CloseIcon className="h-4 w-4" />
             </button>
 
-            <div className="grid gap-8 md:grid-cols-[1fr_1fr]">
-              <div className="aspect-square w-full overflow-hidden rounded-[20px]">
+            <div className="grid gap-5 sm:gap-8 md:grid-cols-[1fr_1fr]">
+              <div className="aspect-square w-full overflow-hidden rounded-[16px] sm:rounded-[20px]">
                 <PuppyImage
                   variant={
                     (selected.thumbs[activeThumb] ?? selected.variant) as never
@@ -394,7 +394,7 @@ export default function PuppiesPage() {
 
               <div className="flex flex-col">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="text-[26px] font-bold tracking-[-0.26px] text-black">
+                  <h3 className="text-[22px] font-bold tracking-[-0.26px] text-black sm:text-[26px]">
                     {selected.name}
                   </h3>
                   <span className="rounded-[10px] bg-line-tag px-2.5 py-1 text-[12px] text-ink-500">
@@ -404,20 +404,20 @@ export default function PuppiesPage() {
                     {translateMonths(lang, selected.months)}
                   </span>
                 </div>
-                <ul className="mt-6 space-y-3 text-[16px] text-ink-500">
-                  <li className="flex justify-between border-b border-line-card pb-3">
+                <ul className="mt-4 space-y-2.5 text-[14px] text-ink-500 sm:mt-6 sm:space-y-3 sm:text-[16px]">
+                  <li className="flex justify-between border-b border-line-card pb-2.5 sm:pb-3">
                     <span>{pick(lang, "색상", "颜色")}</span>
                     <span className="text-black">
                       {translateColor(lang, selected.color)}
                     </span>
                   </li>
-                  <li className="flex justify-between border-b border-line-card pb-3">
+                  <li className="flex justify-between border-b border-line-card pb-2.5 sm:pb-3">
                     <span>{pick(lang, "분양", "分养")}</span>
                     <span className="text-black">
                       {translateStatus(lang, selected.status)}
                     </span>
                   </li>
-                  <li className="flex justify-between border-b border-line-card pb-3">
+                  <li className="flex justify-between border-b border-line-card pb-2.5 sm:pb-3">
                     <span>{pick(lang, "성별", "性别")}</span>
                     <span className="text-black">
                       {translateGender(lang, selected.gender)}
@@ -432,7 +432,7 @@ export default function PuppiesPage() {
                 </ul>
                 <a
                   href="/contact"
-                  className="mt-auto inline-flex h-[59px] w-fit items-center gap-3 bg-brand-brown px-7 text-[16px] text-white transition-colors hover:bg-black"
+                  className="mt-5 inline-flex h-[48px] w-fit items-center gap-3 bg-brand-brown px-6 text-[14px] text-white transition-colors hover:bg-black sm:mt-auto sm:h-[59px] sm:px-7 sm:text-[16px]"
                   style={{ borderRadius: "29.5px" }}
                 >
                   {pick(lang, "바로 상담하기", "立即咨询")}
@@ -495,15 +495,15 @@ function FilterSelect({
   onChange: (v: string) => void;
 }) {
   return (
-    <div className="flex items-center gap-3 lg:gap-[34px]">
-      <span className="shrink-0 text-[14px] font-medium text-black lg:text-[16px]">
+    <div className="flex w-full flex-col gap-1 lg:w-auto lg:flex-row lg:items-center lg:gap-[34px]">
+      <span className="text-[11.5px] font-medium text-black lg:shrink-0 lg:text-[16px]">
         {label}
       </span>
-      <div className="relative">
+      <div className="relative w-full lg:w-auto">
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-[37px] w-[160px] appearance-none rounded-[6px] border border-line-card bg-white px-4 pr-9 text-[14px] font-medium text-black focus:border-brand-brown focus:outline-none lg:w-[202px] lg:text-[15px]"
+          className="h-[34px] w-full appearance-none rounded-[6px] border border-line-card bg-white px-2.5 pr-7 text-[12.5px] font-medium text-black focus:border-brand-brown focus:outline-none lg:h-[37px] lg:w-[202px] lg:px-4 lg:pr-9 lg:text-[15px]"
         >
           {options.map((opt) => (
             <option key={opt} value={opt}>
@@ -514,7 +514,7 @@ function FilterSelect({
         <svg
           viewBox="0 0 8 5"
           aria-hidden
-          className="pointer-events-none absolute right-3 top-1/2 h-1 w-2 -translate-y-1/2 text-ink-500"
+          className="pointer-events-none absolute right-2 top-1/2 h-1 w-2 -translate-y-1/2 text-ink-500 lg:right-3"
           fill="currentColor"
         >
           <path d="M0 0l4 5 4-5z" />

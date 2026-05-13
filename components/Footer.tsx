@@ -128,7 +128,7 @@ export default function Footer() {
               alt="Coton Kennel"
               width={76}
               height={100}
-              className="h-12 w-auto select-none lg:h-14"
+              className="h-20 w-auto select-none lg:h-24 xl:h-28"
             />
             <p className="mt-3 text-[11.5px] font-medium tracking-[0.18em] text-white/70">
               2026 COTON KENNEL COMPANY
@@ -137,7 +137,7 @@ export default function Footer() {
 
           <Col label="Contact">
             <p className="tnum text-[20px] font-bold text-white lg:text-[22px]">
-              02-472-9966
+              0507-1390-8073
             </p>
             <p className="mt-2 text-[13px] font-medium text-white/85 lg:text-[14px]">
               {pick(lang, "24시 방문 가능", "24小时可参观")}

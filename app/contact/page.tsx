@@ -73,7 +73,7 @@ export default function ContactPage() {
   const FAQ = getFaq(lang);
   const [notices, setNotices] = useState<Notice[]>([]);
   const [openNoticeId, setOpenNoticeId] = useState<string | null>(null);
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [faqIdx, setFaqIdx] = useState(0);
   const [showWeChatQR, setShowWeChatQR] = useState(false);
   const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
   const [stepImages, setStepImages] = useState<Record<string, string | null>>({});
@@ -132,7 +132,7 @@ export default function ContactPage() {
       />
 
       {/* Vistor Guide intro + 5단계 프로세스 */}
-      <section className="mx-auto w-full max-w-page-wide px-6 py-16 lg:px-12 xl:px-20 2xl:px-[180px] lg:pt-20 xl:pt-28 2xl:pt-[109px]">
+      <section className="mx-auto w-full max-w-page-wide px-6 pt-16 lg:px-12 xl:px-20 2xl:px-[180px] lg:pt-20 xl:pt-28 2xl:pt-[109px]">
         <h2 className="text-[32px] font-bold leading-[1.1] lg:text-[44px] lg:leading-[64px] lg:tracking-[-0.55px]">
           <span>Vistor </span>
           <span className="text-brand-brown">Guide</span>
@@ -144,58 +144,66 @@ export default function ContactPage() {
             "为了提供更细致和准确的咨询,所有预约及预约金的说明均通过电话与咨询渠道个别进行。网站上不显示预约金金额,我们将根据您的具体情况通过咨询为您提供详细说明。"
           )}
         </p>
+      </section>
 
-        <div className="mt-10 space-y-10 lg:mt-12 lg:space-y-12 xl:space-y-16">
-          {STEPS.map((s, i) => {
-            const imgRight = i % 2 === 1; // 2,4단계는 사진 오른쪽
-            const imgUrl = stepImages[`contact.step.${i + 1}`];
-            return (
-              <article
-                key={i}
-                className="grid grid-cols-1 items-center gap-6 lg:grid-cols-2 lg:gap-10 xl:gap-14"
+      <div className="mt-10 space-y-10 lg:mt-12 lg:space-y-12 xl:space-y-16">
+        {STEPS.map((s, i) => {
+          const imgRight = i % 2 === 1; // 2,4단계는 사진 오른쪽
+          const imgUrl = stepImages[`contact.step.${i + 1}`];
+          const bandBg = imgRight ? "bg-brand-beige" : "";
+          return (
+            <div key={i} className={`w-full ${bandBg}`}>
+              <section
+                className={`mx-auto w-full max-w-page-wide px-6 lg:px-12 xl:px-20 2xl:px-[180px] ${
+                  imgRight ? "py-10 lg:py-14 xl:py-16" : ""
+                }`}
               >
-                <div className={`w-full ${imgRight ? "lg:order-2" : ""}`}>
+                <article className="grid grid-cols-1 items-center gap-6 lg:grid-cols-2 lg:gap-10 xl:gap-14">
+                  <div className={`w-full ${imgRight ? "lg:order-2" : ""}`}>
+                    <div
+                      className={`mx-auto aspect-[3/2] w-full max-w-[520px] ${
+                        imgRight ? "lg:ml-0 lg:mr-auto" : "lg:ml-auto lg:mr-0"
+                      }`}
+                    >
+                      {imgUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={imgUrl}
+                          alt={s.title}
+                          className="h-full w-full object-contain"
+                        />
+                      ) : (
+                        <div className="h-full w-full overflow-hidden rounded-[24px]">
+                          <PuppyImage variant={`p${(i + 1) * 2}` as never} />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                   <div
-                    className={`mx-auto aspect-[3/2] w-full max-w-[520px] ${
-                      imgRight ? "lg:ml-0 lg:mr-auto" : "lg:ml-auto lg:mr-0"
+                    className={`lg:max-w-[440px] ${
+                      imgRight ? "lg:order-1 lg:ml-auto lg:pr-2" : "lg:pl-2"
                     }`}
                   >
-                    {imgUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={imgUrl}
-                        alt={s.title}
-                        className="h-full w-full object-contain"
-                      />
-                    ) : (
-                      <div className="h-full w-full overflow-hidden rounded-[24px]">
-                        <PuppyImage variant={`p${(i + 1) * 2}` as never} />
-                      </div>
-                    )}
+                    <p className="text-[26px] font-bold leading-none tracking-[-0.4px] text-brand-brown lg:text-[30px]">
+                      {s.num}
+                    </p>
+                    <h3 className="mt-2 text-[22px] font-bold leading-[1.2] tracking-[-0.32px] text-black lg:mt-3 lg:text-[28px]">
+                      {s.title}
+                    </h3>
+                    <p className="mt-4 break-keep text-[15px] leading-[1.7] text-ink-700 lg:mt-5 lg:text-[16px]">
+                      {s.desc}
+                    </p>
                   </div>
-                </div>
-                <div
-                  className={`lg:max-w-[440px] ${
-                    imgRight ? "lg:order-1 lg:ml-auto lg:pr-2" : "lg:pl-2"
-                  }`}
-                >
-                  <p className="text-[26px] font-bold leading-none tracking-[-0.4px] text-brand-brown lg:text-[30px]">
-                    {s.num}
-                  </p>
-                  <h3 className="mt-2 text-[22px] font-bold leading-[1.2] tracking-[-0.32px] text-black lg:mt-3 lg:text-[28px]">
-                    {s.title}
-                  </h3>
-                  <p className="mt-4 break-keep text-[15px] leading-[1.7] text-ink-700 lg:mt-5 lg:text-[16px]">
-                    {s.desc}
-                  </p>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+                </article>
+              </section>
+            </div>
+          );
+        })}
+      </div>
 
-        {/* 예약금 환불 안내 */}
-        <div className="mt-12 space-y-6 border-t border-line-card pt-10 lg:mt-16 lg:space-y-8 lg:pt-12">
+      {/* 예약금 환불 안내 */}
+      <section className="mx-auto w-full max-w-page-wide px-6 pb-16 pt-12 lg:px-12 xl:px-20 2xl:px-[180px] lg:pb-20 xl:pb-24">
+        <div className="space-y-6 border-t border-line-card pt-10 lg:space-y-8 lg:pt-12">
           {REFUND.map((r) => (
             <div
               key={r.label}
@@ -212,8 +220,31 @@ export default function ContactPage() {
         </div>
       </section>
 
+      {/* 지도 (Figma 1563×665) */}
+      <section className="mx-auto w-full max-w-page-wide px-6 pt-16 lg:px-12 xl:px-20 2xl:px-[174px] lg:pt-20 xl:pt-28 2xl:pt-[88px]">
+        <div className="relative aspect-[16/7] w-full overflow-hidden rounded-[24px] bg-ink-300 ring-1 ring-line-card lg:aspect-[1563/665] lg:rounded-[32px]">
+          <MapEmbed
+            query={STORE_ADDRESS}
+            zoom={17}
+            title={pick(lang, "꼬똥켄넬 위치", "Coton Kennel 位置")}
+          />
+          <a
+            href={mapLink(STORE_ADDRESS)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute right-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-[12.5px] font-medium text-black shadow-card backdrop-blur transition-colors hover:bg-white"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="#8E5E27" strokeWidth="1.8" aria-hidden>
+              <path d="M12 21s-7-7-7-12a7 7 0 0114 0c0 5-7 12-7 12z" />
+              <circle cx="12" cy="9" r="2.5" />
+            </svg>
+            {pick(lang, "큰 지도로 보기", "查看大地图")}
+          </a>
+        </div>
+      </section>
+
       {/* 방문 안내 4 카드 (Figma 365×212 #f9f9f9) */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pt-16 lg:px-12 xl:px-20 2xl:px-[182px] lg:pt-20 xl:pt-28 2xl:pt-[88px]">
+      <section className="mx-auto w-full max-w-page-wide px-6 pt-12 lg:px-12 xl:px-20 2xl:px-[182px] lg:pt-14 xl:pt-16 2xl:pt-[60px]">
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-[37px]">
           <VisitCard
             label={pick(lang, "주소", "地址")}
@@ -249,35 +280,12 @@ export default function ContactPage() {
           />
           <VisitCard
             label={pick(lang, "대표번호", "电话")}
-            value={<span className="tnum">02-472-9966</span>}
+            value={<span className="tnum">0507-1390-8073</span>}
           />
           <VisitCard
             label={pick(lang, "운영시간", "营业时间")}
             value={pick(lang, "주차가능 24시간 연중무휴", "可停车 24小时 全年无休")}
           />
-        </div>
-      </section>
-
-      {/* 지도 (Figma 1563×665) */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pt-12 lg:px-12 xl:px-20 2xl:px-[174px] lg:pt-20 xl:pt-28 2xl:pt-[88px]">
-        <div className="relative aspect-[16/7] w-full overflow-hidden rounded-[24px] bg-ink-300 ring-1 ring-line-card lg:aspect-[1563/665] lg:rounded-[32px]">
-          <MapEmbed
-            query={STORE_ADDRESS}
-            zoom={17}
-            title={pick(lang, "꼬똥켄넬 위치", "Coton Kennel 位置")}
-          />
-          <a
-            href={mapLink(STORE_ADDRESS)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute right-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-[12.5px] font-medium text-black shadow-card backdrop-blur transition-colors hover:bg-white"
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="#8E5E27" strokeWidth="1.8" aria-hidden>
-              <path d="M12 21s-7-7-7-12a7 7 0 0114 0c0 5-7 12-7 12z" />
-              <circle cx="12" cy="9" r="2.5" />
-            </svg>
-            {pick(lang, "큰 지도로 보기", "查看大地图")}
-          </a>
         </div>
       </section>
 
@@ -323,7 +331,7 @@ export default function ContactPage() {
             }
             iconBg="bg-brand-brown"
             title={pick(lang, "전화 상담", "电话咨询")}
-            highlight="010-0000-0000"
+            highlight="0507-1390-8073"
             desc={pick(
               lang,
               "전화 상담 가능 시간은 평일 10:00–19:00입니다. 월요일은 휴무입니다.",
@@ -332,7 +340,7 @@ export default function ContactPage() {
             ctaLabel={pick(lang, "전화상담 바로가기", "立即拨打")}
             ctaBg="bg-brand-brown"
             ctaText="text-white"
-            href="tel:0247299666"
+            href="tel:050713908073"
           />
           {/* 위챗 */}
           <button
@@ -370,13 +378,23 @@ export default function ContactPage() {
         <div className="mt-10 grid grid-cols-1 gap-6 lg:mt-14 2xl:mt-[44px] lg:grid-cols-3 lg:gap-10 xl:gap-14 2xl:gap-[36px]">
           <SnsCard
             icon={
-              <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" aria-hidden className="h-6 w-6">
-                <rect x="3" y="3" width="18" height="18" rx="5" />
-                <circle cx="12" cy="12" r="4" />
-                <circle cx="17.5" cy="6.5" r="0.9" fill="white" stroke="none" />
+              <svg viewBox="0 0 48 48" aria-hidden className="h-full w-full">
+                <defs>
+                  <radialGradient id="contact-ig-g" cx="30%" cy="107%" r="150%">
+                    <stop offset="0%" stopColor="#FDF497" />
+                    <stop offset="5%" stopColor="#FDF497" />
+                    <stop offset="45%" stopColor="#FD5949" />
+                    <stop offset="60%" stopColor="#D6249F" />
+                    <stop offset="90%" stopColor="#285AEB" />
+                  </radialGradient>
+                </defs>
+                <circle cx="24" cy="24" r="24" fill="url(#contact-ig-g)" />
+                <rect x="14" y="14" width="20" height="20" rx="6" fill="none" stroke="#fff" strokeWidth="2.6" />
+                <circle cx="24" cy="24" r="5.4" fill="none" stroke="#fff" strokeWidth="2.6" />
+                <circle cx="30.6" cy="17.4" r="1.7" fill="#fff" />
               </svg>
             }
-            iconBg="bg-social-insta"
+            iconBg=""
             title={pick(lang, "인스타그램 DM", "Instagram DM")}
             highlight={pick(lang, "일상 사진 · 숏폼 영상", "日常照片 · 短视频")}
             ctaLabel={pick(lang, "인스타그램 바로가기", "前往 Instagram")}
@@ -459,62 +477,63 @@ export default function ContactPage() {
           )}
         </p>
 
-        <ul className="mt-8 space-y-4 lg:mt-[57px] lg:space-y-[27px]">
-          {FAQ.map((f, i) => {
-            const isOpen = openFaq === i;
+        <div className="relative mt-8 lg:mt-[57px]">
+          {(() => {
+            const f = FAQ[Math.min(faqIdx, FAQ.length - 1)];
             return (
-              <li
-                key={i}
-                className="overflow-hidden rounded-[20px] border border-brand-brown bg-white shadow-card lg:rounded-[29px]"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaq(isOpen ? null : i)}
-                  aria-expanded={isOpen}
-                  className="flex w-full items-center gap-4 px-6 py-6 text-left lg:gap-[42px] lg:px-[59px] lg:py-[34px]"
-                >
-                  <span
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center text-[16px] font-bold lg:max-w-[56px] 2xl:h-[56px] 2xl:w-[56px] lg:rounded-[28px] lg:text-[24px] ${
-                      isOpen
-                        ? "rounded-[20px] bg-brand-brown text-white"
-                        : "rounded-[20px] bg-brand-tan text-brand-brown"
-                    }`}
-                  >
+              <article className="rounded-[20px] border border-brand-brown bg-white shadow-card lg:rounded-[29px]">
+                <div className="flex items-start gap-4 px-6 py-6 lg:gap-[42px] lg:px-[59px] lg:py-[34px]">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[20px] bg-brand-brown text-[16px] font-bold text-white lg:h-[56px] lg:w-[56px] lg:rounded-[28px] lg:text-[24px]">
                     Q
                   </span>
-                  <span className="font-pretendard flex-1 text-[16px] font-bold leading-[1.3] text-black lg:text-[28px]">
+                  <span className="flex-1 text-[16px] font-bold leading-[1.3] text-black lg:text-[28px]">
                     {f.q}
                   </span>
-                  <span
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all duration-300 lg:max-w-[51px] 2xl:h-[51px] 2xl:w-[51px] ${
-                      isOpen
-                        ? "rotate-180 bg-brand-brown text-white"
-                        : "bg-brand-tan text-brand-brown"
-                    }`}
-                    aria-hidden
-                  >
-                    <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
-                </button>
-                <div
-                  className={`grid transition-[grid-template-rows] duration-300 ease-out ${
-                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <div className="flex items-start gap-4 px-6 pb-7 pl-[60px] lg:gap-[42px] lg:px-[59px] lg:pb-[40px] lg:pl-[157px]">
-                      <p className="flex-1 text-[14px] leading-[1.65] text-ink-500 lg:text-[18px] lg:leading-[28.785px]">
-                        {f.a}
-                      </p>
-                    </div>
-                  </div>
                 </div>
-              </li>
+                <div className="flex items-start gap-4 border-t border-brand-tan/60 px-6 pb-7 pt-5 lg:gap-[42px] lg:px-[59px] lg:pb-[40px] lg:pt-7">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[20px] bg-brand-tan text-[16px] font-bold text-brand-brown lg:h-[56px] lg:w-[56px] lg:rounded-[28px] lg:text-[24px]">
+                    A
+                  </span>
+                  <p className="flex-1 text-[14px] leading-[1.65] text-ink-700 lg:text-[18px] lg:leading-[28.785px]">
+                    {f.a}
+                  </p>
+                </div>
+              </article>
             );
-          })}
-        </ul>
+          })()}
+
+          <div className="mt-6 flex items-center justify-center gap-4 lg:mt-8">
+            <button
+              type="button"
+              onClick={() => setFaqIdx((i) => (i - 1 + FAQ.length) % FAQ.length)}
+              aria-label={pick(lang, "이전 질문", "上一个")}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-line-card bg-white text-brand-brown shadow-card transition-colors hover:bg-brand-beige lg:h-11 lg:w-11"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <div className="flex items-center gap-2">
+              {FAQ.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setFaqIdx(i)}
+                  aria-label={`${i + 1}번째 질문`}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === faqIdx ? "w-6 bg-brand-brown" : "w-1.5 bg-ink-300 hover:bg-ink-300/70"
+                  }`}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setFaqIdx((i) => (i + 1) % FAQ.length)}
+              aria-label={pick(lang, "다음 질문", "下一个")}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-line-card bg-white text-brand-brown shadow-card transition-colors hover:bg-brand-beige lg:h-11 lg:w-11"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
       </section>
 
       {/* 공지사항 테이블 (Figma 1555×58 헤더, NO/제목/날짜) */}
