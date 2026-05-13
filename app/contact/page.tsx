@@ -141,9 +141,15 @@ export default function ContactPage() {
                 <div className={`w-full ${imgRight ? "lg:order-2" : ""}`}>
                   {imgUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={imgUrl} alt={s.title} className="mx-auto w-full max-w-[560px]" />
+                    <img
+                      src={imgUrl}
+                      alt={s.title}
+                      className={`mx-auto w-full max-w-[560px] ${imgRight ? "lg:ml-0" : ""}`}
+                    />
                   ) : (
-                    <div className="mx-auto aspect-[16/10] w-full max-w-[560px] overflow-hidden rounded-[24px]">
+                    <div
+                      className={`mx-auto aspect-[16/10] w-full max-w-[560px] overflow-hidden rounded-[24px] ${imgRight ? "lg:ml-0" : ""}`}
+                    >
                       <PuppyImage variant={`p${(i + 1) * 2}` as never} />
                     </div>
                   )}
