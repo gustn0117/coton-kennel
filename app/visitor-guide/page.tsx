@@ -7,15 +7,16 @@ import StarRating from "@/components/StarRating";
 import { supabasePublic, type Review, type SiteImage } from "@/lib/supabase";
 import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
-import { ChevronLeft, ChevronRight } from "@/components/icons";
+import { ChevronLeft, ChevronRight, ChevronDown } from "@/components/icons";
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 5;
 
 export default function VisitorGuidePage() {
   const lang = useLang();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
   const [page, setPage] = useState(0);
+  const [openId, setOpenId] = useState<string | null>(null);
 
   useEffect(() => {
     supabasePublic
@@ -37,6 +38,26 @@ export default function VisitorGuidePage() {
     () => reviews.slice(safePage * PAGE_SIZE, (safePage + 1) * PAGE_SIZE),
     [reviews, safePage]
   );
+
+  const fallbackReviews: Review[] = Array.from({ length: 5 }).map((_, i) => ({
+    id: `f-${i}`,
+    name: pick(lang, "후기 제목", "评价标题"),
+    title: pick(lang, "후기 제목", "评价标题"),
+    body: pick(
+      lang,
+      "후기 내용이 들어갑니다. 후기 내용이 들어갑니다. 후기 내용이 들어갑니다.",
+      "评价内容。评价内容。评价内容。"
+    ),
+    period: "2026.00.00",
+    variant: ["p2", "p5", "p9", "p1", "p7"][i] ?? "p2",
+    image_url: null,
+    created_at: "",
+  }));
+  const list = visible.length > 0 ? visible : fallbackReviews;
+
+  function toggle(id: string) {
+    setOpenId((prev) => (prev === id ? null : id));
+  }
 
   return (
     <>
@@ -61,39 +82,68 @@ export default function VisitorGuidePage() {
         imageRadius={68}
       />
 
-      {/* 가족이 된 후기 - 6 cards 2x3 grid */}
       <section className="mx-auto w-full max-w-page-wide px-6 py-16 lg:px-12 xl:px-20 2xl:px-[180px] lg:py-20 xl:py-28 2xl:py-[116px]">
         <h2 className="text-[32px] font-bold leading-[1.1] text-black lg:text-[44px] lg:leading-[64px] lg:tracking-[-0.55px]">
           <span>{pick(lang, "가족이 된 ", "成为家人的 ")}</span>
           <span className="text-brand-brown">{pick(lang, "후기", "评价")}</span>
         </h2>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:mt-14 2xl:mt-[77px] lg:grid-cols-3 lg:gap-10 xl:gap-14 2xl:gap-[36px]">
-          {visible.length > 0
-            ? visible.map((r) => <FigmaReviewCard key={r.id} review={r} />)
-            : Array.from({ length: 6 }).map((_, i) => (
-                <FigmaReviewCard
-                  key={`f-${i}`}
-                  review={{
-                    id: `f-${i}`,
-                    name: pick(lang, "후기 제목", "评价标题"),
-                    title: pick(lang, "후기 제목", "评价标题"),
-                    body: pick(
-                      lang,
-                      "후기 내용이 들어갑니다. 후기 내용이 들어갑니다. 후기 내용이 들어갑니다.",
-                      "评价内容。评价内容。评价内容。"
-                    ),
-                    period: "2026.00.00",
-                    variant: ["p2", "p5", "p9", "p1", "p7", "p11"][i] ?? "p2",
-                    image_url: null,
-                  } as Review}
-                />
-              ))}
-        </div>
+        <ul className="mt-10 divide-y divide-line-card border-y border-line-card lg:mt-14">
+          {list.map((r) => {
+            const isOpen = openId === r.id;
+            return (
+              <li key={r.id}>
+                <button
+                  type="button"
+                  onClick={() => toggle(r.id)}
+                  aria-expanded={isOpen}
+                  className="flex w-full items-center gap-4 py-5 text-left transition-colors hover:bg-brand-beige/40 lg:py-7"
+                >
+                  <span className="flex-1 min-w-0">
+                    <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                      <span className="text-[17px] font-bold text-black lg:text-[22px]">
+                        {r.title || r.name}
+                      </span>
+                      <span className="text-[13px] text-ink-500 lg:text-[15px]">
+                        {r.period}
+                      </span>
+                    </span>
+                    <span className="mt-1.5 block">
+                      <StarRating rating={5} />
+                    </span>
+                  </span>
+                  <ChevronDown
+                    className={`h-5 w-5 shrink-0 text-brand-brown transition-transform duration-200 ${
+                      isOpen ? "rotate-180" : ""
+                    } lg:h-6 lg:w-6`}
+                  />
+                </button>
 
-        {/* Pagination */}
+                <div
+                  className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="grid grid-cols-1 gap-6 pb-6 lg:grid-cols-[minmax(0,380px)_1fr] lg:gap-10 lg:pb-9">
+                      <div className="aspect-[481/342] w-full overflow-hidden rounded-[16px] lg:rounded-[20px]">
+                        <PuppyImage variant={r.variant as never} url={r.image_url} />
+                      </div>
+                      <div className="flex flex-col justify-center">
+                        <p className="whitespace-pre-line text-[14px] leading-[1.65] text-ink-700 lg:text-[16px] lg:leading-[1.75]">
+                          {r.body}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+
         {totalPages > 1 && (
-          <div className="mt-16 flex items-center justify-center gap-[15px] lg:mt-14 2xl:mt-[55px]">
+          <div className="mt-12 flex items-center justify-center gap-[15px] lg:mt-14 2xl:mt-[55px]">
             <button
               type="button"
               onClick={() => setPage((p) => Math.max(0, p - 1))}
@@ -130,29 +180,5 @@ export default function VisitorGuidePage() {
         )}
       </section>
     </>
-  );
-}
-
-function FigmaReviewCard({ review }: { review: Review }) {
-  return (
-    <article className="card-asym overflow-hidden border border-line-card bg-white shadow-card">
-      <div className="aspect-[481/342] w-full">
-        <PuppyImage variant={review.variant as never} url={review.image_url} />
-      </div>
-      <div className="px-[42px] pb-8 pt-10">
-        <StarRating rating={5} />
-        <div className="mt-4 flex items-baseline gap-3">
-          <h3 className="text-[20px] font-bold leading-tight text-black lg:text-[30px] lg:tracking-[-0.3px]">
-            {review.title || review.name}
-          </h3>
-          <span className="text-[14px] text-ink-500 lg:text-[16px]">
-            {review.period}
-          </span>
-        </div>
-        <p className="mt-3 line-clamp-4 text-[14px] leading-[1.6] text-ink-700 lg:text-[16px]">
-          {review.body}
-        </p>
-      </div>
-    </article>
   );
 }
