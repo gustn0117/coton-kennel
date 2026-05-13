@@ -135,8 +135,9 @@ function KennelIntro({
   const slide = slides[idx];
 
   return (
-    <section className="mx-auto w-full max-w-page-wide px-5 py-14 sm:px-6 md:py-20 lg:px-12 lg:py-24 xl:px-20 2xl:px-[180px] 2xl:py-[91px]">
-      <div className="relative grid grid-cols-1 items-center gap-10 md:gap-12 lg:grid-cols-[minmax(0,733px)_1fr] lg:gap-12 xl:gap-16 2xl:gap-[61px]">
+    <section className="w-full bg-brand-beige">
+      <div className="mx-auto w-full max-w-page-wide px-5 py-14 sm:px-6 md:py-20 lg:px-12 lg:py-24 xl:px-20 2xl:px-[180px] 2xl:py-[91px]">
+        <div className="relative grid grid-cols-1 items-center gap-10 md:gap-12 lg:grid-cols-[minmax(0,733px)_1fr] lg:gap-12 xl:gap-16 2xl:gap-[61px]">
         <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[20px] lg:max-w-[733px] lg:rounded-[28px] 2xl:rounded-[32px]">
           <PuppyImage
             key={idx}
@@ -180,20 +181,21 @@ function KennelIntro({
         >
           <ChevronRight className="h-5 w-5" />
         </button>
-      </div>
+        </div>
 
-      <div className="mt-8 flex justify-center gap-2">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => setIdx(i)}
-            aria-label={`${i + 1}번째 섹션`}
-            className={`h-1.5 rounded-full transition-all ${
-              i === idx ? "w-6 bg-brand-brown" : "w-1.5 bg-ink-300 hover:bg-ink-300/70"
-            }`}
-          />
-        ))}
+        <div className="mt-8 flex justify-center gap-2">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setIdx(i)}
+              aria-label={`${i + 1}번째 섹션`}
+              className={`h-1.5 rounded-full transition-all ${
+                i === idx ? "w-6 bg-brand-brown" : "w-1.5 bg-ink-300 hover:bg-ink-300/70"
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
