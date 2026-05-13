@@ -367,7 +367,7 @@ export default function ContactPage() {
           )}
         </p>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 lg:mt-14 2xl:mt-[44px] lg:grid-cols-3 lg:gap-10 xl:gap-14 2xl:gap-[36px]">
+        <div className="mx-auto mt-10 grid max-w-[1120px] grid-cols-1 gap-5 sm:grid-cols-3 lg:mt-14 lg:gap-8 xl:gap-10">
           <SnsCard
             icon={
               <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" aria-hidden className="h-6 w-6">
@@ -414,9 +414,12 @@ export default function ContactPage() {
       {/* Premium Pet 배너 (Figma 1563×477 #f9f6f0) */}
       <section className="mx-auto w-full max-w-page-wide px-6 pt-20 lg:px-12 xl:px-20 2xl:px-[179px] lg:pt-20 xl:pt-28 2xl:pt-[78px]">
         <div className="flex flex-col items-center rounded-[24px] bg-brand-beige px-8 py-12 text-center lg:rounded-[30px] lg:px-8 lg:py-[52px]">
-          <div className="relative h-[130px] w-[280px] overflow-hidden lg:max-w-[420px] 2xl:h-[193px] 2xl:w-[420px]">
-            <PuppyImage variant="p10" />
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={PREMIUM_PET_IMG}
+            alt="Premium Pet"
+            className="h-auto w-[220px] sm:w-[260px] lg:w-[300px]"
+          />
           <p className="mt-6 max-w-[716px] text-[15px] leading-[1.6] text-ink-700 lg:mt-[20px] lg:text-[18px]">
             {pick(
               lang,
@@ -512,34 +515,6 @@ export default function ContactPage() {
             );
           })}
         </ul>
-      </section>
-
-      {/* Premium Pet 안내 배너 */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pt-16 lg:px-12 xl:px-20 2xl:px-[181px] lg:pt-20">
-        <div className="rounded-[24px] border border-line-card bg-line-surface px-6 py-10 text-center sm:px-10 lg:px-16 lg:py-14">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={PREMIUM_PET_IMG}
-            alt="Premium Pet"
-            className="mx-auto h-auto w-full max-w-[360px]"
-          />
-          <p className="mx-auto mt-6 max-w-[640px] break-keep text-[15px] leading-[1.7] text-ink-700 lg:text-[16px]">
-            {pick(
-              lang,
-              "꼬똥 드 툴레아 외에도 일반 견종 등 추가 견종이 궁금하신 경우, 아래 전용 페이지에서 추가적으로 다양한 아이들을 확인하실 수 있습니다.",
-              "除棉花面纱犬外,如您还想了解普通犬种等其他犬种,可在下方专属页面查看更多宝贝。"
-            )}
-          </p>
-          <a
-            href="#"
-            className="mt-6 inline-flex h-[48px] items-center gap-2 rounded-full bg-brand-brown px-7 text-[14px] text-white transition-colors hover:bg-black lg:h-[52px] lg:text-[15px]"
-          >
-            {pick(lang, "Premium Pet 방문하기", "访问 Premium Pet")}
-            <svg width="20" height="8" viewBox="0 0 22 8" fill="none" aria-hidden>
-              <path d="M0 4h20m0 0L16 1m4 3l-4 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-            </svg>
-          </a>
-        </div>
       </section>
 
       {/* 공지사항 테이블 (Figma 1555×58 헤더, NO/제목/날짜) */}
@@ -799,20 +774,20 @@ function SnsCard({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="card-asym group flex flex-col items-center border border-line-card bg-white p-10 text-center shadow-card transition-all hover:-translate-y-1"
+      className="card-asym group flex min-h-[280px] flex-col items-center border border-line-card bg-white p-7 text-center shadow-card transition-all hover:-translate-y-1 sm:min-h-[300px] lg:min-h-[330px] lg:p-9"
     >
-      <div className={`flex h-[58px] w-[58px] items-center justify-center rounded-full ${iconBg}`}>
+      <div className={`flex h-12 w-12 items-center justify-center rounded-full lg:h-14 lg:w-14 ${iconBg}`}>
         {icon}
       </div>
-      <h3 className="mt-6 text-[22px] font-bold tracking-[-0.3px] text-black lg:text-[30px]">
+      <h3 className="mt-5 text-[19px] font-bold tracking-[-0.3px] text-black lg:mt-6 lg:text-[24px]">
         {title}
       </h3>
-      <p className="mt-3 text-[14px] text-ink-500 lg:text-[16px]">
+      <p className="mt-2 text-[13px] text-ink-500 lg:text-[15px]">
         {highlight}
       </p>
       <span
-        className={`mt-auto inline-flex h-[59px] w-full max-w-[326px] items-center justify-between gap-2 px-8 pt-0 text-[15px] lg:text-[16px] ${ctaBg} ${ctaText}`}
-        style={{ borderRadius: "29.5px", marginTop: "auto" }}
+        className={`mt-auto inline-flex h-[48px] w-full items-center justify-between gap-2 px-6 text-[13.5px] lg:h-[52px] lg:text-[15px] ${ctaBg} ${ctaText}`}
+        style={{ borderRadius: "26px", marginTop: "auto" }}
       >
         <span className="flex-1 text-center">{ctaLabel}</span>
         <svg width="22" height="8" viewBox="0 0 22 8" fill="none" aria-hidden>
