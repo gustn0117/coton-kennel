@@ -130,38 +130,42 @@ export default function ContactPage() {
         </p>
 
         <div className="mt-12 space-y-16 lg:mt-14 2xl:mt-[55px] lg:space-y-[100px]">
-          {STEPS.map((s, i) => (
-            <article
-              key={i}
-              className={`grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-14 2xl:gap-[58px] ${
-                i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
-              }`}
-            >
-              <div className={`relative aspect-[16/10] w-full overflow-hidden rounded-[24px] bg-brand-beige lg:rounded-[32px] ${i % 2 === 0 ? "" : "lg:order-1"}`}>
-                {stepImages[`contact.step.${i + 1}`] ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={stepImages[`contact.step.${i + 1}`] as string}
-                    alt={s.title}
-                    className="absolute inset-0 h-full w-full object-contain p-4 sm:p-6 lg:p-8"
-                  />
-                ) : (
-                  <PuppyImage variant={`p${(i + 1) * 2}` as never} />
-                )}
-              </div>
-              <div className={i % 2 === 0 ? "" : "lg:order-2"}>
-                <p className="text-[28px] font-bold leading-none tracking-[-0.4px] text-brand-brown lg:text-[32px]">
-                  {s.num}
-                </p>
-                <h3 className="mt-3 text-[24px] font-bold leading-[1.2] tracking-[-0.32px] text-black lg:mt-[14px] lg:text-[32px]">
-                  {s.title}
-                </h3>
-                <p className="mt-5 whitespace-pre-line text-[15px] leading-[1.65] text-ink-700 lg:mt-[53px] lg:text-[18px]">
-                  {s.desc}
-                </p>
-              </div>
-            </article>
-          ))}
+          {STEPS.map((s, i) => {
+            const imgRight = i % 2 === 1; // 2,4단계는 사진 오른쪽
+            const imgUrl = stepImages[`contact.step.${i + 1}`];
+            return (
+              <article
+                key={i}
+                className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16 2xl:gap-[58px]"
+              >
+                <div className={`relative aspect-[16/10] w-full ${imgRight ? "lg:order-2" : ""}`}>
+                  {imgUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={imgUrl}
+                      alt={s.title}
+                      className="absolute inset-0 h-full w-full object-contain"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 overflow-hidden rounded-[24px] lg:rounded-[32px]">
+                      <PuppyImage variant={`p${(i + 1) * 2}` as never} />
+                    </div>
+                  )}
+                </div>
+                <div className={imgRight ? "lg:order-1" : ""}>
+                  <p className="text-[28px] font-bold leading-none tracking-[-0.4px] text-brand-brown lg:text-[32px]">
+                    {s.num}
+                  </p>
+                  <h3 className="mt-3 text-[24px] font-bold leading-[1.2] tracking-[-0.32px] text-black lg:mt-[14px] lg:text-[32px]">
+                    {s.title}
+                  </h3>
+                  <p className="mt-5 whitespace-pre-line text-[15px] leading-[1.65] text-ink-700 lg:mt-[53px] lg:text-[18px]">
+                    {s.desc}
+                  </p>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
