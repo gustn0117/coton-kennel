@@ -129,37 +129,33 @@ export default function ContactPage() {
           )}
         </p>
 
-        <div className="mt-12 space-y-16 lg:mt-14 2xl:mt-[55px] lg:space-y-[100px]">
+        <div className="mt-10 space-y-10 lg:mt-12 lg:space-y-12 xl:space-y-16">
           {STEPS.map((s, i) => {
             const imgRight = i % 2 === 1; // 2,4단계는 사진 오른쪽
             const imgUrl = stepImages[`contact.step.${i + 1}`];
             return (
               <article
                 key={i}
-                className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16 2xl:gap-[58px]"
+                className="grid grid-cols-1 items-center gap-6 lg:grid-cols-2 lg:gap-10 xl:gap-14"
               >
-                <div className={`relative aspect-[16/10] w-full ${imgRight ? "lg:order-2" : ""}`}>
+                <div className={`w-full ${imgRight ? "lg:order-2" : ""}`}>
                   {imgUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={imgUrl}
-                      alt={s.title}
-                      className="absolute inset-0 h-full w-full object-contain"
-                    />
+                    <img src={imgUrl} alt={s.title} className="mx-auto w-full max-w-[560px]" />
                   ) : (
-                    <div className="absolute inset-0 overflow-hidden rounded-[24px] lg:rounded-[32px]">
+                    <div className="mx-auto aspect-[16/10] w-full max-w-[560px] overflow-hidden rounded-[24px]">
                       <PuppyImage variant={`p${(i + 1) * 2}` as never} />
                     </div>
                   )}
                 </div>
                 <div className={imgRight ? "lg:order-1" : ""}>
-                  <p className="text-[28px] font-bold leading-none tracking-[-0.4px] text-brand-brown lg:text-[32px]">
+                  <p className="text-[26px] font-bold leading-none tracking-[-0.4px] text-brand-brown lg:text-[30px]">
                     {s.num}
                   </p>
-                  <h3 className="mt-3 text-[24px] font-bold leading-[1.2] tracking-[-0.32px] text-black lg:mt-[14px] lg:text-[32px]">
+                  <h3 className="mt-2 text-[22px] font-bold leading-[1.2] tracking-[-0.32px] text-black lg:mt-3 lg:text-[28px]">
                     {s.title}
                   </h3>
-                  <p className="mt-5 whitespace-pre-line text-[15px] leading-[1.65] text-ink-700 lg:mt-[53px] lg:text-[18px]">
+                  <p className="mt-4 whitespace-pre-line text-[15px] leading-[1.65] text-ink-700 lg:mt-5 lg:text-[16px]">
                     {s.desc}
                   </p>
                 </div>
