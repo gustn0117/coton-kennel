@@ -163,10 +163,10 @@ function KennelIntro({
         </div>
 
         <div className="flex flex-col justify-center lg:order-1">
-          <p className="text-[20px] font-bold leading-none text-brand-brown sm:text-[24px] lg:text-[28px] xl:text-[32px]">
+          <p className="text-[26px] font-extrabold leading-none tracking-[-0.01em] text-brand-brown sm:text-[32px] lg:text-[38px] xl:text-[44px] 2xl:text-[48px]">
             {slide.eyebrow}
           </p>
-          <h2 className="mt-2 text-[24px] font-bold leading-[1.18] text-black sm:text-[28px] lg:text-[32px]">
+          <h2 className="mt-3 text-[32px] font-extrabold leading-[1.12] tracking-[-0.018em] text-black sm:text-[40px] lg:text-[48px] xl:text-[56px] 2xl:text-[60px]">
             {slide.title}
           </h2>
           <div className="mt-5 space-y-3.5 lg:mt-7 2xl:mt-8">
