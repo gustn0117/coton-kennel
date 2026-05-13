@@ -132,8 +132,8 @@ export default function PremiumGuide({
 
   return (
     <section className="mx-auto w-full max-w-page-wide px-5 py-14 sm:px-6 md:py-20 lg:px-12 lg:py-24 xl:px-20 2xl:px-[180px] 2xl:py-[91px]">
-      <div className="relative grid grid-cols-1 items-stretch gap-10 md:gap-12 lg:grid-cols-[minmax(0,733px)_1fr] lg:gap-12 xl:gap-16 2xl:gap-[61px]">
-        {/* Left image — fixed aspect */}
+      <div className="grid grid-cols-1 items-stretch gap-10 md:gap-12 lg:grid-cols-[minmax(0,733px)_1fr] lg:gap-12 xl:gap-16 2xl:gap-[61px]">
+        {/* Left image — fixed aspect, arrows confined to image */}
         <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[20px] lg:max-w-[733px] lg:rounded-[28px] 2xl:rounded-[32px]">
           <ImageCarousel
             key={idx}
@@ -141,6 +141,22 @@ export default function PremiumGuide({
             fallbackVariant="p3"
             alt="Coton Kennel"
           />
+          <button
+            type="button"
+            onClick={() => setIdx((idx - 1 + total) % total)}
+            aria-label="이전 섹션"
+            className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-white md:h-11 md:w-11 lg:left-4"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setIdx((idx + 1) % total)}
+            aria-label="다음 섹션"
+            className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-white md:h-11 md:w-11 lg:right-4"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
         </div>
 
         {/* Right content — same vertical box on every slide */}
@@ -185,23 +201,6 @@ export default function PremiumGuide({
           </div>
         </div>
 
-        {/* Arrows */}
-        <button
-          type="button"
-          onClick={() => setIdx((idx - 1 + total) % total)}
-          aria-label="이전 섹션"
-          className="absolute left-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-line-surface md:h-11 md:w-11 lg:left-0 xl:-left-5"
-        >
-          <ChevronLeft className="h-5 w-5" />
-        </button>
-        <button
-          type="button"
-          onClick={() => setIdx((idx + 1) % total)}
-          aria-label="다음 섹션"
-          className="absolute right-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-line-surface md:h-11 md:w-11 lg:right-0 xl:-right-5"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </button>
       </div>
 
       {/* Dots */}
