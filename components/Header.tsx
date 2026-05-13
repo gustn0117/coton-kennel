@@ -40,7 +40,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white">
-      <div className="mx-auto flex h-16 w-full max-w-page-wide items-center justify-between px-5 sm:px-6 md:h-20 lg:h-24 lg:px-12 xl:px-20 2xl:h-[124px] 2xl:px-[159px]">
+      <div className="mx-auto flex h-14 w-full max-w-page-wide items-center justify-between px-5 sm:px-6 md:h-16 lg:h-[68px] lg:px-12 xl:h-[74px] xl:px-20 2xl:h-[84px] 2xl:px-[159px]">
         {/* Logo */}
         <Link href="/" className="shrink-0">
           <Logo />
@@ -52,7 +52,7 @@ export default function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className={`text-[14px] leading-none transition-colors lg:text-[16px] xl:text-[19px] 2xl:text-[24px] ${
+              className={`text-[14px] leading-none transition-colors lg:text-[15px] xl:text-[16px] 2xl:text-[18px] ${
                 isActive(item.href)
                   ? "font-bold text-brand-brown"
                   : "font-normal text-ink-900 hover:text-brand-brown"
@@ -68,7 +68,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => switchTo("ko")}
-            className={`flex h-9 items-center justify-center px-4 text-[13px] transition-colors lg:h-10 lg:w-[92px] lg:text-[14px] 2xl:h-[45px] 2xl:w-[116px] 2xl:text-[16px] ${
+            className={`flex h-8 items-center justify-center px-3.5 text-[12.5px] transition-colors lg:h-9 lg:w-[84px] lg:text-[13.5px] 2xl:h-[38px] 2xl:w-[96px] 2xl:text-[14px] ${
               lang === "ko"
                 ? "bg-brand-pink text-ink-900"
                 : "bg-white text-ink-500 ring-1 ring-brand-pink/60 hover:bg-brand-pink/40"
@@ -80,7 +80,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => switchTo("zh")}
-            className={`flex h-9 items-center justify-center px-4 text-[13px] transition-colors lg:h-10 lg:w-[92px] lg:text-[14px] 2xl:h-[45px] 2xl:w-[116px] 2xl:text-[16px] ${
+            className={`flex h-8 items-center justify-center px-3.5 text-[12.5px] transition-colors lg:h-9 lg:w-[84px] lg:text-[13.5px] 2xl:h-[38px] 2xl:w-[96px] 2xl:text-[14px] ${
               lang === "zh"
                 ? "bg-brand-brown text-white"
                 : "bg-white text-ink-500 ring-1 ring-brand-brown/40 hover:bg-brand-brown/10"
