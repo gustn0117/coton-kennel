@@ -18,19 +18,19 @@ const NOTICE_PAGE_SIZE = 5;
 function getSteps(lang: Lang) {
   if (lang === "zh") {
     return [
-      { num: "01", title: "查看幼犬", desc: "通过 Coton Kennel 官方网站,\n查看目前可分养幼犬的详细资料,\n仔细了解性别、毛色等信息。" },
-      { num: "02", title: "提前咨询", desc: "如有心仪的宝贝,请通过 KakaoTalk、电话或微信\n申请咨询。我们将向您介绍可分养时间、流程等详细信息。" },
-      { num: "03", title: "参观咨询", desc: "通过 1:1 预约亲临犬舍参观,\n确认父母犬与饲养环境。" },
-      { num: "04", title: "分养", desc: "我们会同时提供健康证明、血统证书及照护指南,\n并承诺终身售后照护。" },
-      { num: "05", title: "预约指南", desc: "棉花面纱犬采用预约制分养。\n如希望预约,可通过 1:1 咨询另行说明预约金事宜。" },
+      { num: "01", title: "查看幼犬", desc: "通过 Coton Kennel 官方网站, 查看目前可分养幼犬的详细资料, 仔细了解性别、毛色等信息。" },
+      { num: "02", title: "提前咨询", desc: "如有心仪的宝贝,请通过 KakaoTalk、电话或微信 申请咨询。我们将向您介绍可分养时间、流程等详细信息。" },
+      { num: "03", title: "参观咨询", desc: "通过 1:1 预约亲临犬舍参观, 确认父母犬与饲养环境。" },
+      { num: "04", title: "分养", desc: "我们会同时提供健康证明、血统证书及照护指南, 并承诺终身售后照护。" },
+      { num: "05", title: "预约指南", desc: "棉花面纱犬采用预约制分养。 如希望预约,可通过 1:1 咨询另行说明预约金事宜。" },
     ];
   }
   return [
-    { num: "01", title: "아이들 확인", desc: "꼬똥 켄넬 공식 홈페이지를 통해 현재 분양 가능한\n아이들의 상세 프로필을 확인하실 수 있습니다.\n각 아이의 성별, 모색 등을 꼼꼼히 살펴보세요." },
-    { num: "02", title: "문의", desc: "궁금하신 사항은 카카오톡, 전화, WeChat으로\n상담을 요청해주세요. 분양 가능 시기, 절차 등을\n안내해드립니다." },
-    { num: "03", title: "방문 및 상담", desc: "직접 방문하셔서 1:1 상담을 통해 켄넬을 둘러보시고,\n부모견과 환경을 확인하실 수 있습니다." },
-    { num: "04", title: "분양", desc: "국내외 분양 여부에 따라 절차가 다르며,\n건강 확인서, 혈통서, 케어 가이드를 함께 안내드립니다." },
-    { num: "05", title: "예약 안내", desc: "꼬똥 드 툴레아는 예약제로 분양됩니다.\n예약 희망 시, 예약금 안내는 1:1 상담으로 별도로 진행됩니다." },
+    { num: "01", title: "아이들 확인", desc: "꼬똥 켄넬 공식 홈페이지를 통해 현재 분양 가능한 아이들의 상세 프로필을 확인하실 수 있습니다. 각 아이의 성별, 모색 등을 꼼꼼히 살펴보세요." },
+    { num: "02", title: "문의", desc: "궁금하신 사항은 카카오톡, 전화, WeChat으로 상담을 요청해주세요. 분양 가능 시기, 절차 등을 안내해드립니다." },
+    { num: "03", title: "방문 및 상담", desc: "직접 방문하셔서 1:1 상담을 통해 켄넬을 둘러보시고, 부모견과 환경을 확인하실 수 있습니다." },
+    { num: "04", title: "분양", desc: "국내외 분양 여부에 따라 절차가 다르며, 건강 확인서, 혈통서, 케어 가이드를 함께 안내드립니다." },
+    { num: "05", title: "예약 안내", desc: "꼬똥 드 툴레아는 예약제로 분양됩니다. 예약 희망 시, 예약금 안내는 1:1 상담으로 별도로 진행됩니다." },
   ];
 }
 
@@ -139,28 +139,28 @@ export default function ContactPage() {
                 className="grid grid-cols-1 items-center gap-6 lg:grid-cols-2 lg:gap-10 xl:gap-14"
               >
                 <div className={`w-full ${imgRight ? "lg:order-2" : ""}`}>
-                  {imgUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={imgUrl}
-                      alt={s.title}
-                      className={`mx-auto w-full max-w-[560px] ${
-                        imgRight ? "lg:ml-0 lg:mr-auto" : "lg:ml-auto lg:mr-0"
-                      }`}
-                    />
-                  ) : (
-                    <div
-                      className={`mx-auto aspect-[16/10] w-full max-w-[560px] overflow-hidden rounded-[24px] ${
-                        imgRight ? "lg:ml-0 lg:mr-auto" : "lg:ml-auto lg:mr-0"
-                      }`}
-                    >
-                      <PuppyImage variant={`p${(i + 1) * 2}` as never} />
-                    </div>
-                  )}
+                  <div
+                    className={`mx-auto aspect-[3/2] w-full max-w-[520px] ${
+                      imgRight ? "lg:ml-0 lg:mr-auto" : "lg:ml-auto lg:mr-0"
+                    }`}
+                  >
+                    {imgUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={imgUrl}
+                        alt={s.title}
+                        className="h-full w-full object-contain"
+                      />
+                    ) : (
+                      <div className="h-full w-full overflow-hidden rounded-[24px]">
+                        <PuppyImage variant={`p${(i + 1) * 2}` as never} />
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div
-                  className={`lg:max-w-[460px] ${
-                    imgRight ? "lg:order-1 lg:ml-auto lg:pr-4" : "lg:pl-4"
+                  className={`lg:max-w-[440px] ${
+                    imgRight ? "lg:order-1 lg:ml-auto lg:pr-2" : "lg:pl-2"
                   }`}
                 >
                   <p className="text-[26px] font-bold leading-none tracking-[-0.4px] text-brand-brown lg:text-[30px]">
@@ -169,7 +169,7 @@ export default function ContactPage() {
                   <h3 className="mt-2 text-[22px] font-bold leading-[1.2] tracking-[-0.32px] text-black lg:mt-3 lg:text-[28px]">
                     {s.title}
                   </h3>
-                  <p className="mt-4 whitespace-pre-line text-[15px] leading-[1.65] text-ink-700 lg:mt-5 lg:text-[16px]">
+                  <p className="mt-4 break-keep text-[15px] leading-[1.7] text-ink-700 lg:mt-5 lg:text-[16px]">
                     {s.desc}
                   </p>
                 </div>
