@@ -140,7 +140,7 @@ function FigmaReviewCard({ review }: { review: Review }) {
         <PuppyImage variant={review.variant as never} url={review.image_url} />
       </div>
       <div className="px-[42px] pb-8 pt-10">
-        <StarRating rating={4} />
+        <StarRating rating={5} />
         <div className="mt-4 flex items-baseline gap-3">
           <h3 className="text-[20px] font-bold leading-tight text-black lg:text-[30px] lg:tracking-[-0.3px]">
             {review.title || review.name}

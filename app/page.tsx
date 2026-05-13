@@ -244,7 +244,7 @@ function ReviewCard({ review }: { review: Review }) {
         <PuppyImage variant={review.variant as never} url={review.image_url} />
       </div>
       <div className="px-6 pb-7 pt-8 sm:px-8 lg:px-[42px] lg:pb-8 lg:pt-10">
-        <StarRating rating={4} />
+        <StarRating rating={5} />
         <div className="mt-4 flex items-baseline gap-3">
           <h3 className="text-[18px] font-bold leading-tight text-black sm:text-[20px] lg:text-[24px] xl:text-[28px] 2xl:text-[30px] xl:tracking-[-0.3px]">
             {review.title || review.name}
