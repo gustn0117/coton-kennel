@@ -37,10 +37,164 @@ const FILTER_OPTIONS = {
   status: ["전체", "분양중", "분양완료"],
 } as const;
 
+/* ---------------- Kennel intro slider (Heritage / Champion Line / Premium Breeding) ---------------- */
+type IntroSlide = { eyebrow: string; title: string; body: string[]; imgKey: string };
+
+function getIntroSlides(lang: Lang): IntroSlide[] {
+  if (lang === "zh") {
+    return [
+      {
+        eyebrow: "Heritage",
+        title: "Conton Kennel",
+        imgKey: "puppies.breed.heritage",
+        body: [
+          "Coton Kennel 是位于首尔、专业繁育棉花面纱犬的犬舍,不只是单纯的分养,更坚守血统、品质与严格标准的高端犬舍。",
+          "以犬展上经过验证的成绩与一贯的繁育理念为基础,向您承诺一份值得信赖的选择。",
+        ],
+      },
+      {
+        eyebrow: "Champion Line",
+        title: "犬展获奖经历",
+        imgKey: "puppies.breed.appearance",
+        body: [
+          "Coton Kennel 的代表幼犬「Cotti」以法国 B.I.S(Best In Show 全犬种第一名)直系幼犬血统为基础,在 KKF(韩国犬业协会)、FCI(国际犬业联盟)等国内外犬展中取得优异成绩,并多次荣获 BIS。",
+          "目前我们仍持续准备参与海外犬展,为棉花面纱犬纯正血统的保护与品质提升不懈努力。",
+        ],
+      },
+      {
+        eyebrow: "Premium Breeding",
+        title: "自有繁育体系",
+        imgKey: "puppies.breed.temperament",
+        body: [
+          "Coton Kennel 以拥有犬展获奖履历的优秀血统为基础,在严格的标准下亲自进行繁育。作为在首尔通过自有繁育分养棉花面纱犬的专业犬舍,我们不止于外形,更甄选健康、性格、血统皆均衡的个体。",
+          "我们还拥有多种颜色的健康棉花面纱犬,您可以安心地见到符合自己喜好的珍贵家人。",
+          "Coton Kennel 不仅在国内,还通过与欧洲专业犬舍的合作,构建了透明且值得信赖的分养体系。",
+          "通过对包括遗传疾病在内的健康状态的彻底管理,帮助您安心开始陪伴生活。",
+          "所有宝贝都拥有可爱而温和的性格,无论选择哪一只作为伴侣犬与家人,都会长久地为家庭带来温暖的活力与幸福。",
+          "Coton Kennel 以标准与信赖为基础,为您牵起可以相伴一生的特别缘分。",
+        ],
+      },
+    ];
+  }
+  return [
+    {
+      eyebrow: "Heritage",
+      title: "Conton Kennel",
+      imgKey: "puppies.breed.heritage",
+      body: [
+        "꼬똥 켄넬은 서울에서 꼬똥 드 툴레아를 전문적으로 브리딩하는 켄넬로, 단순한 분양을 넘어 혈통과 품질, 그리고 엄격한 기준을 지켜온 프리미엄 켄넬입니다.",
+        "도그쇼에서 입증된 결과와 꾸준한 브리딩 철학을 바탕으로, 고객님께 신뢰할 수 있는 선택을 약속드립니다.",
+      ],
+    },
+    {
+      eyebrow: "Champion Line",
+      title: "도그쇼 수상 경력",
+      imgKey: "puppies.breed.appearance",
+      body: [
+        "꼬똥 켄넬의 대표 자견 ‘코따’는 프랑스 B.I.S (Best In Show, 전견종 1위) 직자견 혈통을 기반으로, KKF(한국애견협회), FCI(국제애견연맹) 등 국내외 도그쇼에서 우수한 성적과 함께 다수의 BIS 수상을 기록한 바 있습니다.",
+        "현재도 해외 도그쇼 출전을 지속적으로 준비하며, 꼬똥 드 툴레아의 순수 혈통 보존과 품질 향상을 위해 끊임없이 노력하고 있습니다.",
+      ],
+    },
+    {
+      eyebrow: "Premium Breeding",
+      title: "자체 브리딩 시스템",
+      imgKey: "puppies.breed.temperament",
+      body: [
+        "꼬똥 켄넬은 도그쇼 수상 이력을 갖춘 우수 혈통을 기반으로, 엄격한 기준 아래 직접 브리딩을 진행하고 있습니다. 서울에서 자체 브리딩을 통해 꼬똥 드 툴레아를 분양하는 전문 켄넬로서, 단순한 외형을 넘어 건강, 성격, 혈통까지 균형 잡힌 개체를 선별합니다.",
+        "또한 다양한 색상의 건강한 꼬똥들을 보유하고 있어, 고객님의 취향에 맞는 소중한 가족을 편안하게 만나보실 수 있습니다.",
+        "꼬똥 켄넬은 국내는 물론 유럽의 전문 켄넬들과의 협약을 통해 투명하고 신뢰할 수 있는 분양 시스템을 구축해왔습니다.",
+        "유전질환을 포함한 건강 상태에 대한 철저한 관리를 통해, 고객님께서 안심하고 반려를 시작할 수 있도록 돕고 있습니다.",
+        "모든 아이들은 사랑스럽고 온화한 성격을 지니고 있어, 어느 아이를 반려견이자 가족으로 선택하시더라도 오랜 시간 동안 가정에 따뜻한 활기와 행복을 전해드릴 것입니다.",
+        "꼬똥 켄넬은 기준과 신뢰를 바탕으로, 평생을 함께할 특별한 인연을 이어드립니다.",
+      ],
+    },
+  ];
+}
+
+function KennelIntro({
+  lang,
+  images,
+}: {
+  lang: Lang;
+  images: Record<string, string | null>;
+}) {
+  const slides = getIntroSlides(lang);
+  const total = slides.length;
+  const [idx, setIdx] = useState(0);
+  const slide = slides[idx];
+
+  return (
+    <section className="mx-auto w-full max-w-page-wide px-5 py-14 sm:px-6 md:py-20 lg:px-12 lg:py-24 xl:px-20 2xl:px-[180px] 2xl:py-[91px]">
+      <div className="relative grid grid-cols-1 items-center gap-10 md:gap-12 lg:grid-cols-[minmax(0,733px)_1fr] lg:gap-12 xl:gap-16 2xl:gap-[61px]">
+        <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[20px] lg:max-w-[733px] lg:rounded-[28px] 2xl:rounded-[32px]">
+          <PuppyImage
+            key={idx}
+            variant={(["p3", "p7", "p9"][idx] ?? "p3") as never}
+            url={images[slide.imgKey] ?? null}
+          />
+        </div>
+
+        <div className="flex flex-col justify-center">
+          <p className="text-[20px] font-bold leading-none text-brand-brown sm:text-[24px] lg:text-[28px] xl:text-[32px]">
+            {slide.eyebrow}
+          </p>
+          <h2 className="mt-2 text-[24px] font-bold leading-[1.18] text-black sm:text-[28px] lg:text-[32px]">
+            {slide.title}
+          </h2>
+          <div className="mt-5 space-y-3.5 lg:mt-7 2xl:mt-8">
+            {slide.body.map((p, i) => (
+              <p
+                key={i}
+                className="break-keep text-[15px] leading-[1.6] text-ink-500 sm:text-[16px] lg:text-[18px] xl:text-[21px] 2xl:leading-[31px]"
+              >
+                {p}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIdx((idx - 1 + total) % total)}
+          aria-label="이전 섹션"
+          className="absolute left-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-line-surface md:h-11 md:w-11 lg:left-0 xl:-left-5"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <button
+          type="button"
+          onClick={() => setIdx((idx + 1) % total)}
+          aria-label="다음 섹션"
+          className="absolute right-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-line-surface md:h-11 md:w-11 lg:right-0 xl:-right-5"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+      </div>
+
+      <div className="mt-8 flex justify-center gap-2">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => setIdx(i)}
+            aria-label={`${i + 1}번째 섹션`}
+            className={`h-1.5 rounded-full transition-all ${
+              i === idx ? "w-6 bg-brand-brown" : "w-1.5 bg-ink-300 hover:bg-ink-300/70"
+            }`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function PuppiesPage() {
   const lang = useLang();
   const [PUPPIES, setPuppies] = useState<Puppy[]>([]);
   const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
+  const [introImages, setIntroImages] = useState<Record<string, string | null>>(
+    {}
+  );
   const [selected, setSelected] = useState<Puppy | null>(null);
   const [activeThumb, setActiveThumb] = useState(0);
   const [page, setPage] = useState(0);
@@ -63,6 +217,21 @@ export default function PuppiesPage() {
       .eq("key", "puppies.hero")
       .order("slot", { ascending: true })
       .then(({ data }) => setHeroImages((data ?? []) as SiteImage[]));
+    supabasePublic
+      .from("site_images")
+      .select("*")
+      .in("key", [
+        "puppies.breed.heritage",
+        "puppies.breed.appearance",
+        "puppies.breed.temperament",
+      ])
+      .then(({ data }) => {
+        const map: Record<string, string | null> = {};
+        ((data ?? []) as SiteImage[]).forEach((r) => {
+          map[r.key] = r.image_url;
+        });
+        setIntroImages(map);
+      });
   }, []);
 
   const filteredPuppies = useMemo(() => {
@@ -104,6 +273,9 @@ export default function PuppiesPage() {
         images={heroImages}
         imageRadius={46}
       />
+
+      {/* Kennel intro slider: arrows swap the whole section */}
+      <KennelIntro lang={lang} images={introImages} />
 
       {/* Filter row + Grid */}
       <section className="mx-auto w-full max-w-page-wide px-6 pb-20 pt-16 lg:px-12 xl:px-20 2xl:px-[173px] lg:pb-20 xl:pb-28 2xl:pb-[92px] lg:pt-20 xl:pt-28 2xl:pt-[75px]">
