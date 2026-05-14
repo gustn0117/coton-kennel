@@ -71,138 +71,87 @@ export type SiteVideo = {
 
 export type SiteImageGroup = {
   key: string;
+  slot: number;
   label: string;
   description: string;
   page: string;
-  multiple: boolean;
+  pageLabel: string;
 };
 
 export const SITE_IMAGE_GROUPS: SiteImageGroup[] = [
+  // 홈 — Premium Guide 캐러셀 5 슬라이드 (home.premium 키의 slot 0-4)
   {
-    key: "home.hero",
-    label: "홈 — 메인 히어로",
-    description: "사이트 첫 화면 우측의 큰 이미지. 좌/우 화살표로 넘기는 캐러셀.",
+    key: "home.premium",
+    slot: 0,
+    label: "Premium Guide 섹션",
+    description: "홈 ‘Premium Guide’ 슬라이드 1번 ‘Coton Kennel의 약속’의 좌측 이미지.",
     page: "/",
-    multiple: true,
+    pageLabel: "홈 (메인페이지)",
   },
   {
     key: "home.premium",
-    label: "홈 — Premium Guide 섹션",
-    description: "‘Premium Guide’ 문구 좌측의 사진. 좌/우 화살표 캐러셀.",
+    slot: 1,
+    label: "Heritage 섹션",
+    description: "홈 Premium Guide 슬라이드 2번 ‘꼬똥 드 툴레아의 가치 있는 기원’의 좌측 이미지.",
     page: "/",
-    multiple: true,
+    pageLabel: "홈 (메인페이지)",
   },
   {
-    key: "home.highlight",
-    label: "홈 — Highlight 섹션",
-    description: "‘Highlight’ 제목 아래 16:10 비율의 한 장짜리 이미지.",
+    key: "home.premium",
+    slot: 2,
+    label: "Appearance 섹션",
+    description: "홈 Premium Guide 슬라이드 3번 ‘자연이 만든 섬세한 아름다움’의 좌측 이미지.",
     page: "/",
-    multiple: false,
+    pageLabel: "홈 (메인페이지)",
   },
+  {
+    key: "home.premium",
+    slot: 3,
+    label: "Temperament 섹션",
+    description: "홈 Premium Guide 슬라이드 4번 ‘따뜻하고 섬세한 교감’의 좌측 이미지.",
+    page: "/",
+    pageLabel: "홈 (메인페이지)",
+  },
+  {
+    key: "home.premium",
+    slot: 4,
+    label: "Care 섹션",
+    description: "홈 Premium Guide 슬라이드 5번 ‘견모 케어 방식’의 좌측 이미지.",
+    page: "/",
+    pageLabel: "홈 (메인페이지)",
+  },
+  // 강아지 소개 페이지 — KennelIntro 4 슬라이드 (각 슬라이드별 키)
   {
     key: "puppies.hero",
-    label: "강아지 페이지 — 메인 히어로",
-    description: "/puppies 첫 화면 우측 이미지. 좌/우 화살표 캐러셀.",
+    slot: 0,
+    label: "Introduce Puppies 섹션",
+    description: "강아지 소개 페이지 상단 슬라이드 1번 ‘Introduce Puppies’ 우측 이미지.",
     page: "/puppies",
-    multiple: true,
+    pageLabel: "강아지소개 페이지",
   },
   {
     key: "puppies.breed.heritage",
-    label: "강아지 페이지 — Heritage 섹션",
-    description: "‘꼬똥 드 툴레아의 가치 있는 기원’ 본문 옆 이미지.",
+    slot: 0,
+    label: "Heritage 섹션",
+    description: "강아지 소개 슬라이드 2번 ‘Heritage / Conton Kennel’ 우측 이미지.",
     page: "/puppies",
-    multiple: false,
+    pageLabel: "강아지소개 페이지",
   },
   {
     key: "puppies.breed.appearance",
-    label: "강아지 페이지 — Appearance 섹션",
-    description: "‘자연이 만든 섬세한 아름다움’ 본문 옆 이미지.",
+    slot: 0,
+    label: "Champion Line 섹션",
+    description: "강아지 소개 슬라이드 3번 ‘Champion Line / 도그쇼 수상 경력’ 우측 이미지.",
     page: "/puppies",
-    multiple: false,
+    pageLabel: "강아지소개 페이지",
   },
   {
     key: "puppies.breed.temperament",
-    label: "강아지 페이지 — Temperament 섹션",
-    description: "‘따뜻하고 섬세한 교감’ 본문 옆 이미지.",
+    slot: 0,
+    label: "Premium Breeding 섹션",
+    description: "강아지 소개 슬라이드 4번 ‘Premium Breeding / 자체 브리딩 시스템’ 우측 이미지.",
     page: "/puppies",
-    multiple: false,
-  },
-  {
-    key: "puppies.breed.care",
-    label: "강아지 페이지 — Care 섹션",
-    description: "‘견모 케어 방식’ 본문 옆 이미지.",
-    page: "/puppies",
-    multiple: false,
-  },
-  {
-    key: "visitor-guide.hero",
-    label: "후기/방문 안내 — 메인 히어로",
-    description: "/visitor-guide 첫 화면 우측 이미지.",
-    page: "/visitor-guide",
-    multiple: false,
-  },
-  {
-    key: "heritage.hero",
-    label: "Heritage — 메인 히어로",
-    description: "/heritage 첫 화면 우측 이미지. 좌/우 화살표 캐러셀.",
-    page: "/heritage",
-    multiple: true,
-  },
-  {
-    key: "heritage.champion",
-    label: "Heritage — Champion Line 섹션",
-    description: "‘도그쇼 수상 경력’ 우측 이미지. 좌/우 화살표 캐러셀.",
-    page: "/heritage",
-    multiple: true,
-  },
-  {
-    key: "heritage.cta",
-    label: "Heritage — 하단 CTA 박스",
-    description: "‘혈통의 깊이를 직접 만나보세요’ 우측 한 장.",
-    page: "/heritage",
-    multiple: false,
-  },
-  {
-    key: "contact.hero",
-    label: "상담/문의 — 메인 히어로",
-    description: "/contact 첫 화면 우측 이미지.",
-    page: "/contact",
-    multiple: false,
-  },
-  {
-    key: "contact.step.1",
-    label: "상담/문의 — Visitor Guide 1단계",
-    description: "‘아이들 확인’ 단계 카드의 이미지.",
-    page: "/contact",
-    multiple: false,
-  },
-  {
-    key: "contact.step.2",
-    label: "상담/문의 — Visitor Guide 2단계",
-    description: "‘사전 상담’ 단계 카드의 이미지.",
-    page: "/contact",
-    multiple: false,
-  },
-  {
-    key: "contact.step.3",
-    label: "상담/문의 — Visitor Guide 3단계",
-    description: "‘방문 상담’ 단계 카드의 이미지.",
-    page: "/contact",
-    multiple: false,
-  },
-  {
-    key: "contact.step.4",
-    label: "상담/문의 — Visitor Guide 4단계",
-    description: "‘분양’ 단계 카드의 이미지.",
-    page: "/contact",
-    multiple: false,
-  },
-  {
-    key: "contact.step.5",
-    label: "상담/문의 — Visitor Guide 5단계",
-    description: "‘케어 가이드’ 단계 카드의 이미지.",
-    page: "/contact",
-    multiple: false,
+    pageLabel: "강아지소개 페이지",
   },
 ];
 

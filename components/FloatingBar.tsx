@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
 import { CloseIcon } from "./icons";
@@ -101,8 +102,11 @@ type Item = {
 };
 
 export default function FloatingBar() {
+  const pathname = usePathname();
   const lang = useLang();
   const [showWeChatQR, setShowWeChatQR] = useState(false);
+
+  if (pathname?.startsWith("/admin")) return null;
 
   const items: Item[] = [
     { label: pick(lang, "카카오톡 상담", "KakaoTalk 咨询"), logo: KakaoLogo, href: "https://pf.kakao.com/" },

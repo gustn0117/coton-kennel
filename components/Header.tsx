@@ -28,6 +28,8 @@ export default function Header() {
   const items = NAV[lang];
   const [menuOpen, setMenuOpen] = useState(false);
 
+  if (pathname?.startsWith("/admin")) return null;
+
   function switchTo(target: "ko" | "zh") {
     if (target === lang) return;
     setLangCookie(target);

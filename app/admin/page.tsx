@@ -73,9 +73,9 @@ export default function AdminPage() {
       <main className="flex min-h-[70vh] items-center justify-center px-6">
         <form
           onSubmit={login}
-          className="w-full max-w-sm rounded-card-lg border border-cream-300/60 bg-white p-8 shadow-soft"
+          className="w-full max-w-sm rounded-2xl border border-line-card/60 bg-white p-8 shadow-card"
         >
-          <p className="font-serif text-[12px] uppercase tracking-[0.3em] text-kennel-gold">
+          <p className="font-serif text-[12px] uppercase tracking-[0.3em] text-brand-brown">
             Coton Kennel
           </p>
           <h1 className="mt-3 text-[24px] font-bold tracking-[-0.018em] text-ink-900">
@@ -90,14 +90,14 @@ export default function AdminPage() {
             value={pwInput}
             onChange={(e) => setPwInput(e.target.value)}
             placeholder="••••"
-            className="mt-6 w-full rounded-card border border-cream-300 bg-white px-4 py-3 text-[15px] tracking-widest focus:border-kennel-gold focus:outline-none"
+            className="mt-6 w-full rounded-xl border border-line-card bg-white px-4 py-3 text-[15px] tracking-widest focus:border-brand-brown focus:outline-none"
           />
           {pwErr && (
             <p className="mt-2 text-[12.5px] text-red-500">{pwErr}</p>
           )}
           <button
             type="submit"
-            className="mt-5 w-full rounded-full bg-kennel-btn py-3 text-[14px] font-medium tracking-wide text-white transition-colors hover:bg-kennel-dark"
+            className="mt-5 w-full rounded-full bg-brand-brown py-3 text-[14px] font-medium tracking-wide text-white transition-colors hover:bg-black"
           >
             로그인
           </button>
@@ -110,7 +110,7 @@ export default function AdminPage() {
     <main className="mx-auto max-w-page px-6 py-12 lg:px-10">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="font-serif text-[12px] uppercase tracking-[0.32em] text-kennel-gold">
+          <p className="font-serif text-[12px] uppercase tracking-[0.32em] text-brand-brown">
             Admin Dashboard
           </p>
           <h1 className="mt-2 text-[28px] font-bold tracking-[-0.018em] text-ink-900 md:text-[34px]">
@@ -120,13 +120,13 @@ export default function AdminPage() {
         <button
           type="button"
           onClick={logout}
-          className="rounded-full border border-cream-300 bg-white px-4 py-2 text-[13px] font-medium text-ink-700 hover:bg-cream-100"
+          className="rounded-full border border-line-card bg-white px-4 py-2 text-[13px] font-medium text-ink-700 hover:bg-brand-beige"
         >
           로그아웃
         </button>
       </div>
 
-      <div className="mt-8 flex flex-wrap border-b border-cream-300/60">
+      <div className="mt-8 flex flex-wrap border-b border-line-card/60">
         {(
           [
             ["site-images", "사이트 이미지"],
@@ -267,13 +267,13 @@ function ImageInput({
 
   const previewBox = (
     <div
-      className={`relative ${size} shrink-0 overflow-hidden rounded-card border border-cream-300 bg-cream-50`}
+      className={`relative ${size} shrink-0 overflow-hidden rounded-xl border border-line-card bg-line-surface`}
     >
       {value ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={value} alt="" className="h-full w-full object-cover" />
       ) : (
-        <div className="flex h-full w-full items-center justify-center text-[11px] text-ink-400">
+        <div className="flex h-full w-full items-center justify-center text-[11px] text-ink-500">
           이미지 없음
         </div>
       )}
@@ -287,7 +287,7 @@ function ImageInput({
 
   const buttons = (
     <div className={layout === "stack" ? "mt-2 flex gap-1.5" : "flex flex-col gap-1.5"}>
-      <label className="flex-1 cursor-pointer rounded-md border border-cream-300 bg-white px-3 py-1.5 text-center text-[12px] font-medium text-ink-700 hover:bg-cream-100">
+      <label className="flex-1 cursor-pointer rounded-md border border-line-card bg-white px-3 py-1.5 text-center text-[12px] font-medium text-ink-700 hover:bg-brand-beige">
         {value ? "이미지 변경" : "이미지 선택"}
         <input type="file" accept="image/*" onChange={onFile} className="hidden" />
       </label>
@@ -324,14 +324,6 @@ function ImageInput({
 }
 
 /* ---------------- SITE IMAGES ---------------- */
-const PAGE_LABELS: Record<string, string> = {
-  "/": "홈 (메인 페이지)",
-  "/puppies": "강아지소개 페이지",
-  "/visitor-guide": "후기 / 방문 안내 페이지",
-  "/heritage": "Heritage 페이지",
-  "/contact": "상담 / 문의 페이지",
-};
-
 function SiteImagesTab({ pw }: { pw: string }) {
   const [items, setItems] = useState<SiteImage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -355,29 +347,11 @@ function SiteImagesTab({ pw }: { pw: string }) {
     await load();
   }
 
-  async function addSlot(key: string) {
-    await fetch("/api/admin/site-images", {
-      method: "POST",
-      headers: authHeaders(pw),
-      body: JSON.stringify({ key, image_url: null }),
-    });
-    await load();
-  }
-
-  async function removeSlot(key: string, slot: number) {
-    if (!confirm("이 슬라이드를 삭제할까요?")) return;
-    await fetch(`/api/admin/site-images?key=${key}&slot=${slot}`, {
-      method: "DELETE",
-      headers: authHeaders(pw),
-    });
-    await load();
-  }
-
   const groupsByPage = useMemo(() => {
-    const out: Record<string, typeof SITE_IMAGE_GROUPS> = {};
+    const out: Record<string, { pageLabel: string; groups: typeof SITE_IMAGE_GROUPS }> = {};
     for (const g of SITE_IMAGE_GROUPS) {
-      if (!out[g.page]) out[g.page] = [];
-      out[g.page].push(g);
+      if (!out[g.page]) out[g.page] = { pageLabel: g.pageLabel, groups: [] };
+      out[g.page].groups.push(g);
     }
     return out;
   }, []);
@@ -388,120 +362,58 @@ function SiteImagesTab({ pw }: { pw: string }) {
 
   return (
     <div className="space-y-12">
-      <div className="rounded-card-lg border border-cream-300/70 bg-cream-50 p-5 text-[13.5px] leading-[1.8] text-ink-700">
+      <div className="rounded-2xl border border-line-card/70 bg-line-surface p-5 text-[13.5px] leading-[1.8] text-ink-700">
         <p className="flex items-center gap-2 font-semibold text-ink-900">
-          <MapPinIcon className="h-4 w-4 text-kennel-gold" />
+          <MapPinIcon className="h-4 w-4 text-brand-brown" />
           안내
         </p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>
-            <strong>한 장만 등록한 곳</strong>은 그 사진이 그대로 보입니다.
-          </li>
-          <li>
-            <strong>여러 장 등록한 곳</strong>은 자동으로 캐러셀이 되어 사이트의
-            좌/우 화살표와 점 버튼으로 넘길 수 있습니다.
-          </li>
-          <li>
-            이미지를 비워두면 빗금 무늬 자리표시자가 표시됩니다 (사진이 없을 때
-            대체).
+            각 섹션은 사진 <strong>한 장씩</strong> 고정입니다. 추가/삭제는 불가합니다.
           </li>
           <li>
             JPG/PNG 등 이미지 파일을 직접 선택하면 자동으로 1600px로 압축되어
-            Supabase Storage에 저장됩니다. 외부 URL은 사용하지 않습니다.
+            Supabase Storage에 저장됩니다.
+          </li>
+          <li>
+            이미지를 비워두면 빗금 무늬 자리표시자가 표시됩니다.
           </li>
         </ul>
       </div>
 
-      {Object.entries(groupsByPage).map(([page, groups]) => (
+      {Object.entries(groupsByPage).map(([page, { pageLabel, groups }]) => (
         <section key={page}>
-          <div className="mb-4 flex items-end justify-between gap-3 border-b border-cream-300/60 pb-3">
+          <div className="mb-4 border-b border-line-card/60 pb-3">
             <h3 className="text-[18px] font-bold tracking-[-0.018em] text-ink-900">
-              {PAGE_LABELS[page] || page}
+              {pageLabel}
             </h3>
-            <span className="font-mono text-[11.5px] text-ink-500">
-              {page}
-            </span>
           </div>
 
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {groups.map((group) => {
-              const slots = items
-                .filter((i) => i.key === group.key)
-                .sort((a, b) => a.slot - b.slot);
-              const showSlots = slots.length > 0 ? slots : [];
-
+              const current = items.find(
+                (i) => i.key === group.key && i.slot === group.slot
+              );
               return (
                 <div
-                  key={group.key}
-                  className="rounded-card-lg border border-cream-300/60 bg-white p-6 shadow-soft"
+                  key={`${group.key}-${group.slot}`}
+                  className="rounded-2xl border border-line-card/60 bg-white p-5 shadow-card"
                 >
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h4 className="text-[15.5px] font-semibold text-ink-900">
-                          {group.label}
-                        </h4>
-                        {group.multiple ? (
-                          <span className="rounded-full bg-kennel-gold/15 px-2 py-0.5 text-[11px] font-medium text-kennel-gold">
-                            캐러셀 (여러 장 가능)
-                          </span>
-                        ) : (
-                          <span className="rounded-full bg-cream-200 px-2 py-0.5 text-[11px] font-medium text-ink-700">
-                            한 장 슬롯
-                          </span>
-                        )}
-                      </div>
-                      <p className="mt-1.5 text-[13px] leading-[1.7] text-ink-500">
-                        {group.description}
-                      </p>
-                    </div>
-                    {group.multiple && (
-                      <button
-                        type="button"
-                        onClick={() => addSlot(group.key)}
-                        className={primaryBtn}
-                      >
-                        + 슬라이드 추가
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
-                    {showSlots.length === 0 && (
-                      <ImageInput
-                        pw={pw}
-                        label={group.multiple ? "슬라이드 1" : "이미지"}
-                        value={null}
-                        onChange={(url) => patchSlot(group.key, 0, url)}
-                        size="aspect-[4/3] w-full"
-                        layout="stack"
-                      />
-                    )}
-                    {showSlots.map((s) => (
-                      <div key={s.slot}>
-                        <ImageInput
-                          pw={pw}
-                          label={
-                            group.multiple
-                              ? `슬라이드 ${s.slot + 1}`
-                              : "이미지"
-                          }
-                          value={s.image_url}
-                          onChange={(url) => patchSlot(group.key, s.slot, url)}
-                          size="aspect-[4/3] w-full"
-                          layout="stack"
-                        />
-                        {group.multiple && showSlots.length > 1 && (
-                          <button
-                            type="button"
-                            onClick={() => removeSlot(group.key, s.slot)}
-                            className="mt-2 w-full rounded-md border border-red-200 bg-red-50 px-2 py-1 text-[11.5px] font-medium text-red-600 hover:bg-red-100"
-                          >
-                            이 슬라이드 삭제
-                          </button>
-                        )}
-                      </div>
-                    ))}
+                  <h4 className="text-[15.5px] font-semibold text-ink-900">
+                    {group.label}
+                  </h4>
+                  <p className="mt-1.5 text-[12.5px] leading-[1.6] text-ink-500">
+                    {group.description}
+                  </p>
+                  <div className="mt-4">
+                    <ImageInput
+                      pw={pw}
+                      label="이미지"
+                      value={current?.image_url ?? null}
+                      onChange={(url) => patchSlot(group.key, group.slot, url)}
+                      size="aspect-[4/3] w-full"
+                      layout="stack"
+                    />
                   </div>
                 </div>
               );
@@ -582,9 +494,9 @@ function SiteVideosTab({ pw }: { pw: string }) {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-card-lg border border-cream-300/70 bg-cream-50 p-5 text-[13.5px] leading-[1.8] text-ink-700">
+      <div className="rounded-2xl border border-line-card/70 bg-line-surface p-5 text-[13.5px] leading-[1.8] text-ink-700">
         <p className="flex items-center gap-2 font-semibold text-ink-900">
-          <MapPinIcon className="h-4 w-4 text-kennel-gold" />
+          <MapPinIcon className="h-4 w-4 text-brand-brown" />
           안내 — 메인 홈 ‘Coton Kennel highlight’ 섹션
         </p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
@@ -603,7 +515,7 @@ function SiteVideosTab({ pw }: { pw: string }) {
         </ul>
       </div>
 
-      <div className="rounded-card-lg border border-cream-300/60 bg-white p-6 shadow-soft">
+      <div className="rounded-2xl border border-line-card/60 bg-white p-6 shadow-card">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h4 className="text-[15.5px] font-semibold text-ink-900">홈 — Highlight 영상 슬라이더</h4>
@@ -622,7 +534,7 @@ function SiteVideosTab({ pw }: { pw: string }) {
         </div>
 
         {slots.length === 0 && (
-          <p className="mt-6 rounded-md border border-dashed border-cream-300 p-6 text-center text-[13px] text-ink-500">
+          <p className="mt-6 rounded-md border border-dashed border-line-card p-6 text-center text-[13px] text-ink-500">
             아직 등록된 영상이 없습니다. 위의 ‘+ 영상 슬롯 추가’를 눌러 시작하세요.
           </p>
         )}
@@ -681,12 +593,12 @@ function VideoSlotCard({
   }
 
   return (
-    <div className="rounded-md border border-cream-300 bg-cream-50 p-3">
+    <div className="rounded-md border border-line-card bg-line-surface p-3">
       <p className="mb-2 text-[12px] font-semibold tracking-wide text-ink-700">
         슬라이드 {slot + 1}
       </p>
 
-      <div className="relative aspect-video w-full overflow-hidden rounded border border-cream-300 bg-black">
+      <div className="relative aspect-video w-full overflow-hidden rounded border border-line-card bg-black">
         {videoUrl ? (
           <video
             src={videoUrl}
@@ -707,7 +619,7 @@ function VideoSlotCard({
       </div>
 
       <div className="mt-2 flex flex-col gap-1.5">
-        <label className="cursor-pointer rounded-md border border-cream-300 bg-white px-3 py-1.5 text-center text-[12px] font-medium text-ink-700 hover:bg-cream-100">
+        <label className="cursor-pointer rounded-md border border-line-card bg-white px-3 py-1.5 text-center text-[12px] font-medium text-ink-700 hover:bg-brand-beige">
           {videoUrl ? "영상 변경" : "영상 선택 (MP4)"}
           <input type="file" accept="video/*" onChange={onVideoFile} className="hidden" />
         </label>
@@ -722,7 +634,7 @@ function VideoSlotCard({
         )}
       </div>
 
-      <div className="mt-3 border-t border-cream-200 pt-3">
+      <div className="mt-3 border-t border-line-tag pt-3">
         <ImageInput
           pw={pw}
           label="포스터 이미지 (선택)"
@@ -861,7 +773,7 @@ function NoticesTab({ pw }: { pw: string }) {
       </Panel>
 
       <Panel title={`등록된 공지사항 (${items.length})`}>
-        <ul className="divide-y divide-cream-200">
+        <ul className="divide-y divide-line-tag">
           {items.map((n) => (
             <li key={n.id} className="flex items-start justify-between gap-3 py-3">
               <div className="min-w-0 flex-1">
@@ -1090,7 +1002,7 @@ function PuppiesTab({ pw }: { pw: string }) {
       </Panel>
 
       <Panel title={`등록된 강아지 (${items.length})`}>
-        <ul className="divide-y divide-cream-200">
+        <ul className="divide-y divide-line-tag">
           {items.map((p) => (
             <li key={p.id} className="flex items-center justify-between gap-3 py-3">
               <div className="min-w-0 flex-1">
@@ -1266,7 +1178,7 @@ function ReviewsTab({ pw }: { pw: string }) {
       </Panel>
 
       <Panel title={`등록된 후기 (${items.length})`}>
-        <ul className="divide-y divide-cream-200">
+        <ul className="divide-y divide-line-tag">
           {items.map((r) => (
             <li key={r.id} className="flex items-start justify-between gap-3 py-3">
               <div className="min-w-0 flex-1">
@@ -1307,7 +1219,7 @@ function Panel({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-card-lg border border-cream-300/60 bg-white p-6 shadow-soft">
+    <section className="rounded-2xl border border-line-card/60 bg-white p-6 shadow-card">
       <h2 className="mb-5 text-[15px] font-semibold tracking-[-0.005em] text-ink-900">
         {title}
       </h2>
@@ -1334,12 +1246,12 @@ function Field({
 }
 
 const inputCls =
-  "w-full rounded-lg border border-cream-300 bg-white px-3 py-2 text-[14px] text-ink-900 focus:border-kennel-gold focus:outline-none";
+  "w-full rounded-lg border border-line-card bg-white px-3 py-2 text-[14px] text-ink-900 focus:border-brand-brown focus:outline-none";
 const primaryBtn =
-  "rounded-full bg-kennel-btn px-5 py-2.5 text-[13px] font-medium text-white transition-colors hover:bg-kennel-dark disabled:opacity-50";
+  "rounded-full bg-brand-brown px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-ink-900 disabled:opacity-50";
 const secondaryBtn =
-  "rounded-full border border-cream-300 bg-white px-4 py-2.5 text-[13px] font-medium text-ink-700 hover:bg-cream-100";
+  "rounded-full border border-line-card bg-white px-4 py-2.5 text-[13px] font-medium text-ink-700 hover:bg-line-surface";
 const smallBtn =
-  "rounded-md border border-cream-300 bg-white px-2.5 py-1 text-[12px] font-medium text-ink-700 hover:bg-cream-100";
+  "rounded-md border border-line-card bg-white px-2.5 py-1 text-[12px] font-medium text-ink-700 hover:bg-line-surface";
 const dangerBtn =
   "rounded-md border border-red-200 bg-red-50 px-2.5 py-1 text-[12px] font-medium text-red-600 hover:bg-red-100";

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
 import { ArrowRight } from "./icons";
@@ -76,9 +77,12 @@ const SOCIAL: { href: string; label: string; tile: React.ReactNode }[] = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
   const lang = useLang();
   const terms = pick(lang, "이용약관", "服务条款");
   const privacy = pick(lang, "개인정보처리방침", "隐私政策");
+
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <footer className="relative w-full overflow-hidden bg-black text-white">
