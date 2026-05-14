@@ -25,24 +25,41 @@ export default function AdminPage() {
   const [tab, setTab] = useState<Tab>("site-images");
 
   useEffect(() => {
-    const saved = sessionStorage.getItem(STORAGE_KEY);
-    if (saved) setPw(saved);
+    try {
+      const saved = sessionStorage.getItem(STORAGE_KEY);
+      if (saved) setPw(saved);
+    } catch {
+      /* sessionStorage may be unavailable (Safari private mode, etc.) */
+    }
   }, []);
 
   async function login(e: FormEvent) {
     e.preventDefault();
     setPwErr(null);
-    const r = await fetch("/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password: pwInput }),
-    });
-    if (!r.ok) {
-      setPwErr("비밀번호가 올바르지 않습니다.");
+    const value = pwInput.trim();
+    if (!value) {
+      setPwErr("비밀번호를 입력해 주세요.");
       return;
     }
-    sessionStorage.setItem(STORAGE_KEY, pwInput);
-    setPw(pwInput);
+    try {
+      const r = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: value }),
+      });
+      if (!r.ok) {
+        setPwErr(`비밀번호가 올바르지 않습니다. (HTTP ${r.status})`);
+        return;
+      }
+      try {
+        sessionStorage.setItem(STORAGE_KEY, value);
+      } catch {
+        /* keep going even if sessionStorage write fails */
+      }
+      setPw(value);
+    } catch (err) {
+      setPwErr(`로그인 요청 실패: ${(err as Error).message}`);
+    }
   }
 
   function logout() {
