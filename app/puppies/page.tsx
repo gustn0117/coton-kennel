@@ -22,8 +22,8 @@ function translateColor(lang: Lang, v: string) {
   return v;
 }
 function translateStatus(lang: Lang, v: string) {
-  if (lang !== "zh") return v === "분양중" ? "未分养" : "已分养";
-  return v === "분양중" ? "미분양" : "분양완료";
+  if (lang === "zh") return v === "분양중" ? "未分养" : "已分养";
+  return v === "분양중" ? "분양중" : "분양완료";
 }
 function translateMonths(lang: Lang, m: number) {
   return lang === "zh" ? `${m} 个月` : `${m}개월`;

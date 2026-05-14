@@ -9,7 +9,7 @@ import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
 import { ChevronLeft, ChevronRight, ChevronDown } from "@/components/icons";
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 6;
 
 export default function VisitorGuidePage() {
   const lang = useLang();
@@ -39,7 +39,7 @@ export default function VisitorGuidePage() {
     [reviews, safePage]
   );
 
-  const fallbackReviews: Review[] = Array.from({ length: 5 }).map((_, i) => ({
+  const fallbackReviews: Review[] = Array.from({ length: 6 }).map((_, i) => ({
     id: `f-${i}`,
     name: pick(lang, "후기 제목", "评价标题"),
     title: pick(lang, "후기 제목", "评价标题"),
@@ -49,15 +49,11 @@ export default function VisitorGuidePage() {
       "评价内容。评价内容。评价内容。"
     ),
     period: "2026.00.00",
-    variant: ["p2", "p5", "p9", "p1", "p7"][i] ?? "p2",
+    variant: ["p2", "p5", "p9", "p1", "p7", "p11"][i] ?? "p2",
     image_url: null,
     created_at: "",
   }));
   const list = visible.length > 0 ? visible : fallbackReviews;
-
-  function toggle(id: string) {
-    setOpenId((prev) => (prev === id ? null : id));
-  }
 
   return (
     <>
@@ -88,59 +84,16 @@ export default function VisitorGuidePage() {
           <span className="text-brand-brown">{pick(lang, "후기", "评价")}</span>
         </h2>
 
-        <ul className="mt-10 divide-y divide-line-card border-y border-line-card lg:mt-14">
-          {list.map((r) => {
-            const isOpen = openId === r.id;
-            return (
-              <li key={r.id}>
-                <button
-                  type="button"
-                  onClick={() => toggle(r.id)}
-                  aria-expanded={isOpen}
-                  className="flex w-full items-center gap-4 py-5 text-left transition-colors hover:bg-brand-beige/40 lg:py-7"
-                >
-                  <span className="flex-1 min-w-0">
-                    <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <span className="text-[17px] font-bold text-black lg:text-[22px]">
-                        {r.title || r.name}
-                      </span>
-                      <span className="text-[13px] text-ink-500 lg:text-[15px]">
-                        {r.period}
-                      </span>
-                    </span>
-                    <span className="mt-1.5 block">
-                      <StarRating rating={5} />
-                    </span>
-                  </span>
-                  <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-brand-brown transition-transform duration-200 ${
-                      isOpen ? "rotate-180" : ""
-                    } lg:h-6 lg:w-6`}
-                  />
-                </button>
-
-                <div
-                  className={`grid transition-[grid-template-rows] duration-300 ease-out ${
-                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <div className="grid grid-cols-1 gap-6 pb-6 lg:grid-cols-[minmax(0,380px)_1fr] lg:gap-10 lg:pb-9">
-                      <div className="aspect-[481/342] w-full overflow-hidden rounded-[16px] lg:rounded-[20px]">
-                        <PuppyImage variant={r.variant as never} url={r.image_url} />
-                      </div>
-                      <div className="flex flex-col justify-center">
-                        <p className="whitespace-pre-line text-[14px] leading-[1.65] text-ink-700 lg:text-[16px] lg:leading-[1.75]">
-                          {r.body}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:mt-14 2xl:mt-[77px] lg:grid-cols-3 lg:gap-10 xl:gap-14 2xl:gap-[36px]">
+          {list.map((r) => (
+            <FigmaReviewCard
+              key={r.id}
+              review={r}
+              isOpen={openId === r.id}
+              onToggle={() => setOpenId((prev) => (prev === r.id ? null : r.id))}
+            />
+          ))}
+        </div>
 
         {totalPages > 1 && (
           <div className="mt-12 flex items-center justify-center gap-[15px] lg:mt-14 2xl:mt-[55px]">
@@ -180,5 +133,59 @@ export default function VisitorGuidePage() {
         )}
       </section>
     </>
+  );
+}
+
+function FigmaReviewCard({
+  review,
+  isOpen,
+  onToggle,
+}: {
+  review: Review;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <article className="card-asym overflow-hidden border border-line-card bg-white shadow-card">
+      <div className="aspect-[481/342] w-full">
+        <PuppyImage variant={review.variant as never} url={review.image_url} />
+      </div>
+      <div className="px-[28px] pb-7 pt-8 sm:px-[36px] lg:px-[42px] lg:pt-10">
+        <StarRating rating={5} />
+        <div className="mt-4 flex items-start justify-between gap-3">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h3 className="text-[20px] font-bold leading-tight text-black lg:text-[26px] xl:text-[30px] lg:tracking-[-0.3px]">
+              {review.title || review.name}
+            </h3>
+            <span className="text-[13px] text-ink-500 lg:text-[15px]">
+              {review.period}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onToggle}
+            aria-expanded={isOpen}
+            aria-label={isOpen ? "후기 접기" : "후기 펼치기"}
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand-tan text-brand-brown transition-all hover:bg-brand-beige ${
+              isOpen ? "rotate-180 bg-brand-beige" : ""
+            }`}
+          >
+            <ChevronDown className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div
+          className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+            isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <p className="mt-4 whitespace-pre-line text-[14px] leading-[1.65] text-ink-700 lg:text-[16px]">
+              {review.body}
+            </p>
+          </div>
+        </div>
+      </div>
+    </article>
   );
 }
