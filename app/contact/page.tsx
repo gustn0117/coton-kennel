@@ -9,7 +9,7 @@ import NoticeModal, { isNew } from "@/components/NoticeModal";
 import MapEmbed, { mapLink } from "@/components/MapEmbed";
 import { useLang } from "@/lib/LangProvider";
 import { pick, type Lang } from "@/lib/i18n";
-import { ChevronLeft, ChevronRight, CloseIcon } from "@/components/icons";
+import { ChevronLeft, ChevronRight, ChevronDown, CloseIcon } from "@/components/icons";
 
 const STORE_ADDRESS = "서울 강동구 구천면로29길 23";
 const STORE_ADDRESS_ZH = "首尔江东区九泉面路29街23号";
@@ -52,19 +52,37 @@ function getRefund(lang: Lang) {
 function getFaq(lang: Lang) {
   if (lang === "zh") {
     return [
-      { q: "棉花面纱犬性格如何?", a: "棉花面纱犬整体来说性情温和、非常喜欢人,社交能力好,即使是陌生人也能很快靠近。叫声不多,适合室内饲养。" },
-      { q: "分养价格如何确定?", a: "价格依据血统、颜色、毛质、气质等因素分级,具体价格请通过 1:1 咨询了解。" },
-      { q: "可以海外分养吗?", a: "请通过微信或邮件联系我们,我们会为您介绍具体流程。" },
-      { q: "如何预约参观?", a: "通过电话或 KakaoTalk 进行 1:1 预约后即可参观。" },
+      { q: "棉花面纱犬性格如何?", a: "棉花面纱犬整体来说性情温和、非常喜欢人,\n社交能力好,即使是陌生人也能很快靠近,\n叫声不多,非常适合室内饲养。" },
+      { q: "成犬大约能长到几公斤?", a: "受父母犬遗传影响有所差异,\n平均约 5~7 公斤,个体之间可能略有差异。" },
+      { q: "食欲怎么样?", a: "大多数都吃得很好,但偶尔也有食欲较小的孩子,\n这种情况下可以加入少量泡软的狗粮一同喂食,通常会吃得更好。" },
+      { q: "为什么价格较高?", a: "棉花面纱犬在国内还属于稀有犬种,\n血统管理和繁育标准都较为严格,因此分养价格较高。" },
+      { q: "与其他犬种相比有什么差别?", a: "棉花面纱犬具有以下特点:\n· 被毛柔软、质感独特\n· 性格亲人\n· 叫声较少\n· 整体体质健康\n即便是初次饲养也容易上手。" },
+      { q: "疫苗接种是如何进行的?", a: "· 较小的幼犬:已完成第 1 次接种\n· 月龄稍大的:已完成第 2 次接种\n之后请按每 2 周一次的间隔进行追加接种。" },
+      { q: "血统证书是什么?", a: "血统证书是证明该幼犬父母犬及血统的正式文件。\n但近年伪造案例较多,\n部分犬舍会有限制性地发放。" },
+      { q: "如何预防分离焦虑?", a: "出生后 2~6 个月期间,\n请避免形成过度依恋,\n同时也让幼犬适应独处时间,\n培养独立性非常重要。\n此阶段管理得当有助于预防分离焦虑。" },
+      { q: "散步需要多少?", a: "每周 1~3 次,\n每次约 20~30 分钟左右轻松散步即可。" },
+      { q: "棉花面纱犬健康吗?", a: "是的,棉花面纱犬整体来说是较为健康的犬种。\n腿部较为结实,\n遗传性疾病发生较少,\n与其他小型犬(如膝盖骨问题较多的品种)相比,\n就医频率较低。" },
+      { q: "犬舍里通常都是几个月的孩子?", a: "一般以 2~6 个月之间的幼犬最多。" },
+      { q: "便溺训练容易吗?", a: "棉花面纱犬学习能力相对较好,\n只要持续而一致地训练,\n便溺训练完全可以做到。" },
     ];
   }
   return [
-    { q: "꼬똥은 성격이 어떤가요?", a: "꼬똥은 전반적으로 온순하고 사람을 매우 좋아하는 견종입니다. 사교성이 좋아 처음 보는 사람에게도 잘 다가가며, 짖음이 많은 편이 아니라 실내에서 키우기에도 적합한 아이들입니다." },
-    { q: "분양가는 어떻게 책정되나요?", a: "혈통, 색상, 모질, 기질에 따라 차등 책정되며, 정확한 안내는 1:1 상담을 통해 도와드리고 있습니다." },
-    { q: "해외 분양도 가능한가요?", a: "WeChat 또는 이메일로 문의 주시면 절차를 안내해드립니다." },
-    { q: "방문 예약은 어떻게 하나요?", a: "전화 또는 카카오톡으로 1:1 사전 예약 후 방문 가능합니다." },
+    { q: "꼬똥은 성격이 어떤가요?", a: "꼬똥은 전반적으로 온순하고 사람을 매우 좋아하는 견종입니다.\n사교성이 좋아 처음 보는 사람에게도 잘 다가가며,\n짖음이 많은 편이 아니라 실내에서 키우기에도 적합한 아이들입니다." },
+    { q: "성견이 되면 몇 kg 정도까지 크나요?", a: "부모견의 유전적인 영향에 따라 차이가 있습니다.\n평균 약 5~7kg, 개체마다 차이가 있을 수 있습니다." },
+    { q: "밥을 잘 먹나요?", a: "대부분 잘 먹는 편이지만, 간혹 입이 짧은 아이도 있습니다.\n이 경우 불린 사료를 소량 섞어 급여하면 훨씬 잘 먹는 편입니다." },
+    { q: "가격대가 높은 이유는 무엇인가요?", a: "꼬똥은 국내에서 아직 희소성이 높은 견종이며,\n혈통 관리와 번식 기준이 까다로운 편이라 분양가가 높은 편입니다." },
+    { q: "다른 견종과의 차별점은 무엇인가요?", a: "꼬똥은\n· 털이 부드럽고 독특한 질감\n· 사람을 잘 따르는 성격\n· 짖음이 적은 편\n· 전반적으로 건강한 체질\n이러한 특징으로 초보자도 키우기 좋은 견종입니다." },
+    { q: "접종은 어떻게 진행되나요?", a: "· 어린 강아지: 1차 접종 완료 상태\n· 개월수가 조금 더 된 경우: 2차 접종까지 진행\n이후에는 2주 간격으로 추가 접종을 진행하시면 됩니다." },
+    { q: "혈통증명서는 무엇인가요?", a: "혈통증명서는 해당 강아지의 부모견 및 혈통을 증명하는 공식 문서입니다.\n다만 최근 혈통서 위조 사례가 많아,\n일부 켄넬에서는 발급을 제한적으로 진행하는 경우도 있습니다." },
+    { q: "분리불안은 어떻게 예방하나요?", a: "생후 2개월 ~ 6개월 사이에는\n너무 과도한 애착 형성을 피하고,\n혼자 있는 시간도 적응시키고\n자립심을 키워주는 것이 중요합니다.\n이 시기에 관리가 잘 되면 분리불안 예방에 도움이 됩니다." },
+    { q: "산책은 얼마나 필요한가요?", a: "주 1~3회,\n1회 약 20~30분 정도\n가볍게 해주시면 충분합니다." },
+    { q: "꼬똥은 건강한 편인가요?", a: "네, 꼬똥은 전반적으로 건강한 견종입니다.\n· 다리가 튼튼한 편이며\n· 유전병 발생이 비교적 적습니다\n다른 소형견(예: 슬개골 이슈가 많은 견종)에 비해\n병원 방문 빈도가 낮은 편입니다." },
+    { q: "켄넬에는 보통 몇 개월 아이들이 있나요?", a: "일반적으로 2~6개월 사이의 아이들이 가장 많이 있습니다." },
+    { q: "배변 교육은 잘 되나요?", a: "꼬똥은 비교적 학습 능력이 좋은 편이라\n일관성 있게 교육하면 배변 훈련도 충분히 가능합니다." },
   ];
 }
+
+const FAQ_PAGE_SIZE = 6;
 
 export default function ContactPage() {
   const lang = useLang();
@@ -73,7 +91,8 @@ export default function ContactPage() {
   const FAQ = getFaq(lang);
   const [notices, setNotices] = useState<Notice[]>([]);
   const [openNoticeId, setOpenNoticeId] = useState<string | null>(null);
-  const [faqIdx, setFaqIdx] = useState(0);
+  const [faqPage, setFaqPage] = useState(0);
+  const [openFaqKey, setOpenFaqKey] = useState<number | null>(0);
   const [showWeChatQR, setShowWeChatQR] = useState(false);
   const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
   const [stepImages, setStepImages] = useState<Record<string, string | null>>({});
@@ -477,63 +496,118 @@ export default function ContactPage() {
           )}
         </p>
 
-        <div className="relative mt-8 lg:mt-[57px]">
-          {(() => {
-            const f = FAQ[Math.min(faqIdx, FAQ.length - 1)];
-            return (
-              <article className="rounded-[20px] border border-brand-brown bg-white shadow-card lg:rounded-[29px]">
-                <div className="flex items-start gap-4 px-6 py-6 lg:gap-[42px] lg:px-[59px] lg:py-[34px]">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[20px] bg-brand-brown text-[16px] font-bold text-white lg:h-[56px] lg:w-[56px] lg:rounded-[28px] lg:text-[24px]">
-                    Q
-                  </span>
-                  <span className="flex-1 text-[16px] font-bold leading-[1.3] text-black lg:text-[28px]">
-                    {f.q}
-                  </span>
-                </div>
-                <div className="flex items-start gap-4 border-t border-brand-tan/60 px-6 pb-7 pt-5 lg:gap-[42px] lg:px-[59px] lg:pb-[40px] lg:pt-7">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[20px] bg-brand-tan text-[16px] font-bold text-brand-brown lg:h-[56px] lg:w-[56px] lg:rounded-[28px] lg:text-[24px]">
-                    A
-                  </span>
-                  <p className="flex-1 text-[14px] leading-[1.65] text-ink-700 lg:text-[18px] lg:leading-[28.785px]">
-                    {f.a}
-                  </p>
-                </div>
-              </article>
-            );
-          })()}
+        {(() => {
+          const totalFaqPages = Math.max(1, Math.ceil(FAQ.length / FAQ_PAGE_SIZE));
+          const safeFaqPage = Math.min(faqPage, totalFaqPages - 1);
+          const visibleFaq = FAQ.slice(
+            safeFaqPage * FAQ_PAGE_SIZE,
+            (safeFaqPage + 1) * FAQ_PAGE_SIZE
+          );
+          return (
+            <>
+              <ul className="mt-8 space-y-4 lg:mt-[57px] lg:space-y-[27px]">
+                {visibleFaq.map((f, i) => {
+                  const key = safeFaqPage * FAQ_PAGE_SIZE + i;
+                  const isOpen = openFaqKey === key;
+                  return (
+                    <li
+                      key={key}
+                      className="overflow-hidden rounded-[20px] border border-brand-brown bg-white shadow-card lg:rounded-[29px]"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setOpenFaqKey(isOpen ? null : key)}
+                        aria-expanded={isOpen}
+                        className="flex w-full items-center gap-4 px-6 py-6 text-left lg:gap-[42px] lg:px-[59px] lg:py-[34px]"
+                      >
+                        <span
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center text-[16px] font-bold lg:h-[56px] lg:w-[56px] lg:rounded-[28px] lg:text-[24px] ${
+                            isOpen
+                              ? "rounded-[20px] bg-brand-brown text-white"
+                              : "rounded-[20px] bg-brand-tan text-brand-brown"
+                          }`}
+                        >
+                          Q
+                        </span>
+                        <span className="font-pretendard flex-1 text-[16px] font-bold leading-[1.3] text-black lg:text-[24px] xl:text-[26px] 2xl:text-[28px]">
+                          {f.q}
+                        </span>
+                        <span
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all duration-300 lg:h-[51px] lg:w-[51px] ${
+                            isOpen
+                              ? "rotate-180 bg-brand-brown text-white"
+                              : "bg-brand-tan text-brand-brown"
+                          }`}
+                          aria-hidden
+                        >
+                          <ChevronDown className="h-4 w-4" />
+                        </span>
+                      </button>
+                      <div
+                        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                        }`}
+                      >
+                        <div className="overflow-hidden">
+                          <div className="flex items-start gap-4 px-6 pb-7 lg:gap-[42px] lg:px-[59px] lg:pb-[40px]">
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[20px] bg-brand-tan text-[16px] font-bold text-brand-brown lg:h-[56px] lg:w-[56px] lg:rounded-[28px] lg:text-[24px]">
+                              A
+                            </span>
+                            <p className="flex-1 whitespace-pre-line text-[14px] leading-[1.65] text-ink-700 lg:text-[18px] lg:leading-[28.785px]">
+                              {f.a}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
 
-          <div className="mt-6 flex items-center justify-center gap-4 lg:mt-8">
-            <button
-              type="button"
-              onClick={() => setFaqIdx((i) => (i - 1 + FAQ.length) % FAQ.length)}
-              aria-label={pick(lang, "이전 질문", "上一个")}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-line-card bg-white text-brand-brown shadow-card transition-colors hover:bg-brand-beige lg:h-11 lg:w-11"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <div className="flex items-center gap-2">
-              {FAQ.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setFaqIdx(i)}
-                  aria-label={`${i + 1}번째 질문`}
-                  className={`h-1.5 rounded-full transition-all ${
-                    i === faqIdx ? "w-6 bg-brand-brown" : "w-1.5 bg-ink-300 hover:bg-ink-300/70"
-                  }`}
-                />
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={() => setFaqIdx((i) => (i + 1) % FAQ.length)}
-              aria-label={pick(lang, "다음 질문", "下一个")}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-line-card bg-white text-brand-brown shadow-card transition-colors hover:bg-brand-beige lg:h-11 lg:w-11"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
+              {totalFaqPages > 1 && (
+                <div className="mt-10 flex items-center justify-center gap-[15px] lg:mt-12">
+                  <button
+                    type="button"
+                    onClick={() => setFaqPage((p) => Math.max(0, p - 1))}
+                    disabled={safeFaqPage === 0}
+                    aria-label="Prev"
+                    className="text-ink-500 disabled:opacity-30"
+                  >
+                    <ChevronLeft className="h-3.5 w-3.5" />
+                  </button>
+                  {Array.from({ length: totalFaqPages }).map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => {
+                        setFaqPage(i);
+                        setOpenFaqKey(null);
+                      }}
+                      className={`tnum text-[15px] ${
+                        i === safeFaqPage
+                          ? "font-medium text-black"
+                          : "font-normal text-ink-500"
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFaqPage((p) => Math.min(totalFaqPages - 1, p + 1))
+                    }
+                    disabled={safeFaqPage === totalFaqPages - 1}
+                    aria-label="Next"
+                    className="text-ink-500 disabled:opacity-30"
+                  >
+                    <ChevronRight className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              )}
+            </>
+          );
+        })()}
       </section>
 
       {/* 공지사항 테이블 (Figma 1555×58 헤더, NO/제목/날짜) */}
