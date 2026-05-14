@@ -57,9 +57,21 @@ const WechatTile = (
 
 const SOCIAL: { href: string; label: string; tile: React.ReactNode }[] = [
   { href: "https://pf.kakao.com/", label: "KakaoTalk", tile: KakaoTile },
-  { href: "https://www.instagram.com/", label: "Instagram", tile: InstaTile },
-  { href: "https://www.youtube.com/", label: "YouTube", tile: YoutubeTile },
-  { href: "https://www.xiaohongshu.com/", label: "Xiaohongshu", tile: XhsTile },
+  {
+    href: "https://www.instagram.com/coton_kennel_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+    label: "Instagram",
+    tile: InstaTile,
+  },
+  {
+    href: "https://youtube.com/@cotonkennel?si=_UU6ZdcNn1rZrtzg",
+    label: "YouTube",
+    tile: YoutubeTile,
+  },
+  {
+    href: "https://www.xiaohongshu.com/user/profile/61a28839000000001000e304?xsec_token=YBlEemk-s1wYQ1Av9EU9rEhml6vuWQXT8EfisTKFHRAMA=&xsec_source=app_share&xhsshare=CopyLink&shareRedId=ODg1ODo2Rj42NzUyOTgwNjczOTdIOz9M&apptime=1778217466&share_id=5737c633f0d74e5b9a720b40fbbf4f88",
+    label: "Xiaohongshu",
+    tile: XhsTile,
+  },
   { href: "https://weixin.qq.com/", label: "WeChat", tile: WechatTile },
 ];
 

@@ -419,7 +419,7 @@ export default function ContactPage() {
             ctaLabel={pick(lang, "인스타그램 바로가기", "前往 Instagram")}
             ctaBg="bg-social-insta"
             ctaText="text-line-surface"
-            href="https://www.instagram.com/"
+            href="https://www.instagram.com/coton_kennel_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
           />
           <SnsCard
             icon={
@@ -433,7 +433,7 @@ export default function ContactPage() {
             ctaLabel={pick(lang, "유튜브 채널 바로가기", "前往 YouTube")}
             ctaBg="bg-social-youtube"
             ctaText="text-white"
-            href="https://www.youtube.com/"
+            href="https://youtube.com/@cotonkennel?si=_UU6ZdcNn1rZrtzg"
           />
           <SnsCard
             icon={<span className="text-[11px] font-bold text-white">小红书</span>}
@@ -443,7 +443,7 @@ export default function ContactPage() {
             ctaLabel={pick(lang, "샤오홍슈 바로가기", "前往小红书")}
             ctaBg="bg-social-xhs"
             ctaText="text-white"
-            href="https://www.xiaohongshu.com/"
+            href="https://www.xiaohongshu.com/user/profile/61a28839000000001000e304?xsec_token=YBlEemk-s1wYQ1Av9EU9rEhml6vuWQXT8EfisTKFHRAMA=&xsec_source=app_share&xhsshare=CopyLink&shareRedId=ODg1ODo2Rj42NzUyOTgwNjczOTdIOz9M&apptime=1778217466&share_id=5737c633f0d74e5b9a720b40fbbf4f88"
           />
         </div>
       </section>
@@ -465,7 +465,9 @@ export default function ContactPage() {
             )}
           </p>
           <a
-            href="#"
+            href="https://premiumpet.co.kr/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-8 inline-flex h-[59px] w-[280px] items-center justify-between gap-3 bg-brand-brown px-8 text-[16px] text-white transition-transform hover:-translate-y-0.5 lg:mt-[34px] lg:w-[326px]"
             style={{ borderRadius: "29.5px" }}
           >

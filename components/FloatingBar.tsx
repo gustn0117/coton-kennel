@@ -106,11 +106,23 @@ export default function FloatingBar() {
 
   const items: Item[] = [
     { label: pick(lang, "카카오톡 상담", "KakaoTalk 咨询"), logo: KakaoLogo, href: "https://pf.kakao.com/" },
-    { label: "Instagram", logo: InstaLogo, href: "https://instagram.com/" },
-    { label: "YouTube", logo: YoutubeLogo, href: "https://youtube.com/" },
-    { label: pick(lang, "샤오홍슈 (小红书)", "小红书"), logo: XhsLogo, href: "https://www.xiaohongshu.com/" },
+    {
+      label: "Instagram",
+      logo: InstaLogo,
+      href: "https://www.instagram.com/coton_kennel_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+    },
+    {
+      label: "YouTube",
+      logo: YoutubeLogo,
+      href: "https://youtube.com/@cotonkennel?si=_UU6ZdcNn1rZrtzg",
+    },
+    {
+      label: pick(lang, "샤오홍슈 (小红书)", "小红书"),
+      logo: XhsLogo,
+      href: "https://www.xiaohongshu.com/user/profile/61a28839000000001000e304?xsec_token=YBlEemk-s1wYQ1Av9EU9rEhml6vuWQXT8EfisTKFHRAMA=&xsec_source=app_share&xhsshare=CopyLink&shareRedId=ODg1ODo2Rj42NzUyOTgwNjczOTdIOz9M&apptime=1778217466&share_id=5737c633f0d74e5b9a720b40fbbf4f88",
+    },
     { label: pick(lang, "위챗 QR 보기", "微信二维码"), logo: WechatLogo, onClick: () => setShowWeChatQR(true) },
-    { label: "Premium Pet", logo: PremiumPetLogo, href: "#" },
+    { label: "Premium Pet", logo: PremiumPetLogo, href: "https://premiumpet.co.kr/" },
   ];
 
   return (
