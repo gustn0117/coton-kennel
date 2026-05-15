@@ -1248,7 +1248,7 @@ function Field({
 const inputCls =
   "w-full rounded-lg border border-line-card bg-white px-3 py-2 text-[14px] text-ink-900 focus:border-brand-brown focus:outline-none";
 const primaryBtn =
-  "rounded-full bg-brand-brown px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-ink-900 disabled:opacity-50";
+  "rounded-full bg-brand-brown px-5 py-2.5 text-[13px] font-semibold text-white shadow-sm transition-colors hover:bg-ink-900 disabled:cursor-not-allowed disabled:bg-ink-300 disabled:text-white disabled:shadow-none";
 const secondaryBtn =
   "rounded-full border border-line-card bg-white px-4 py-2.5 text-[13px] font-medium text-ink-700 hover:bg-line-surface";
 const smallBtn =
