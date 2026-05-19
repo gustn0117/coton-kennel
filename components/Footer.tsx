@@ -57,7 +57,7 @@ const WechatTile = (
 );
 
 const SOCIAL: { href: string; label: string; tile: React.ReactNode }[] = [
-  { href: "https://pf.kakao.com/", label: "KakaoTalk", tile: KakaoTile },
+  { href: "https://pf.kakao.com/_FRxhsX", label: "KakaoTalk", tile: KakaoTile },
   {
     href: "https://www.instagram.com/coton_kennel_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
     label: "Instagram",
@@ -152,9 +152,18 @@ export default function Footer() {
           </div>
 
           <Col label="Contact">
-            <p className="tnum text-[20px] font-bold text-white lg:text-[22px]">
-              0507-1390-8073
-            </p>
+            <a
+              href="tel:01094104366"
+              className="tnum block text-[18px] font-bold text-white hover:text-brand-tan lg:text-[20px]"
+            >
+              010-9410-4366
+            </a>
+            <a
+              href="tel:01055231973"
+              className="tnum mt-1 block text-[18px] font-bold text-white hover:text-brand-tan lg:text-[20px]"
+            >
+              010-5523-1973
+            </a>
             <p className="mt-2 text-[13px] font-medium text-white/85 lg:text-[14px]">
               {pick(lang, "24시 방문 가능", "24小时可参观")}
             </p>

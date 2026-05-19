@@ -206,7 +206,9 @@ export default async function HomePage() {
                     period: "2026.00.00",
                     variant: ["p2", "p5", "p9"][i] ?? "p2",
                     image_url: null,
-                  } as Review}
+                    image_urls: [] as string[],
+                    created_at: "",
+                  } satisfies Review}
                 />
               ))}
         </div>
@@ -234,10 +236,12 @@ export default async function HomePage() {
 }
 
 function ReviewCard({ review }: { review: Review }) {
+  const firstImage =
+    (review.image_urls ?? []).find((u) => !!u && u.length > 0) ?? review.image_url;
   return (
     <article className="card-asym overflow-hidden border border-line-card bg-white shadow-card">
       <div className="aspect-[481/342] w-full">
-        <PuppyImage variant={review.variant as never} url={review.image_url} />
+        <PuppyImage variant={review.variant as never} url={firstImage} />
       </div>
       <div className="px-6 pb-7 pt-8 sm:px-8 lg:px-[42px] lg:pb-8 lg:pt-10">
         <StarRating rating={5} />

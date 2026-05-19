@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PuppyImage from "@/components/PuppyImage";
 import { supabasePublic, type Puppy, type SiteImage } from "@/lib/supabase";
 import { useLang } from "@/lib/LangProvider";
@@ -19,6 +19,7 @@ function translateColor(lang: Lang, v: string) {
   if (lang !== "zh") return v;
   if (v === "화이트") return "白色";
   if (v === "크림") return "奶油色";
+  if (v === "파티 컬러") return "派对色";
   return v;
 }
 function translateStatus(lang: Lang, v: string) {
@@ -30,7 +31,7 @@ function translateMonths(lang: Lang, m: number) {
 }
 
 const FILTER_OPTIONS = {
-  color: ["전체", "화이트", "크림"],
+  color: ["전체", "화이트", "크림", "파티 컬러"],
   months: ["전체", "1-3개월", "3-6개월", "6개월 이상"],
   gender: ["전체", "여아", "남아"],
   status: ["전체", "분양중", "분양완료"],
@@ -133,9 +134,22 @@ function KennelIntro({
   const total = slides.length;
   const [idx, setIdx] = useState(0);
   const slide = slides[idx];
+  const paused = useRef(false);
+
+  useEffect(() => {
+    if (total <= 1) return;
+    const id = window.setInterval(() => {
+      if (!paused.current) setIdx((p) => (p + 1) % total);
+    }, 8000);
+    return () => window.clearInterval(id);
+  }, [total]);
 
   return (
-    <section className="w-full bg-brand-beige">
+    <section
+      className="w-full bg-brand-beige"
+      onMouseEnter={() => (paused.current = true)}
+      onMouseLeave={() => (paused.current = false)}
+    >
       <div className="mx-auto w-full max-w-page-wide px-5 py-14 sm:px-6 md:py-20 lg:px-12 lg:py-24 xl:px-20 2xl:px-[180px] 2xl:py-[91px]">
         <div className="grid grid-cols-1 items-center gap-10 md:gap-12 lg:grid-cols-[1fr_minmax(0,733px)] lg:gap-12 xl:gap-16 2xl:gap-[61px]">
         <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[20px] lg:order-2 lg:max-w-[733px] lg:justify-self-end lg:rounded-[28px] 2xl:rounded-[32px]">
@@ -144,22 +158,6 @@ function KennelIntro({
             variant={(["p11", "p3", "p7", "p9"][idx] ?? "p3") as never}
             url={images[slide.imgKey] ?? null}
           />
-          <button
-            type="button"
-            onClick={() => setIdx((idx - 1 + total) % total)}
-            aria-label="이전 섹션"
-            className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-white md:h-11 md:w-11 lg:left-4"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => setIdx((idx + 1) % total)}
-            aria-label="다음 섹션"
-            className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-white md:h-11 md:w-11 lg:right-4"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
         </div>
 
         <div className="flex flex-col justify-center lg:order-1">
@@ -182,18 +180,37 @@ function KennelIntro({
         </div>
         </div>
 
-        <div className="mt-8 flex justify-center gap-2">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => setIdx(i)}
-              aria-label={`${i + 1}번째 섹션`}
-              className={`h-1.5 rounded-full transition-all ${
-                i === idx ? "w-6 bg-brand-brown" : "w-1.5 bg-ink-300 hover:bg-ink-300/70"
-              }`}
-            />
-          ))}
+        {/* Controls below the image — arrows no longer overlap the photo */}
+        <div className="mt-8 flex items-center justify-center gap-4 sm:gap-6">
+          <button
+            type="button"
+            onClick={() => setIdx((idx - 1 + total) % total)}
+            aria-label="이전 섹션"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-line-card bg-white text-brand-brown shadow-card transition-colors hover:bg-brand-beige md:h-11 md:w-11"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <div className="flex items-center gap-2">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setIdx(i)}
+                aria-label={`${i + 1}번째 섹션`}
+                className={`h-1.5 rounded-full transition-all ${
+                  i === idx ? "w-6 bg-brand-brown" : "w-1.5 bg-ink-300 hover:bg-ink-300/70"
+                }`}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => setIdx((idx + 1) % total)}
+            aria-label="다음 섹션"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-line-card bg-white text-brand-brown shadow-card transition-colors hover:bg-brand-beige md:h-11 md:w-11"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </section>
@@ -215,6 +232,7 @@ export default function PuppiesPage() {
     gender: "전체",
     status: "전체",
   });
+  const [mobileCols, setMobileCols] = useState<1 | 2>(1);
 
   useEffect(() => {
     supabasePublic
@@ -300,8 +318,50 @@ export default function PuppiesPage() {
           />
         </div>
 
-        {/* Grid 4-col × N-row */}
-        <div className="grid grid-cols-1 gap-x-4 gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-[47px] lg:gap-y-[66px]">
+        {/* Mobile-only 1열/2열 토글 (sm 이상은 항상 2~4열) */}
+        <div className="mb-5 flex items-center justify-end gap-1.5 sm:hidden">
+          <span className="mr-1.5 text-[12px] font-medium text-ink-500">
+            {pick(lang, "보기", "视图")}
+          </span>
+          <button
+            type="button"
+            onClick={() => setMobileCols(1)}
+            aria-pressed={mobileCols === 1}
+            aria-label={pick(lang, "한 줄 보기", "单列视图")}
+            className={`flex h-8 w-8 items-center justify-center rounded-md border transition-colors ${
+              mobileCols === 1
+                ? "border-brand-brown bg-brand-brown text-white"
+                : "border-line-card bg-white text-ink-500"
+            }`}
+          >
+            <svg viewBox="0 0 16 16" className="h-4 w-4" aria-hidden fill="currentColor">
+              <rect x="3" y="3" width="10" height="10" rx="1.5" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={() => setMobileCols(2)}
+            aria-pressed={mobileCols === 2}
+            aria-label={pick(lang, "두 줄 보기", "双列视图")}
+            className={`flex h-8 w-8 items-center justify-center rounded-md border transition-colors ${
+              mobileCols === 2
+                ? "border-brand-brown bg-brand-brown text-white"
+                : "border-line-card bg-white text-ink-500"
+            }`}
+          >
+            <svg viewBox="0 0 16 16" className="h-4 w-4" aria-hidden fill="currentColor">
+              <rect x="2" y="3" width="4.5" height="10" rx="1" />
+              <rect x="9.5" y="3" width="4.5" height="10" rx="1" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Grid: 모바일 1/2열 토글 · sm 2열 · md 3열 · lg 4열 */}
+        <div
+          className={`grid gap-x-4 gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-[47px] lg:gap-y-[66px] ${
+            mobileCols === 2 ? "grid-cols-2 gap-x-3 gap-y-8" : "grid-cols-1"
+          }`}
+        >
           {visiblePuppies.map((p) => (
             <PuppyCard
               key={p.id}
@@ -384,7 +444,7 @@ export default function PuppiesPage() {
               <div className="aspect-square w-full overflow-hidden rounded-[16px] sm:rounded-[20px]">
                 <PuppyImage
                   variant={
-                    (selected.thumbs[activeThumb] ?? selected.variant) as never
+                    (selected.thumbs?.[activeThumb] ?? selected.variant) as never
                   }
                   url={
                     selected.thumb_urls?.[activeThumb] || selected.image_url
@@ -454,11 +514,11 @@ export default function PuppiesPage() {
               </div>
             </div>
 
-            {selected.thumbs.length > 1 && (
+            {(selected.thumb_urls ?? []).filter(Boolean).length > 1 && (
               <div className="mt-6 grid grid-cols-4 gap-3">
-                {selected.thumbs.map((v, i) => (
+                {(selected.thumb_urls ?? []).filter(Boolean).map((url, i) => (
                   <button
-                    key={i}
+                    key={`${url}-${i}`}
                     type="button"
                     onClick={() => setActiveThumb(i)}
                     className={`aspect-square overflow-hidden rounded-[10px] ring-2 ${
@@ -468,8 +528,10 @@ export default function PuppiesPage() {
                     }`}
                   >
                     <PuppyImage
-                      variant={v as never}
-                      url={selected.thumb_urls?.[i] || null}
+                      variant={
+                        (selected.thumbs?.[i] ?? selected.variant) as never
+                      }
+                      url={url}
                     />
                   </button>
                 ))}

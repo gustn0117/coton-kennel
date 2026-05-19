@@ -9,6 +9,12 @@ import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
 import { ChevronLeft, ChevronRight, ChevronDown } from "@/components/icons";
 
+function reviewImages(r: Review): string[] {
+  const urls = (r.image_urls ?? []).filter((u) => !!u && u.length > 0);
+  if (urls.length > 0) return urls;
+  return r.image_url ? [r.image_url] : [];
+}
+
 const PAGE_SIZE = 6;
 
 export default function VisitorGuidePage() {
@@ -51,6 +57,7 @@ export default function VisitorGuidePage() {
     period: "2026.00.00",
     variant: ["p2", "p5", "p9", "p1", "p7", "p11"][i] ?? "p2",
     image_url: null,
+    image_urls: [],
     created_at: "",
   }));
   const list = visible.length > 0 ? visible : fallbackReviews;
@@ -59,7 +66,7 @@ export default function VisitorGuidePage() {
     <>
       <Hero
         eyebrow={pick(lang, "Review", "Review")}
-        title="Vistor Guide"
+        title={pick(lang, "방문자 후기", "访客评价")}
         description={pick(
           lang,
           <>
@@ -145,10 +152,54 @@ function FigmaReviewCard({
   isOpen: boolean;
   onToggle: () => void;
 }) {
+  const images = reviewImages(review);
+  const [imgIdx, setImgIdx] = useState(0);
+  const safeIdx = images.length > 0 ? Math.min(imgIdx, images.length - 1) : 0;
+  const hasMultiple = images.length > 1;
+
   return (
     <article className="card-asym overflow-hidden border border-line-card bg-white shadow-card">
-      <div className="aspect-[481/342] w-full">
-        <PuppyImage variant={review.variant as never} url={review.image_url} />
+      <div className="relative aspect-[481/342] w-full">
+        <PuppyImage
+          variant={review.variant as never}
+          url={images[safeIdx] ?? null}
+        />
+        {hasMultiple && (
+          <>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setImgIdx((safeIdx - 1 + images.length) % images.length);
+              }}
+              aria-label="이전 이미지"
+              className="absolute left-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-brand-brown shadow ring-1 ring-line-card hover:bg-white"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setImgIdx((safeIdx + 1) % images.length);
+              }}
+              aria-label="다음 이미지"
+              className="absolute right-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-brand-brown shadow ring-1 ring-line-card hover:bg-white"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+            <div className="pointer-events-none absolute inset-x-0 bottom-2 z-10 flex justify-center gap-1">
+              {images.map((_, i) => (
+                <span
+                  key={i}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === safeIdx ? "w-4 bg-white" : "w-1.5 bg-white/70"
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
       <div className="px-[28px] pb-7 pt-8 sm:px-[36px] lg:px-[42px] lg:pt-10">
         <StarRating rating={5} />
@@ -183,6 +234,24 @@ function FigmaReviewCard({
             <p className="mt-4 whitespace-pre-line text-[14px] leading-[1.65] text-ink-700 lg:text-[16px]">
               {review.body}
             </p>
+            {images.length > 1 && (
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                {images.map((u, i) => (
+                  <button
+                    key={`${u}-${i}`}
+                    type="button"
+                    onClick={() => setImgIdx(i)}
+                    aria-label={`${i + 1}번째 이미지 보기`}
+                    className={`aspect-square overflow-hidden rounded-md ring-2 transition-all ${
+                      i === safeIdx ? "ring-brand-brown" : "ring-transparent hover:ring-brand-tan"
+                    }`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={u} alt="" className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

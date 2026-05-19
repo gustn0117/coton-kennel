@@ -13,9 +13,24 @@ export async function GET() {
   return NextResponse.json(data);
 }
 
+function normalizeImagePayload(b: Record<string, unknown>) {
+  const urls = Array.isArray(b.image_urls)
+    ? (b.image_urls as unknown[]).filter(
+        (u): u is string => typeof u === "string" && u.length > 0
+      )
+    : [];
+  const single =
+    typeof b.image_url === "string" && b.image_url.length > 0
+      ? b.image_url
+      : null;
+  if (urls.length === 0 && single) urls.push(single);
+  return { image_urls: urls, image_url: urls[0] ?? null };
+}
+
 export async function POST(req: NextRequest) {
   if (!isAdmin(req)) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const b = await req.json();
+  const imgs = normalizeImagePayload(b);
   const { data, error } = await supabaseAdmin()
     .from("reviews")
     .insert({
@@ -24,7 +39,8 @@ export async function POST(req: NextRequest) {
       title: b.title || "",
       body: b.body || "",
       variant: b.variant || "p1",
-      image_url: b.image_url || null,
+      image_url: imgs.image_url,
+      image_urls: imgs.image_urls,
     })
     .select()
     .single();
@@ -37,6 +53,11 @@ export async function PATCH(req: NextRequest) {
   const b = await req.json();
   const { id, ...rest } = b;
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
+  if ("image_urls" in rest || "image_url" in rest) {
+    const imgs = normalizeImagePayload(rest);
+    rest.image_url = imgs.image_url;
+    rest.image_urls = imgs.image_urls;
+  }
   const { data, error } = await supabaseAdmin()
     .from("reviews")
     .update(rest)

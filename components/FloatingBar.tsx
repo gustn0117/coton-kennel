@@ -109,7 +109,7 @@ export default function FloatingBar() {
   if (pathname?.startsWith("/admin")) return null;
 
   const items: Item[] = [
-    { label: pick(lang, "카카오톡 상담", "KakaoTalk 咨询"), logo: KakaoLogo, href: "https://pf.kakao.com/" },
+    { label: pick(lang, "카카오톡 상담", "KakaoTalk 咨询"), logo: KakaoLogo, href: "https://pf.kakao.com/_FRxhsX" },
     {
       label: "Instagram",
       logo: InstaLogo,

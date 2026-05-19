@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ImageCarousel from "./ImageCarousel";
 import { ChevronLeft, ChevronRight } from "./icons";
 import type { Lang } from "@/lib/i18n";
@@ -130,10 +130,24 @@ export default function PremiumGuide({
   const currentImage =
     images.length > 0 ? images[idx % images.length]?.image_url ?? null : null;
 
+  // Autoplay (pauses on hover/focus)
+  const paused = useRef(false);
+  useEffect(() => {
+    if (total <= 1) return;
+    const id = window.setInterval(() => {
+      if (!paused.current) setIdx((p) => (p + 1) % total);
+    }, 8000);
+    return () => window.clearInterval(id);
+  }, [total]);
+
   return (
-    <section className="mx-auto w-full max-w-page-wide px-5 py-14 sm:px-6 md:py-20 lg:px-12 lg:py-24 xl:px-20 2xl:px-[180px] 2xl:py-[91px]">
+    <section
+      className="mx-auto w-full max-w-page-wide px-5 py-14 sm:px-6 md:py-20 lg:px-12 lg:py-24 xl:px-20 2xl:px-[180px] 2xl:py-[91px]"
+      onMouseEnter={() => (paused.current = true)}
+      onMouseLeave={() => (paused.current = false)}
+    >
       <div className="grid grid-cols-1 items-stretch gap-10 md:gap-12 lg:grid-cols-[minmax(0,733px)_1fr] lg:gap-12 xl:gap-16 2xl:gap-[61px]">
-        {/* Left image — fixed aspect, arrows confined to image */}
+        {/* Left image — clean: arrows no longer overlap the photo */}
         <div className="relative aspect-[733/626] w-full overflow-hidden rounded-[20px] lg:max-w-[733px] lg:rounded-[28px] 2xl:rounded-[32px]">
           <ImageCarousel
             key={idx}
@@ -141,22 +155,6 @@ export default function PremiumGuide({
             fallbackVariant="p3"
             alt="Coton Kennel"
           />
-          <button
-            type="button"
-            onClick={() => setIdx((idx - 1 + total) % total)}
-            aria-label="이전 섹션"
-            className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-white md:h-11 md:w-11 lg:left-4"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => setIdx((idx + 1) % total)}
-            aria-label="다음 섹션"
-            className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-brand-brown shadow-card ring-1 ring-line-card transition-colors hover:bg-white md:h-11 md:w-11 lg:right-4"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
         </div>
 
         {/* Right content — same vertical box on every slide */}
@@ -203,19 +201,37 @@ export default function PremiumGuide({
 
       </div>
 
-      {/* Dots */}
-      <div className="mt-8 flex justify-center gap-2">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => setIdx(i)}
-            aria-label={`${i + 1}번째 섹션`}
-            className={`h-1.5 rounded-full transition-all ${
-              i === idx ? "w-6 bg-brand-brown" : "w-1.5 bg-ink-300 hover:bg-ink-300/70"
-            }`}
-          />
-        ))}
+      {/* Controls below the section — arrows + dots, never over the image */}
+      <div className="mt-8 flex items-center justify-center gap-4 sm:gap-6">
+        <button
+          type="button"
+          onClick={() => setIdx((idx - 1 + total) % total)}
+          aria-label="이전 섹션"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-line-card bg-white text-brand-brown shadow-card transition-colors hover:bg-brand-beige md:h-11 md:w-11"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <div className="flex items-center gap-2">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setIdx(i)}
+              aria-label={`${i + 1}번째 섹션`}
+              className={`h-1.5 rounded-full transition-all ${
+                i === idx ? "w-6 bg-brand-brown" : "w-1.5 bg-ink-300 hover:bg-ink-300/70"
+              }`}
+            />
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => setIdx((idx + 1) % total)}
+          aria-label="다음 섹션"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-line-card bg-white text-brand-brown shadow-card transition-colors hover:bg-brand-beige md:h-11 md:w-11"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
       </div>
     </section>
   );

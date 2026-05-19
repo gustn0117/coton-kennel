@@ -163,6 +163,7 @@ export type Review = {
   body: string;
   variant: string;
   image_url: string | null;
+  image_urls: string[];
   created_at: string;
 };
 

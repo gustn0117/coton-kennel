@@ -233,6 +233,169 @@ async function uploadVideo(pw: string, file: File): Promise<string> {
   return j.url as string;
 }
 
+/* Multi-image picker with batch upload + drag-and-drop reordering */
+function MultiImageInput({
+  pw,
+  values,
+  onChange,
+  label,
+  hint,
+  max,
+}: {
+  pw: string;
+  values: string[];
+  onChange: (urls: string[]) => void;
+  label: string;
+  hint?: string;
+  max?: number;
+}) {
+  const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+  const [overIdx, setOverIdx] = useState<number | null>(null);
+
+  async function onFiles(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    e.target.value = "";
+    if (files.length === 0) return;
+    setBusy(true);
+    setProgress({ done: 0, total: files.length });
+    const uploaded: string[] = [];
+    for (let i = 0; i < files.length; i++) {
+      try {
+        const url = await uploadImage(pw, files[i]);
+        uploaded.push(url);
+      } catch (err) {
+        alert(`'${files[i].name}' 업로드 실패: ${(err as Error).message}`);
+      }
+      setProgress({ done: i + 1, total: files.length });
+    }
+    let merged = [...values, ...uploaded];
+    if (max && merged.length > max) merged = merged.slice(0, max);
+    onChange(merged);
+    setBusy(false);
+    setProgress(null);
+  }
+
+  function removeAt(i: number) {
+    const next = [...values];
+    next.splice(i, 1);
+    onChange(next);
+  }
+
+  function moveItem(from: number, to: number) {
+    if (from === to || from < 0 || to < 0 || from >= values.length || to >= values.length) return;
+    const next = [...values];
+    const [item] = next.splice(from, 1);
+    next.splice(to, 0, item);
+    onChange(next);
+  }
+
+  const remaining = max ? max - values.length : Infinity;
+  const canAddMore = remaining > 0;
+
+  return (
+    <div>
+      <div className="mb-1.5 flex items-baseline justify-between gap-3">
+        <span className="block text-[12px] font-medium tracking-wide text-ink-500">
+          {label}
+          {typeof max === "number" && (
+            <span className="ml-1.5 text-[11px] text-ink-500">
+              ({values.length}/{max})
+            </span>
+          )}
+        </span>
+        {hint && <span className="text-[11px] text-ink-500">{hint}</span>}
+      </div>
+
+      <div className="rounded-xl border border-dashed border-line-card bg-line-surface p-3">
+        {values.length === 0 ? (
+          <p className="py-4 text-center text-[12px] text-ink-500">
+            아직 이미지가 없습니다. 아래 ‘사진 추가’로 여러 장 한 번에 선택해 주세요.
+          </p>
+        ) : (
+          <ul className="grid grid-cols-3 gap-2.5 sm:grid-cols-4">
+            {values.map((url, i) => (
+              <li
+                key={`${url}-${i}`}
+                draggable
+                onDragStart={(e) => {
+                  setDragIdx(i);
+                  e.dataTransfer.effectAllowed = "move";
+                  e.dataTransfer.setData("text/plain", String(i));
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.dataTransfer.dropEffect = "move";
+                  if (overIdx !== i) setOverIdx(i);
+                }}
+                onDragEnd={() => {
+                  setDragIdx(null);
+                  setOverIdx(null);
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const from = Number(e.dataTransfer.getData("text/plain"));
+                  if (!Number.isNaN(from)) moveItem(from, i);
+                  setDragIdx(null);
+                  setOverIdx(null);
+                }}
+                className={`relative aspect-square select-none overflow-hidden rounded-lg border bg-white transition-all ${
+                  dragIdx === i
+                    ? "opacity-40 ring-2 ring-brand-brown"
+                    : overIdx === i && dragIdx !== null
+                    ? "ring-2 ring-brand-brown"
+                    : "border-line-card"
+                }`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={url} alt="" className="pointer-events-none h-full w-full object-cover" draggable={false} />
+                <span className="pointer-events-none absolute left-1 top-1 rounded-md bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                  {i + 1}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => removeAt(i)}
+                  aria-label="이미지 삭제"
+                  className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white/95 text-red-600 shadow ring-1 ring-line-card hover:bg-red-50"
+                >
+                  <svg viewBox="0 0 12 12" className="h-3 w-3" fill="currentColor" aria-hidden>
+                    <path d="M2.4 1.4l1.4 1.4L6 1l2.2 1.8L9.6 1.4l1.4 1.4-1.8 2.2L11 7.2l-1.4 1.4L7.4 7.2 6 9l-1.4-1.8-2.2 1.4L1 7.2 2.8 5 1 2.8z" />
+                  </svg>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <label
+          className={`mt-3 block cursor-pointer rounded-md border px-3 py-2 text-center text-[12.5px] font-medium transition-colors ${
+            canAddMore && !busy
+              ? "border-line-card bg-white text-ink-700 hover:bg-brand-beige"
+              : "cursor-not-allowed border-line-card bg-line-tag text-ink-500"
+          }`}
+        >
+          {busy
+            ? progress
+              ? `업로드 중... ${progress.done}/${progress.total}`
+              : "업로드 중..."
+            : canAddMore
+            ? "사진 추가 (여러 장 선택 가능)"
+            : `최대 ${max}장까지 등록할 수 있습니다`}
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            disabled={!canAddMore || busy}
+            onChange={onFiles}
+            className="hidden"
+          />
+        </label>
+      </div>
+    </div>
+  );
+}
+
 function ImageInput({
   pw,
   value,
@@ -818,7 +981,7 @@ function PuppiesTab({ pw }: { pw: string }) {
     thumbs: ["p1", "p2", "p3", "p4"] as string[],
     order_index: 0,
     image_url: null as string | null,
-    thumb_urls: ["", "", "", ""] as string[],
+    thumb_urls: [] as string[],
   };
   const [form, setForm] = useState(empty);
   const [busy, setBusy] = useState(false);
@@ -863,9 +1026,7 @@ function PuppiesTab({ pw }: { pw: string }) {
 
   function startEdit(p: Puppy) {
     setEditing(p);
-    const tu = p.thumb_urls && p.thumb_urls.length === 4
-      ? p.thumb_urls
-      : ["", "", "", ""];
+    const tu = (p.thumb_urls ?? []).filter((u) => !!u && u.length > 0);
     setForm({
       name: p.name,
       color: p.color,
@@ -878,12 +1039,6 @@ function PuppiesTab({ pw }: { pw: string }) {
       image_url: p.image_url,
       thumb_urls: tu,
     });
-  }
-
-  function setThumbUrl(i: number, url: string | null) {
-    const next = [...form.thumb_urls];
-    next[i] = url || "";
-    setForm({ ...form, thumb_urls: next });
   }
 
   return (
@@ -905,6 +1060,7 @@ function PuppiesTab({ pw }: { pw: string }) {
             >
               <option>화이트</option>
               <option>크림</option>
+              <option>파티 컬러</option>
             </select>
           </Field>
           <Field label="개월 수">
@@ -944,20 +1100,14 @@ function PuppiesTab({ pw }: { pw: string }) {
           onChange={(url) => setForm({ ...form, image_url: url })}
           size="h-40 w-40"
         />
-        <Field label="상세 썸네일 4장 (선택)">
-          <div className="grid grid-cols-2 gap-3">
-            {form.thumb_urls.map((u, i) => (
-              <ImageInput
-                key={i}
-                pw={pw}
-                label={`썸네일 ${i + 1}`}
-                value={u || null}
-                onChange={(url) => setThumbUrl(i, url)}
-                size="h-24 w-24"
-              />
-            ))}
-          </div>
-        </Field>
+        <MultiImageInput
+          pw={pw}
+          label="상세 썸네일 (드래그하여 순서 변경)"
+          hint="최대 12장"
+          max={12}
+          values={form.thumb_urls}
+          onChange={(urls) => setForm({ ...form, thumb_urls: urls })}
+        />
         <Field label="대체 빗금 variant (이미지 없을 때)">
           <select
             value={form.variant}
@@ -1001,37 +1151,343 @@ function PuppiesTab({ pw }: { pw: string }) {
         </div>
       </Panel>
 
-      <Panel title={`등록된 강아지 (${items.length})`}>
-        <ul className="divide-y divide-line-tag">
-          {items.map((p) => (
-            <li key={p.id} className="flex items-center justify-between gap-3 py-3">
-              <div className="min-w-0 flex-1">
-                <p className="font-medium text-ink-900">
-                  {p.name}{" "}
-                  <span className="ml-1 text-[12px] text-ink-500">
-                    {p.color} · {p.gender} · {p.months}개월
-                  </span>
-                </p>
-                <p className="mt-0.5 text-[12.5px] text-ink-500">
-                  {p.status} · variant {p.variant} · order {p.order_index}
-                </p>
-              </div>
-              <div className="flex gap-1">
-                <button onClick={() => startEdit(p)} className={smallBtn}>
-                  수정
-                </button>
-                <button onClick={() => remove(p.id)} className={dangerBtn}>
-                  삭제
-                </button>
-              </div>
-            </li>
-          ))}
-          {items.length === 0 && (
-            <li className="py-8 text-center text-[13px] text-ink-500">없음</li>
-          )}
-        </ul>
-      </Panel>
+      <PuppiesList
+        items={items}
+        pw={pw}
+        startEdit={startEdit}
+        reload={load}
+      />
     </div>
+  );
+}
+
+/* ---------------- PUPPIES list (filter / sort / bulk-select / page-range) ---------------- */
+const PUPPIES_PAGE_SIZE = 10;
+
+function PuppiesList({
+  items,
+  pw,
+  startEdit,
+  reload,
+}: {
+  items: Puppy[];
+  pw: string;
+  startEdit: (p: Puppy) => void;
+  reload: () => Promise<void>;
+}) {
+  const [statusFilter, setStatusFilter] = useState<"전체" | "분양중" | "분양완료">("전체");
+  const [colorFilter, setColorFilter] = useState<"전체" | "화이트" | "크림" | "파티 컬러">("전체");
+  const [sort, setSort] = useState<"latest" | "oldest" | "order">("order");
+  const [page, setPage] = useState(1);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [rangeFrom, setRangeFrom] = useState("");
+  const [rangeTo, setRangeTo] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const filteredSorted = useMemo(() => {
+    let arr = items.slice();
+    if (statusFilter !== "전체") arr = arr.filter((p) => p.status === statusFilter);
+    if (colorFilter !== "전체") arr = arr.filter((p) => p.color === colorFilter);
+    if (sort === "latest") {
+      arr.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
+    } else if (sort === "oldest") {
+      arr.sort((a, b) => (a.created_at > b.created_at ? 1 : -1));
+    } else {
+      arr.sort((a, b) => a.order_index - b.order_index);
+    }
+    return arr;
+  }, [items, statusFilter, colorFilter, sort]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredSorted.length / PUPPIES_PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const pageStart = (safePage - 1) * PUPPIES_PAGE_SIZE;
+  const pageEnd = pageStart + PUPPIES_PAGE_SIZE;
+  const visible = filteredSorted.slice(pageStart, pageEnd);
+
+  useEffect(() => {
+    setPage(1);
+  }, [statusFilter, colorFilter, sort]);
+
+  function toggleOne(id: string) {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setSelected(next);
+  }
+  function togglePage() {
+    const next = new Set(selected);
+    const allOnPage = visible.every((p) => next.has(p.id));
+    if (allOnPage) visible.forEach((p) => next.delete(p.id));
+    else visible.forEach((p) => next.add(p.id));
+    setSelected(next);
+  }
+  function selectByPageRange() {
+    const f = Math.max(1, Math.min(totalPages, Number(rangeFrom) || 1));
+    const t = Math.max(f, Math.min(totalPages, Number(rangeTo) || f));
+    const start = (f - 1) * PUPPIES_PAGE_SIZE;
+    const end = t * PUPPIES_PAGE_SIZE;
+    const chunk = filteredSorted.slice(start, end);
+    const next = new Set(selected);
+    chunk.forEach((p) => next.add(p.id));
+    setSelected(next);
+  }
+  function clearSelection() {
+    setSelected(new Set());
+  }
+
+  async function bulkDelete() {
+    if (selected.size === 0) return;
+    if (!confirm(`선택된 ${selected.size}건을 삭제할까요? 되돌릴 수 없습니다.`)) return;
+    setBusy(true);
+    const ids = Array.from(selected);
+    for (const id of ids) {
+      await fetch(`/api/admin/puppies?id=${id}`, {
+        method: "DELETE",
+        headers: authHeaders(pw),
+      });
+    }
+    setSelected(new Set());
+    await reload();
+    setBusy(false);
+  }
+  async function bulkSetStatus(status: "분양중" | "분양완료") {
+    if (selected.size === 0) return;
+    if (!confirm(`선택된 ${selected.size}건을 '${status}'으로 변경할까요?`)) return;
+    setBusy(true);
+    const ids = Array.from(selected);
+    for (const id of ids) {
+      await fetch("/api/admin/puppies", {
+        method: "PATCH",
+        headers: authHeaders(pw),
+        body: JSON.stringify({ id, status }),
+      });
+    }
+    setSelected(new Set());
+    await reload();
+    setBusy(false);
+  }
+  async function singleDelete(id: string) {
+    if (!confirm("정말 삭제하시겠습니까?")) return;
+    await fetch(`/api/admin/puppies?id=${id}`, {
+      method: "DELETE",
+      headers: authHeaders(pw),
+    });
+    await reload();
+  }
+
+  const allOnPageChecked =
+    visible.length > 0 && visible.every((p) => selected.has(p.id));
+
+  return (
+    <Panel title={`등록된 강아지 (${filteredSorted.length} / 전체 ${items.length})`}>
+      {/* Filter + sort row */}
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
+          className={inputCls}
+        >
+          <option value="전체">전체 상태</option>
+          <option value="분양중">분양중</option>
+          <option value="분양완료">분양완료</option>
+        </select>
+        <select
+          value={colorFilter}
+          onChange={(e) => setColorFilter(e.target.value as typeof colorFilter)}
+          className={inputCls}
+        >
+          <option value="전체">전체 색상</option>
+          <option value="화이트">화이트</option>
+          <option value="크림">크림</option>
+          <option value="파티 컬러">파티 컬러</option>
+        </select>
+        <select
+          value={sort}
+          onChange={(e) => setSort(e.target.value as typeof sort)}
+          className={inputCls}
+        >
+          <option value="order">정렬 순서 (order)</option>
+          <option value="latest">최신순</option>
+          <option value="oldest">오래된순</option>
+        </select>
+      </div>
+
+      {/* Page-range bulk select */}
+      <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-line-card/70 bg-line-surface p-2.5">
+        <span className="text-[12px] font-medium text-ink-700">
+          페이지 구간 선택
+        </span>
+        <input
+          type="number"
+          min={1}
+          max={totalPages}
+          value={rangeFrom}
+          onChange={(e) => setRangeFrom(e.target.value)}
+          placeholder="1"
+          className="h-8 w-16 rounded-md border border-line-card bg-white px-2 text-[12.5px]"
+        />
+        <span className="text-[12px] text-ink-500">~</span>
+        <input
+          type="number"
+          min={1}
+          max={totalPages}
+          value={rangeTo}
+          onChange={(e) => setRangeTo(e.target.value)}
+          placeholder={String(totalPages)}
+          className="h-8 w-16 rounded-md border border-line-card bg-white px-2 text-[12.5px]"
+        />
+        <button type="button" onClick={selectByPageRange} className={smallBtn}>
+          구간 선택
+        </button>
+        <span className="ml-auto text-[12px] text-ink-500">
+          전체 {totalPages}페이지
+        </span>
+      </div>
+
+      {/* Bulk action bar (sticks when any item selected) */}
+      {selected.size > 0 && (
+        <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-brand-brown/40 bg-brand-beige p-2.5">
+          <span className="text-[12.5px] font-semibold text-brand-brown">
+            {selected.size}개 선택됨
+          </span>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={() => bulkSetStatus("분양중")}
+            className={smallBtn}
+          >
+            일괄 분양중
+          </button>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={() => bulkSetStatus("분양완료")}
+            className={smallBtn}
+          >
+            일괄 분양완료
+          </button>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={bulkDelete}
+            className={dangerBtn}
+          >
+            일괄 삭제
+          </button>
+          <button
+            type="button"
+            onClick={clearSelection}
+            className="ml-auto text-[12px] text-ink-500 underline"
+          >
+            선택 해제
+          </button>
+        </div>
+      )}
+
+      {/* List header: page-level select all */}
+      <div className="mt-3 flex items-center gap-2 border-b border-line-card pb-2 text-[12px] text-ink-500">
+        <label className="flex cursor-pointer items-center gap-1.5 select-none">
+          <input
+            type="checkbox"
+            checked={allOnPageChecked}
+            onChange={togglePage}
+            className="h-4 w-4 cursor-pointer accent-brand-brown"
+          />
+          이 페이지 전체 선택
+        </label>
+        <span className="ml-auto tnum text-[12px] text-ink-500">
+          {pageStart + 1}–{Math.min(pageEnd, filteredSorted.length)} / {filteredSorted.length}
+        </span>
+      </div>
+
+      <ul className="divide-y divide-line-tag">
+        {visible.map((p) => (
+          <li
+            key={p.id}
+            className={`flex items-center gap-2 py-2.5 ${
+              selected.has(p.id) ? "bg-brand-beige/40" : ""
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={selected.has(p.id)}
+              onChange={() => toggleOne(p.id)}
+              className="h-4 w-4 cursor-pointer accent-brand-brown"
+            />
+            <div className="min-w-0 flex-1">
+              <p className="font-medium text-ink-900">
+                {p.name}
+                <span className="ml-1.5 text-[12px] text-ink-500">
+                  {p.color} · {p.gender} · {p.months}개월
+                </span>
+              </p>
+              <p className="mt-0.5 text-[12px] text-ink-500">
+                <span
+                  className={
+                    p.status === "분양완료"
+                      ? "rounded bg-ink-300/40 px-1.5 py-0.5 font-medium text-ink-700"
+                      : "rounded bg-brand-tan/60 px-1.5 py-0.5 font-medium text-brand-brown"
+                  }
+                >
+                  {p.status}
+                </span>
+                <span className="ml-2">order {p.order_index}</span>
+                <span className="ml-2 hidden sm:inline">variant {p.variant}</span>
+              </p>
+            </div>
+            <div className="flex shrink-0 gap-1">
+              <button onClick={() => startEdit(p)} className={smallBtn}>
+                수정
+              </button>
+              <button onClick={() => singleDelete(p.id)} className={dangerBtn}>
+                삭제
+              </button>
+            </div>
+          </li>
+        ))}
+        {visible.length === 0 && (
+          <li className="py-8 text-center text-[13px] text-ink-500">
+            조건에 맞는 강아지가 없습니다.
+          </li>
+        )}
+      </ul>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="mt-4 flex items-center justify-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => setPage(Math.max(1, safePage - 1))}
+            disabled={safePage === 1}
+            className="rounded-md border border-line-card bg-white px-2 py-1 text-[12px] disabled:opacity-40"
+          >
+            ‹
+          </button>
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setPage(i + 1)}
+              className={`tnum h-7 min-w-[28px] rounded-md px-1.5 text-[12.5px] ${
+                safePage === i + 1
+                  ? "bg-brand-brown text-white"
+                  : "border border-line-card bg-white text-ink-700"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            type="button"
+            onClick={() => setPage(Math.min(totalPages, safePage + 1))}
+            disabled={safePage === totalPages}
+            className="rounded-md border border-line-card bg-white px-2 py-1 text-[12px] disabled:opacity-40"
+          >
+            ›
+          </button>
+        </div>
+      )}
+    </Panel>
   );
 }
 
@@ -1045,7 +1501,7 @@ function ReviewsTab({ pw }: { pw: string }) {
     title: "",
     body: "",
     variant: "p1",
-    image_url: null as string | null,
+    image_urls: [] as string[],
   };
   const [form, setForm] = useState(empty);
   const [busy, setBusy] = useState(false);
@@ -1090,13 +1546,15 @@ function ReviewsTab({ pw }: { pw: string }) {
 
   function startEdit(r: Review) {
     setEditing(r);
+    const urls = (r.image_urls ?? []).filter((u) => !!u && u.length > 0);
+    if (urls.length === 0 && r.image_url) urls.push(r.image_url);
     setForm({
       name: r.name,
       period: r.period,
       title: r.title,
       body: r.body,
       variant: r.variant,
-      image_url: r.image_url,
+      image_urls: urls,
     });
   }
 
@@ -1135,12 +1593,13 @@ function ReviewsTab({ pw }: { pw: string }) {
             className={inputCls}
           />
         </Field>
-        <ImageInput
+        <MultiImageInput
           pw={pw}
-          label="후기 이미지"
-          value={form.image_url}
-          onChange={(url) => setForm({ ...form, image_url: url })}
-          size="h-32 w-32"
+          label="후기 이미지 (드래그하여 순서 변경)"
+          hint="여러 장 한 번에 선택 가능 · 최대 8장"
+          max={8}
+          values={form.image_urls}
+          onChange={(urls) => setForm({ ...form, image_urls: urls })}
         />
         <Field label="대체 빗금 variant (이미지 없을 때)">
           <select

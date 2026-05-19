@@ -40,12 +40,12 @@ function getRefund(lang: Lang) {
   if (lang === "zh") {
     return [
       { label: "国内分养", body: "如参观后不希望分养,预约金将全额退还。我们会尽最大努力,让您可以毫无负担地慎重做出决定。" },
-      { label: "海外分养", body: "海外发货开始前可全额退还预约金。但海外发货开始后会产生航空运费,可能无法全额退还,敬请谅解。" },
+      { label: "海外分养", body: "海外分养的情况,在海外手续开始之前可全额退还。\n但宠物出入境手续开始或航空运输受理之后,会产生航空运费及各项行政手续费,因此全额退还较为困难,敬请谅解。" },
     ];
   }
   return [
     { label: "국내 분양", body: "방문 후 분양을 원하지 않으실 경우, 예약금은 전액 환불 됩니다. 고객님께서 부담 없이 신중하게 결정하실 수 있도록 최대한 배려하겠습니다." },
-    { label: "해외 분양", body: "해외 발송이 시작되기 전까지는 예약금 전액 환불이 가능합니다. 단, 해외 발송이 시작된 이후에는 항공 운송료가 발생하여 전액 환불이 어려울 수 있는 점 양해 부탁드립니다." },
+    { label: "해외 분양", body: "해외 분양의 경우, 해외 절차가 진행되기 전까지는 전액 환불이 가능합니다.\n다만 동물의 해외 출입국 절차가 시작되거나 항공 운송이 접수된 이후에는 항공 운송료 및 각종 행정 수수료가 발생하므로 전액 환불은 어려운 점 양해 부탁드립니다." },
   ];
 }
 
@@ -150,11 +150,11 @@ export default function ContactPage() {
         imageRadius={68}
       />
 
-      {/* Vistor Guide intro + 5단계 프로세스 */}
+      {/* 방문 안내 intro + 5단계 프로세스 */}
       <section className="mx-auto w-full max-w-page-wide px-6 pt-16 lg:px-12 xl:px-20 2xl:px-[180px] lg:pt-20 xl:pt-28 2xl:pt-[109px]">
         <h2 className="text-[32px] font-bold leading-[1.1] lg:text-[44px] lg:leading-[64px] lg:tracking-[-0.55px]">
-          <span>Vistor </span>
-          <span className="text-brand-brown">Guide</span>
+          <span>{pick(lang, "방문 ", "参观 ")}</span>
+          <span className="text-brand-brown">{pick(lang, "안내", "指南")}</span>
         </h2>
         <p className="mt-4 max-w-[1562px] text-[14px] leading-[1.65] text-black lg:mt-[57px] lg:text-[15px] lg:leading-[25px]">
           {pick(
@@ -231,7 +231,7 @@ export default function ContactPage() {
               <p className="shrink-0 text-[16px] font-bold text-brand-brown sm:w-[110px] lg:text-[18px]">
                 {r.label}
               </p>
-              <p className="break-keep text-[15px] leading-[1.7] text-ink-700 lg:text-[16px]">
+              <p className="whitespace-pre-line break-keep text-[15px] leading-[1.7] text-ink-700 lg:text-[16px]">
                 {r.body}
               </p>
             </div>
@@ -339,7 +339,7 @@ export default function ContactPage() {
             ctaLabel={pick(lang, "카카오채널 바로가기", "前往 Kakao 频道")}
             ctaBg="bg-social-kakao"
             ctaText="text-black"
-            href="https://pf.kakao.com/"
+            href="https://pf.kakao.com/_FRxhsX"
           />
           {/* 전화 */}
           <ContactCard
@@ -350,7 +350,12 @@ export default function ContactPage() {
             }
             iconBg="bg-brand-brown"
             title={pick(lang, "전화 상담", "电话咨询")}
-            highlight="0507-1390-8073"
+            highlight={
+              <span className="flex flex-col items-center gap-0.5 leading-tight">
+                <span>010-9410-4366</span>
+                <span>010-5523-1973</span>
+              </span>
+            }
             desc={pick(
               lang,
               "전화 상담 가능 시간은 평일 10:00–19:00입니다. 월요일은 휴무입니다.",
@@ -359,7 +364,7 @@ export default function ContactPage() {
             ctaLabel={pick(lang, "전화상담 바로가기", "立即拨打")}
             ctaBg="bg-brand-brown"
             ctaText="text-white"
-            href="tel:050713908073"
+            href="tel:01094104366"
           />
           {/* 위챗 */}
           <button
@@ -787,7 +792,7 @@ type ContactCardProps = {
   icon: React.ReactNode;
   iconBg?: string;
   title: string;
-  highlight: string;
+  highlight: React.ReactNode;
   desc: string;
   ctaLabel: string;
   ctaBg: string;

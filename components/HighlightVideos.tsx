@@ -20,27 +20,38 @@ export default function HighlightVideos({ videos }: Props) {
   const safeIdx = total > 0 ? Math.min(idx, total - 1) : 0;
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Pause previously visible video when slide changes
+  // Reset + attempt autoplay when slide changes. Autoplay needs `muted` to
+  // be true on Chrome/Edge (esp. on Windows) — set both as attribute and via
+  // ref so it sticks before metadata loads.
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true;
+    v.currentTime = 0;
+    const p = v.play();
+    if (p && typeof p.catch === "function") {
+      p.catch(() => {
+        /* user-gesture required; controls remain visible */
+      });
     }
   }, [safeIdx]);
 
+  // Auto-advance every ~9s when multiple videos exist.
+  useEffect(() => {
+    if (total <= 1) return;
+    const id = window.setInterval(() => {
+      setIdx((p) => (p + 1) % total);
+    }, 9000);
+    return () => window.clearInterval(id);
+  }, [total]);
+
   if (total === 0) {
-    // Fallback: hatched placeholder
     return (
       <div className="relative aspect-[1332/615] w-full overflow-hidden rounded-[24px] lg:rounded-[40px]">
         <PuppyImage variant="p7" url={null} />
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="flex h-[56px] w-[56px] items-center justify-center rounded-full bg-white/90 shadow-card lg:h-[70px] lg:w-[70px]">
-            <svg
-              viewBox="0 0 24 24"
-              fill="#8E5E27"
-              aria-hidden
-              className="ml-1 h-6 w-6 lg:h-8 lg:w-8"
-            >
+            <svg viewBox="0 0 24 24" fill="#8E5E27" aria-hidden className="ml-1 h-6 w-6 lg:h-8 lg:w-8">
               <path d="M8 5v14l11-7z" />
             </svg>
           </div>
@@ -50,7 +61,7 @@ export default function HighlightVideos({ videos }: Props) {
   }
 
   const current = playable[safeIdx];
-  const showArrows = total > 1;
+  const showControls = total > 1;
 
   return (
     <div className="relative">
@@ -58,60 +69,56 @@ export default function HighlightVideos({ videos }: Props) {
         <video
           key={`${safeIdx}-${current.video_url}`}
           ref={videoRef}
-          src={current.video_url ?? undefined}
           poster={current.poster_url ?? undefined}
-          controls
+          autoPlay
+          muted
+          loop
           playsInline
-          preload="metadata"
+          controls
+          preload="auto"
           className="h-full w-full object-cover"
-        />
+        >
+          {current.video_url && (
+            <source src={current.video_url} type="video/mp4" />
+          )}
+        </video>
       </div>
 
-      {showArrows && (
-        <>
+      {/* Controls row BELOW the video — arrows no longer overlap content */}
+      {showControls && (
+        <div className="mt-5 flex items-center justify-center gap-4 sm:gap-6">
           <button
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIdx((safeIdx - 1 + total) % total);
-            }}
+            onClick={() => setIdx((safeIdx - 1 + total) % total)}
             aria-label="이전 영상"
-            className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-kennel-dark shadow-soft ring-1 ring-cream-300/70 transition-colors hover:bg-white lg:left-5 lg:h-12 lg:w-12"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-line-card bg-white text-brand-brown shadow-card transition-colors hover:bg-brand-beige md:h-11 md:w-11"
           >
             <ChevronLeft className="h-[18px] w-[18px]" />
           </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIdx((safeIdx + 1) % total);
-            }}
-            aria-label="다음 영상"
-            className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-kennel-dark shadow-soft ring-1 ring-cream-300/70 transition-colors hover:bg-white lg:right-5 lg:h-12 lg:w-12"
-          >
-            <ChevronRight className="h-[18px] w-[18px]" />
-          </button>
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center gap-1.5">
+          <div className="flex items-center gap-1.5">
             {playable.map((_, i) => (
               <button
                 key={i}
                 type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setIdx(i);
-                }}
+                onClick={() => setIdx(i)}
                 aria-label={`${i + 1}번째 영상`}
-                className={`pointer-events-auto h-1.5 rounded-full transition-all ${
-                  i === safeIdx ? "w-6 bg-white shadow" : "w-1.5 bg-white/70"
+                className={`h-1.5 rounded-full transition-all ${
+                  i === safeIdx ? "w-6 bg-brand-brown" : "w-1.5 bg-ink-300 hover:bg-ink-300/70"
                 }`}
               />
             ))}
           </div>
-        </>
+
+          <button
+            type="button"
+            onClick={() => setIdx((safeIdx + 1) % total)}
+            aria-label="다음 영상"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-line-card bg-white text-brand-brown shadow-card transition-colors hover:bg-brand-beige md:h-11 md:w-11"
+          >
+            <ChevronRight className="h-[18px] w-[18px]" />
+          </button>
+        </div>
       )}
     </div>
   );
