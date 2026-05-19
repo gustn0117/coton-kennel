@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PuppyImage from "./PuppyImage";
 import { ChevronLeft, ChevronRight } from "./icons";
 
@@ -23,6 +23,8 @@ type Props = {
   showDots?: boolean;
   arrowPlacement?: "inside" | "outside";
   alt?: string;
+  autoplay?: boolean;
+  autoplayMs?: number;
 };
 
 export default function ImageCarousel({
@@ -32,11 +34,22 @@ export default function ImageCarousel({
   showDots = false,
   arrowPlacement = "inside",
   alt,
+  autoplay = true,
+  autoplayMs = 8000,
 }: Props) {
   const list = images && images.length > 0 ? images : [{ image_url: null }];
   const [idx, setIdx] = useState(0);
   const total = list.length;
   const current = list[Math.min(idx, total - 1)]?.image_url ?? null;
+  const paused = useRef(false);
+
+  useEffect(() => {
+    if (!autoplay || total <= 1) return;
+    const id = window.setInterval(() => {
+      if (!paused.current) setIdx((p) => (p + 1) % total);
+    }, autoplayMs);
+    return () => window.clearInterval(id);
+  }, [autoplay, autoplayMs, total]);
 
   const arrowsVisible = showArrows && total > 1;
   const dotsVisible = showDots && total > 1;
@@ -47,7 +60,11 @@ export default function ImageCarousel({
     arrowPlacement === "outside" ? "-right-3 md:-right-4" : "right-3";
 
   return (
-    <div className="relative h-full w-full">
+    <div
+      className="relative h-full w-full"
+      onMouseEnter={() => (paused.current = true)}
+      onMouseLeave={() => (paused.current = false)}
+    >
       <PuppyImage variant={fallbackVariant} url={current} alt={alt} />
 
       {arrowsVisible && (
