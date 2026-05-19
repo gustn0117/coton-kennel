@@ -299,7 +299,12 @@ export default function ContactPage() {
           />
           <VisitCard
             label={pick(lang, "대표번호", "电话")}
-            value={<span className="tnum">0507-1390-8073</span>}
+            value={
+              <span className="tnum flex flex-col gap-0.5 leading-tight">
+                <span>010-9410-4366</span>
+                <span>010-5523-1973</span>
+              </span>
+            }
           />
           <VisitCard
             label={pick(lang, "운영시간", "营业时间")}

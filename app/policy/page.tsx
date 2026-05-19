@@ -409,7 +409,7 @@ function PrivacyContent() {
         <div className="mt-3 grid gap-2.5 sm:grid-cols-3">
           {[
             { label: "업체명", value: "꼬똥켄넬" },
-            { label: "연락처", value: "0507-1390-8073" },
+            { label: "연락처", value: "010-9410-4366 / 010-5523-1973" },
             { label: "이메일", value: "이메일 주소 입력" },
           ].map((c) => (
             <div
