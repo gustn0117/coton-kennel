@@ -289,7 +289,7 @@ export default function PuppiesPage() {
       <KennelIntro lang={lang} images={introImages} />
 
       {/* Filter row + Grid */}
-      <section className="mx-auto w-full max-w-page-wide px-6 pb-20 pt-16 lg:px-12 xl:px-20 2xl:px-[173px] lg:pb-20 xl:pb-28 2xl:pb-[92px] lg:pt-20 xl:pt-28 2xl:pt-[75px]">
+      <section className="mx-auto w-full max-w-page-wide overflow-x-clip px-6 pb-20 pt-16 lg:px-12 xl:px-20 2xl:px-[173px] lg:pb-20 xl:pb-28 2xl:pb-[92px] lg:pt-20 xl:pt-28 2xl:pt-[75px]">
         {/* 4 dropdown filters — mobile: 4-col single row (compact), lg: spaced inline */}
         <div className="mb-10 grid grid-cols-4 items-end gap-2 lg:mb-14 2xl:mb-[53px] lg:flex lg:flex-wrap lg:items-center lg:justify-center lg:gap-x-[91px] lg:gap-y-4">
           <FilterSelect
@@ -367,6 +367,7 @@ export default function PuppiesPage() {
               key={p.id}
               puppy={p}
               lang={lang}
+              compactMobile={mobileCols === 2}
               onClick={() => {
                 setSelected(p);
                 setActiveThumb(0);
@@ -591,46 +592,91 @@ function PuppyCard({
   puppy,
   lang,
   onClick,
+  compactMobile = false,
 }: {
   puppy: Puppy;
   lang: Lang;
   onClick: () => void;
+  compactMobile?: boolean;
 }) {
+  // compactMobile = true → 모바일 2열 보기 전용 좁은 카드 (sm 이상에선 동일 무관)
   return (
     <button
       type="button"
       onClick={onClick}
-      className="group block text-left"
+      className="group block w-full min-w-0 overflow-hidden text-left"
     >
       <div className="relative aspect-square w-full overflow-hidden rounded-[20px] transition-transform group-hover:-translate-y-1 lg:rounded-[24px]">
         <PuppyImage variant={puppy.variant as never} url={puppy.image_url} />
       </div>
 
-      <div className="mt-4 lg:mt-5">
-        <div className="flex items-center justify-between gap-3">
-          <h3 className="text-[19px] font-bold leading-tight tracking-[-0.26px] text-black lg:text-[22px]">
+      <div className={compactMobile ? "mt-3 min-w-0 sm:mt-4 lg:mt-5" : "mt-4 min-w-0 lg:mt-5"}>
+        <div
+          className={
+            compactMobile
+              ? "flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3"
+              : "flex items-center justify-between gap-3"
+          }
+        >
+          <h3
+            className={
+              compactMobile
+                ? "min-w-0 break-keep text-[14.5px] font-bold leading-tight tracking-[-0.2px] text-black sm:text-[19px] lg:text-[22px]"
+                : "min-w-0 break-keep text-[16px] font-bold leading-tight tracking-[-0.26px] text-black sm:text-[19px] lg:text-[22px]"
+            }
+          >
             {pick(lang, `${puppy.name}를 입양해주세요`, `请收养 ${puppy.name}`)}
           </h3>
-          <span className="shrink-0 rounded-[10px] bg-line-tag px-2.5 py-1 text-[12px] text-ink-500">
+          <span
+            className={
+              compactMobile
+                ? "w-fit shrink-0 rounded-[8px] bg-line-tag px-2 py-0.5 text-[11px] text-ink-500 sm:rounded-[10px] sm:px-2.5 sm:py-1 sm:text-[12px]"
+                : "shrink-0 rounded-[10px] bg-line-tag px-2.5 py-1 text-[12px] text-ink-500"
+            }
+          >
             {translateGender(lang, puppy.gender)}, {translateMonths(lang, puppy.months)}
           </span>
         </div>
-        <div className="mt-2 space-y-0.5 text-[14px] leading-[1.5] text-ink-500 lg:mt-2.5 lg:text-[15px] lg:leading-[1.55]">
-          <p>
+        <div
+          className={
+            compactMobile
+              ? "mt-1.5 space-y-0.5 text-[12.5px] leading-[1.45] text-ink-500 sm:mt-2 sm:text-[14px] sm:leading-[1.5] lg:mt-2.5 lg:text-[15px] lg:leading-[1.55]"
+              : "mt-2 space-y-0.5 text-[14px] leading-[1.5] text-ink-500 lg:mt-2.5 lg:text-[15px] lg:leading-[1.55]"
+          }
+        >
+          <p className="truncate">
             {pick(lang, "색상 : ", "颜色 : ")}
             {translateColor(lang, puppy.color)}
           </p>
-          <p>
+          <p className="truncate">
             {pick(lang, "분양 : ", "分养 : ")}
             {translateStatus(lang, puppy.status)}
           </p>
         </div>
 
-        <div className="mt-4 flex items-center justify-between gap-3 lg:mt-5">
-          <span className="text-[14px] font-medium text-black lg:text-[16px]">
+        <div
+          className={
+            compactMobile
+              ? "mt-3 flex items-center justify-between gap-2 sm:mt-4 sm:gap-3 lg:mt-5"
+              : "mt-4 flex items-center justify-between gap-3 lg:mt-5"
+          }
+        >
+          <span
+            className={
+              compactMobile
+                ? "min-w-0 truncate text-[12.5px] font-medium text-black sm:text-[14px] lg:text-[16px]"
+                : "text-[14px] font-medium text-black lg:text-[16px]"
+            }
+          >
             {pick(lang, "상세프로필 확인", "查看详细资料")}
           </span>
-          <span className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-brand-brown text-white transition-transform group-hover:translate-x-0.5 lg:max-w-[38px] 2xl:h-[38px] 2xl:w-[38px]">
+          <span
+            className={
+              compactMobile
+                ? "flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-brown text-white transition-transform group-hover:translate-x-0.5 sm:h-[34px] sm:w-[34px] lg:max-w-[38px] 2xl:h-[38px] 2xl:w-[38px]"
+                : "flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-brand-brown text-white transition-transform group-hover:translate-x-0.5 lg:max-w-[38px] 2xl:h-[38px] 2xl:w-[38px]"
+            }
+          >
             <svg width="7" height="15" viewBox="0 0 7 15" fill="none" aria-hidden>
               <path
                 d="M1 1l5 6.5L1 14"
