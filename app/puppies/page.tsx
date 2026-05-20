@@ -11,27 +11,46 @@ const PAGE_SIZE = 8;
 
 function translateGender(lang: Lang, v: string) {
   if (lang !== "zh") return v;
-  if (v === "여아") return "母";
-  if (v === "남아") return "公";
+  if (v === "여아") return "妹妹";
+  if (v === "남아") return "弟弟";
   return v;
 }
 function translateColor(lang: Lang, v: string) {
   if (lang !== "zh") return v;
-  if (v === "화이트") return "白色";
-  if (v === "크림") return "奶油色";
-  if (v === "파티 컬러") return "派对色";
+  if (v === "화이트") return "纯净奶白";
+  if (v === "화이트블랙") return "奶白映墨";
+  if (v === "화이트크림") return "奶白衬杏";
+  if (v === "파티") return "三色融趣";
+  // 구버전 레코드 호환
+  if (v === "크림") return "奶白衬杏";
+  if (v === "파티 컬러") return "三色融趣";
   return v;
-}
-function translateStatus(lang: Lang, v: string) {
-  if (lang === "zh") return v === "분양중" ? "未分养" : "已分养";
-  return v === "분양중" ? "분양중" : "분양완료";
 }
 function translateMonths(lang: Lang, m: number) {
   return lang === "zh" ? `${m} 个月` : `${m}개월`;
 }
+/** 필터 드롭다운 표시용 — 값은 한국어 유지, 중문 전환 시 라벨만 번역 */
+function translateFilterTerm(lang: Lang, v: string) {
+  if (lang !== "zh") return v;
+  const map: Record<string, string> = {
+    전체: "全部",
+    화이트: "纯净奶白",
+    화이트블랙: "奶白映墨",
+    화이트크림: "奶白衬杏",
+    파티: "三色融趣",
+    "1-3개월": "1-3个月",
+    "3-6개월": "3-6个月",
+    "6개월 이상": "6个月以上",
+    여아: "妹妹",
+    남아: "弟弟",
+    분양중: "未分养",
+    분양완료: "已分养",
+  };
+  return map[v] ?? v;
+}
 
 const FILTER_OPTIONS = {
-  color: ["전체", "화이트", "크림", "파티 컬러"],
+  color: ["전체", "화이트", "화이트블랙", "화이트크림", "파티"],
   months: ["전체", "1-3개월", "3-6개월", "6개월 이상"],
   gender: ["전체", "여아", "남아"],
   status: ["전체", "분양중", "분양완료"],
@@ -44,54 +63,55 @@ function getIntroSlides(lang: Lang): IntroSlide[] {
   if (lang === "zh") {
     return [
       {
-        eyebrow: "Conton Kennel",
+        eyebrow: "Coton Kennel",
         title: "Introduce Puppies",
         imgKey: "puppies.hero",
-        body: ["为您介绍我们的幼犬!"],
+        body: ["小棉花们正在静待结缘中"],
       },
       {
         eyebrow: "Heritage",
-        title: "Conton Kennel",
+        title: "Coton Kennel",
         imgKey: "puppies.breed.heritage",
         body: [
-          "Coton Kennel 是位于首尔、专业繁育棉花面纱犬的犬舍,不只是单纯的分养,更坚守血统、品质与严格标准的高端犬舍。",
-          "以犬展上经过验证的成绩与一贯的繁育理念为基础,向您承诺一份值得信赖的选择。",
+          "本犬舍坐落于首尔,专注纯种棉花面纱犬繁育。秉持纯正血统,恪守严苛培育标准,用心打造高端品质萌犬。",
+          "依托专业赛事荣誉积淀,坚守初心繁育理念,以实力铸就口碑,竭诚为您奉上安心之选。",
         ],
       },
       {
         eyebrow: "Champion Line",
-        title: "犬展获奖经历",
+        title: "赛事荣耀血统",
         imgKey: "puppies.breed.appearance",
         body: [
-          "Coton Kennel 的代表幼犬「Cotti」以法国 B.I.S(Best In Show 全犬种第一名)直系幼犬血统为基础,在 KKF(韩国犬业协会)、FCI(国际犬业联盟)等国内外犬展中取得优异成绩,并多次荣获 BIS。",
-          "目前我们仍持续准备参与海外犬展,为棉花面纱犬纯正血统的保护与品质提升不懈努力。",
+          "本舍名犬 Cotti 源自法国 BIS 全犬种总冠军优血后代,血统纯正优良。",
+          "先后斩获 KKF 韩国犬协、FCI 国际犬联等国内外犬展多项大奖,屡获全场总冠军殊荣。",
+          "我们持续征战国际赛事,坚守纯种血脉,不断精进犬种品质。",
         ],
       },
       {
         eyebrow: "Premium Breeding",
-        title: "自有繁育体系",
+        title: "全备繁育管理体系",
         imgKey: "puppies.breed.temperament",
         body: [
-          "Coton Kennel 以拥有犬展获奖履历的优秀血统为基础,在严格的标准下亲自进行繁育。作为在首尔通过自有繁育分养棉花面纱犬的专业犬舍,我们不止于外形,更甄选健康、性格、血统皆均衡的个体。",
-          "我们还拥有多种颜色的健康棉花面纱犬,您可以安心地见到符合自己喜好的珍贵家人。",
-          "Coton Kennel 不仅在国内,还通过与欧洲专业犬舍的合作,构建了透明且值得信赖的分养体系。",
-          "通过对包括遗传疾病在内的健康状态的彻底管理,帮助您安心开始陪伴生活。",
-          "所有宝贝都拥有可爱而温和的性格,无论选择哪一只作为伴侣犬与家人,都会长久地为家庭带来温暖的活力与幸福。",
-          "Coton Kennel 以标准与信赖为基础,为您牵起可以相伴一生的特别缘分。",
+          "Coton Kennel 以赛事获奖的优良血统为基石,恪守严苛标准自主繁育。作为首尔本地专业棉花面纱犬舍,我们不只追求品相出众,更甄选健康、性格与血统全面均衡的优质个体。",
+          "我们提供多种毛色的健康幼犬,让您安心邂逅心仪的专属家人。",
+          "犬舍不仅立足韩国,更与欧洲专业犬舍深度合作,构建透明可信赖的繁育与交付体系。",
+          "通过对遗传疾病等健康状况的严格管控,为您的相伴生活筑牢安心保障。",
+          "所有幼犬均拥有温和治愈的性格,无论哪一只来到您身边,都将为家庭注入长久的温暖与幸福。",
+          "Coton Kennel 以专业标准与真诚信赖为纽带,为您牵起一段相伴一生的珍贵缘分。",
         ],
       },
     ];
   }
   return [
     {
-      eyebrow: "Conton Kennel",
+      eyebrow: "Coton Kennel",
       title: "Introduce Puppies",
       imgKey: "puppies.hero",
       body: ["강아지를 소개해드립니다 !"],
     },
     {
       eyebrow: "Heritage",
-      title: "Conton Kennel",
+      title: "Coton Kennel",
       imgKey: "puppies.breed.heritage",
       body: [
         "꼬똥 켄넬은 서울에서 꼬똥 드 툴레아를 전문적으로 브리딩하는 켄넬로, 단순한 분양을 넘어 혈통과 품질, 그리고 엄격한 기준을 지켜온 프리미엄 켄넬입니다.",
@@ -293,24 +313,28 @@ export default function PuppiesPage() {
         {/* 4 dropdown filters — mobile: 4-col single row (compact), lg: spaced inline */}
         <div className="mb-10 grid grid-cols-4 items-end gap-2 lg:mb-14 2xl:mb-[53px] lg:flex lg:flex-wrap lg:items-center lg:justify-center lg:gap-x-[91px] lg:gap-y-4">
           <FilterSelect
+            lang={lang}
             label={pick(lang, "색상", "颜色")}
             value={filters.color}
             options={FILTER_OPTIONS.color}
             onChange={(v) => setFilters((f) => ({ ...f, color: v }))}
           />
           <FilterSelect
+            lang={lang}
             label={pick(lang, "개월 수", "月龄")}
             value={filters.months}
             options={FILTER_OPTIONS.months}
             onChange={(v) => setFilters((f) => ({ ...f, months: v }))}
           />
           <FilterSelect
+            lang={lang}
             label={pick(lang, "성별", "性别")}
             value={filters.gender}
             options={FILTER_OPTIONS.gender}
             onChange={(v) => setFilters((f) => ({ ...f, gender: v }))}
           />
           <FilterSelect
+            lang={lang}
             label={pick(lang, "분양 상태", "分养状态")}
             value={filters.status}
             options={FILTER_OPTIONS.status}
@@ -467,27 +491,21 @@ export default function PuppiesPage() {
                 </div>
                 <ul className="mt-4 space-y-2.5 text-[14px] text-ink-500 sm:mt-6 sm:space-y-3 sm:text-[16px]">
                   <li className="flex justify-between border-b border-line-card pb-2.5 sm:pb-3">
-                    <span>{pick(lang, "색상", "颜色")}</span>
-                    <span className="text-black">
-                      {translateColor(lang, selected.color)}
-                    </span>
-                  </li>
-                  <li className="flex justify-between border-b border-line-card pb-2.5 sm:pb-3">
-                    <span>{pick(lang, "분양", "分养")}</span>
-                    <span className="text-black">
-                      {translateStatus(lang, selected.status)}
-                    </span>
-                  </li>
-                  <li className="flex justify-between border-b border-line-card pb-2.5 sm:pb-3">
                     <span>{pick(lang, "성별", "性别")}</span>
                     <span className="text-black">
                       {translateGender(lang, selected.gender)}
                     </span>
                   </li>
-                  <li className="flex justify-between">
-                    <span>{pick(lang, "태어난지", "出生")}</span>
+                  <li className="flex justify-between border-b border-line-card pb-2.5 sm:pb-3">
+                    <span>{pick(lang, "월령", "月龄")}</span>
                     <span className="tnum text-black">
                       {translateMonths(lang, selected.months)}
+                    </span>
+                  </li>
+                  <li className="flex justify-between">
+                    <span>{pick(lang, "색상", "毛色")}</span>
+                    <span className="text-black">
+                      {translateColor(lang, selected.color)}
                     </span>
                   </li>
                 </ul>
@@ -547,11 +565,13 @@ export default function PuppiesPage() {
 
 /** Figma: 라벨 16 Medium + 박스 202×37 rounded-6 border-#e8e8e8 + placeholder 15 Medium #d9d9d9 + 화살표 7×3.5 */
 function FilterSelect({
+  lang,
   label,
   value,
   options,
   onChange,
 }: {
+  lang: Lang;
   label: string;
   value: string;
   options: readonly string[];
@@ -570,7 +590,7 @@ function FilterSelect({
         >
           {options.map((opt) => (
             <option key={opt} value={opt}>
-              {opt}
+              {translateFilterTerm(lang, opt)}
             </option>
           ))}
         </select>
@@ -611,46 +631,30 @@ function PuppyCard({
       </div>
 
       <div className={compactMobile ? "mt-3 min-w-0 sm:mt-4 lg:mt-5" : "mt-4 min-w-0 lg:mt-5"}>
-        <div
+        <h3
           className={
             compactMobile
-              ? "flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3"
-              : "flex items-center justify-between gap-3"
+              ? "min-w-0 break-keep text-[14.5px] font-bold leading-tight tracking-[-0.2px] text-black sm:text-[19px] lg:text-[22px]"
+              : "min-w-0 break-keep text-[16px] font-bold leading-tight tracking-[-0.26px] text-black sm:text-[19px] lg:text-[22px]"
           }
         >
-          <h3
-            className={
-              compactMobile
-                ? "min-w-0 break-keep text-[14.5px] font-bold leading-tight tracking-[-0.2px] text-black sm:text-[19px] lg:text-[22px]"
-                : "min-w-0 break-keep text-[16px] font-bold leading-tight tracking-[-0.26px] text-black sm:text-[19px] lg:text-[22px]"
-            }
-          >
-            {pick(lang, `${puppy.name}를 입양해주세요`, `请收养 ${puppy.name}`)}
-          </h3>
-          <span
-            className={
-              compactMobile
-                ? "w-fit shrink-0 rounded-[8px] bg-line-tag px-2 py-0.5 text-[11px] text-ink-500 sm:rounded-[10px] sm:px-2.5 sm:py-1 sm:text-[12px]"
-                : "shrink-0 rounded-[10px] bg-line-tag px-2.5 py-1 text-[12px] text-ink-500"
-            }
-          >
-            {translateGender(lang, puppy.gender)}, {translateMonths(lang, puppy.months)}
-          </span>
-        </div>
+          {pick(lang, `${puppy.name}를 입양해주세요`, `请结缘 ${puppy.name}`)}
+        </h3>
         <div
           className={
             compactMobile
-              ? "mt-1.5 space-y-0.5 text-[12.5px] leading-[1.45] text-ink-500 sm:mt-2 sm:text-[14px] sm:leading-[1.5] lg:mt-2.5 lg:text-[15px] lg:leading-[1.55]"
-              : "mt-2 space-y-0.5 text-[14px] leading-[1.5] text-ink-500 lg:mt-2.5 lg:text-[15px] lg:leading-[1.55]"
+              ? "mt-1.5 space-y-0.5 text-[12.5px] leading-[1.5] text-ink-500 sm:mt-2.5 sm:text-[14px] lg:mt-3 lg:text-[15px]"
+              : "mt-2.5 space-y-0.5 text-[14px] leading-[1.5] text-ink-500 lg:mt-3 lg:text-[15px]"
           }
         >
           <p className="truncate">
-            {pick(lang, "색상 : ", "颜色 : ")}
-            {translateColor(lang, puppy.color)}
+            {pick(lang, "성별", "性别")} ┃ {translateGender(lang, puppy.gender)}
           </p>
           <p className="truncate">
-            {pick(lang, "분양 : ", "分养 : ")}
-            {translateStatus(lang, puppy.status)}
+            {pick(lang, "월령", "月龄")} ┃ {translateMonths(lang, puppy.months)}
+          </p>
+          <p className="truncate">
+            {pick(lang, "색상", "毛色")} ┃ {translateColor(lang, puppy.color)}
           </p>
         </div>
 

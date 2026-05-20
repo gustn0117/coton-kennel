@@ -66,7 +66,7 @@ export default function VisitorGuidePage() {
     <>
       <Hero
         eyebrow={pick(lang, "Review", "Review")}
-        title={pick(lang, "방문자 후기", "访客评价")}
+        title={pick(lang, "방문자 후기", "相伴心声·真实反馈")}
         description={pick(
           lang,
           <>

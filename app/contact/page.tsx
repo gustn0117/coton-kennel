@@ -20,11 +20,11 @@ const PREMIUM_PET_IMG = "https://api.hsweb.pics/storage/v1/object/public/coton-k
 function getSteps(lang: Lang) {
   if (lang === "zh") {
     return [
-      { num: "01", title: "查看幼犬", desc: "通过 Coton Kennel 官方网站, 查看目前可分养幼犬的详细资料, 仔细了解性别、毛色等信息。" },
-      { num: "02", title: "咨询", desc: "如有疑问,请通过电话咨询、KakaoTalk 频道或 WeChat 便捷地咨询我们。专业咨询师将亲切地为您介绍分养可否及相关信息(血统、健康状态、性格等多种信息)。" },
-      { num: "03", title: "参观与咨询", desc: "您可以亲临犬舍,亲眼确认幼犬的状态与生活环境,并通过与专业人员的充分咨询,帮助您慎重做出决定。" },
-      { num: "04", title: "分养", desc: "我们会与您一同确认国内外分养、繁育或宠物用途等符合您情况的细节后,为您提供最优的定制说明。" },
-      { num: "05", title: "预约指南", desc: "棉花面纱犬分养速度较快,若有心仪的幼犬,建议提前预约。如希望参观咨询或分养,请先电话预约并接收预约金说明。确认预约金到账后,将按对应时间进行专业咨询。" },
+      { num: "01", title: "查看幼犬", desc: "通过 Coton Kennel 官方网站,查看当前可结缘幼犬的完整资料,了解性别、毛色等信息,找到您心仪的宝贝。" },
+      { num: "02", title: "咨询沟通", desc: "如有任何疑问,欢迎通过电话、KakaoTalk 或 WeChat 联系我们。专业咨询师将为您介绍幼犬可结缘状态、血统、健康状况、性格等详细信息,提供一对一的专属解答。" },
+      { num: "03", title: "参观与咨询", desc: "欢迎亲临犬舍,亲眼确认幼犬的健康状态与生活环境,和我们的专业团队深入沟通,帮您慎重做出决定。" },
+      { num: "04", title: "结缘交付", desc: "我们会根据您的具体情况,确认国内外交付、用途(宠物/繁育)等细节,为您提供专属定制的说明与方案。" },
+      { num: "05", title: "预约指南", desc: "棉花面纱犬结缘名额紧俏,若有心仪的宝贝,建议尽早预约。如希望参观咨询或结缘,需先通过电话预约并了解定金相关说明。定金到账后,我们将为您安排专属咨询与后续流程。" },
     ];
   }
   return [
@@ -39,8 +39,8 @@ function getSteps(lang: Lang) {
 function getRefund(lang: Lang) {
   if (lang === "zh") {
     return [
-      { label: "国内分养", body: "如参观后不希望分养,预约金将全额退还。我们会尽最大努力,让您可以毫无负担地慎重做出决定。" },
-      { label: "海外分养", body: "海外分养的情况,在海外手续开始之前可全额退还。\n但宠物出入境手续开始或航空运输受理之后,会产生航空运费及各项行政手续费,因此全额退还较为困难,敬请谅解。" },
+      { label: "国内领养", body: "实地探访考量后若无意选购,预约金全额原路退还,让您无忧斟酌,从容定夺。" },
+      { label: "海外配送", body: "跨境配送相关手续办妥前,预约金可全额退还。\n一经启动幼犬出入境流程及航空托运登记,即产生空运资费与各项行政办理费用,届时无法办理全额退款,敬请知悉谅解。" },
     ];
   }
   return [
@@ -63,7 +63,7 @@ function getFaq(lang: Lang) {
       { q: "散步需要多少?", a: "每周 1~3 次,\n每次约 20~30 分钟左右轻松散步即可。" },
       { q: "棉花面纱犬健康吗?", a: "是的,棉花面纱犬整体来说是较为健康的犬种。\n腿部较为结实,\n遗传性疾病发生较少,\n与其他小型犬(如膝盖骨问题较多的品种)相比,\n就医频率较低。" },
       { q: "犬舍里通常都是几个月的孩子?", a: "一般以 2~6 个月之间的幼犬最多。" },
-      { q: "便溺训练容易吗?", a: "棉花面纱犬学习能力相对较好,\n只要持续而一致地训练,\n便溺训练完全可以做到。" },
+      { q: "如厕训练容易上手吗?", a: "棉花面纱犬悟性佳、学习能力出众,只要日常耐心引导、坚持统一教导,便能轻松养成定点如厕的良好习惯。" },
     ];
   }
   return [
@@ -131,7 +131,7 @@ export default function ContactPage() {
     <>
       <Hero
         eyebrow="Contact us"
-        title={pick(lang, "상담 및 문의", "咨询 / 联系")}
+        title={pick(lang, "상담 및 문의", "咨询预约 与参观指南")}
         description={pick(
           lang,
           <>
@@ -140,9 +140,9 @@ export default function ContactPage() {
             전화 상담 시 상세 안내 도와드립니다.
           </>,
           <>
-            欢迎咨询分养 / 预约 / 报价 等相关事宜。
+            欢迎垂询幼犬结缘、预约参观及报价相关事宜。
             <br />
-            电话咨询时我们会提供更详细的说明。
+            电话咨询中,我们将为您提供详尽说明与专属解答。
           </>
         )}
         variant="p3"
@@ -160,7 +160,7 @@ export default function ContactPage() {
           {pick(
             lang,
             "보다 세심하고 정확한 상담을 위해 모든 예약 및 예약금 안내는 전화 및 상담 채널을 통해 개별적으로 진행하고 있습니다. 홈페이지에는 별도의 예약금 금액이 표기되지 않으며, 고객님 상황에 맞춘 상세한 안내는 상담을 통해 도와드리고 있습니다.",
-            "为了提供更细致和准确的咨询,所有预约及预约金的说明均通过电话与咨询渠道个别进行。网站上不显示预约金金额,我们将根据您的具体情况通过咨询为您提供详细说明。"
+            "为提供细致准确的咨询服务,所有预约及预约金相关说明,均通过电话与线上咨询渠道一对一沟通。网站不直接显示预约金金额,我们会根据您的具体情况,为您提供专属的详细说明。"
           )}
         </p>
       </section>
@@ -275,14 +275,16 @@ export default function ContactPage() {
                 (지번) 서울 강동구 천호동 399-7 (우)05326
               </>,
               <>
-                首尔江东区九泉面路29街23号 棉花面纱犬舍
+                首尔江东区九泉面路 29 街 23 号 纯种棉花面纱犬舍
                 <br />
-                (地番) 首尔江东区千户洞 399-7 (邮)05326
+                属地地址 : 首尔江东区千户洞 399-7
+                <br />
+                邮政编码 : 05326
               </>
             )}
           />
           <VisitCard
-            label={pick(lang, "교통정보", "交通")}
+            label={pick(lang, "교통정보", "出行指引")}
             value={pick(
               lang,
               <>
@@ -291,14 +293,14 @@ export default function ContactPage() {
                 자가용 - 천호동 골목냉면 입구에 위치
               </>,
               <>
-                地铁 - 千户站 5 号出口步行 10 分钟
+                轨道交通 - 千户站 5 号口出站, 步行十分钟即达
                 <br />
-                自驾 - 位于千户洞胡同冷面店入口
+                自驾出行 - 千户洞胡同冷面店入口处
               </>
             )}
           />
           <VisitCard
-            label={pick(lang, "대표번호", "电话")}
+            label={pick(lang, "대표번호", "联系热线")}
             value={
               <span className="tnum flex flex-col gap-0.5 leading-tight">
                 <span>010-9410-4366</span>
@@ -307,8 +309,12 @@ export default function ContactPage() {
             }
           />
           <VisitCard
-            label={pick(lang, "운영시간", "营业时间")}
-            value={pick(lang, "주차가능 24시간 연중무휴", "可停车 24小时 全年无休")}
+            label={pick(lang, "운영시간", "营业须知")}
+            value={pick(
+              lang,
+              "주차가능 24시간 연중무휴",
+              "全天候可到访, 全年无休, 内设专属停车区域"
+            )}
           />
         </div>
       </section>
@@ -322,7 +328,7 @@ export default function ContactPage() {
           {pick(
             lang,
             "분양 문의, 방문 예약, 가격 상담 등 모든 문의를 받고 있습니다.",
-            "我们接受分养咨询、参观预约、价格咨询等各类问询。"
+            "受理分养咨询、参观预约、价格询价等各类业务问询"
           )}
         </p>
 
@@ -335,13 +341,13 @@ export default function ContactPage() {
               </svg>
             }
             title={pick(lang, "카카오톡 상담", "KakaoTalk 咨询")}
-            highlight={pick(lang, "실시간 채팅 상담 · 빠른 답변", "实时聊天咨询 · 快速回复")}
+            highlight={pick(lang, "실시간 채팅 상담 · 빠른 답변", "实时在线聊天, 回复迅速")}
             desc={pick(
               lang,
               "채팅창에 관심 있는 아이의 이름이나 조건을 남겨주시면 빠르게 답변드립니다.",
-              "在聊天框中留下感兴趣的宝贝名字或条件,我们将快速回复。"
+              "留言心仪幼犬名字或选购需求,快速为您解答"
             )}
-            ctaLabel={pick(lang, "카카오채널 바로가기", "前往 Kakao 频道")}
+            ctaLabel={pick(lang, "카카오채널 바로가기", "Kakao 咨询频道")}
             ctaBg="bg-social-kakao"
             ctaText="text-black"
             href="https://pf.kakao.com/_FRxhsX"
@@ -364,9 +370,9 @@ export default function ContactPage() {
             desc={pick(
               lang,
               "전화 상담 가능 시간은 평일 10:00–19:00입니다. 월요일은 휴무입니다.",
-              "电话咨询时间为工作日 10:00–19:00。周一休息。"
+              "咨询全天无休接待"
             )}
-            ctaLabel={pick(lang, "전화상담 바로가기", "立即拨打")}
+            ctaLabel={pick(lang, "전화상담 바로가기", "致电咨询")}
             ctaBg="bg-brand-brown"
             ctaText="text-white"
             href="tel:01094104366"
@@ -400,7 +406,7 @@ export default function ContactPage() {
           {pick(
             lang,
             "다양한 SNS 채널에서 꼬똥켄넬의 소식과 아이들의 귀여운 일상을 만나보세요.",
-            "请在多个社交媒体频道关注棉花面纱犬舍的动态与宝贝们的可爱日常。"
+            "各大平台同步更新,关注我们查看棉花面纱犬舍日常与萌犬动态"
           )}
         </p>
 
@@ -424,9 +430,9 @@ export default function ContactPage() {
               </svg>
             }
             iconBg=""
-            title={pick(lang, "인스타그램 DM", "Instagram DM")}
-            highlight={pick(lang, "일상 사진 · 숏폼 영상", "日常照片 · 短视频")}
-            ctaLabel={pick(lang, "인스타그램 바로가기", "前往 Instagram")}
+            title={pick(lang, "인스타그램 DM", "Instagram 私信")}
+            highlight={pick(lang, "일상 사진 · 숏폼 영상", "实拍日常美图、趣味短视频")}
+            ctaLabel={pick(lang, "인스타그램 바로가기", "点击直达 Instagram")}
             ctaBg="bg-social-insta"
             ctaText="text-line-surface"
             href="https://www.instagram.com/coton_kennel_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
@@ -439,8 +445,8 @@ export default function ContactPage() {
             }
             iconBg="bg-social-youtube"
             title={pick(lang, "유튜브 채널", "YouTube 频道")}
-            highlight={pick(lang, "성장 영상 · 브이로그", "成长视频 · Vlog")}
-            ctaLabel={pick(lang, "유튜브 채널 바로가기", "前往 YouTube")}
+            highlight={pick(lang, "성장 영상 · 브이로그", "幼犬成长纪实、犬舍日常 Vlog")}
+            ctaLabel={pick(lang, "유튜브 채널 바로가기", "点击前往 YouTube")}
             ctaBg="bg-social-youtube"
             ctaText="text-white"
             href="https://youtube.com/@cotonkennel?si=_UU6ZdcNn1rZrtzg"
@@ -449,8 +455,8 @@ export default function ContactPage() {
             icon={<span className="text-[11px] font-bold text-white">小红书</span>}
             iconBg="bg-social-xhs"
             title={pick(lang, "샤오홍슈 (小红书)", "小红书")}
-            highlight={pick(lang, "중국어 커뮤니티", "中文社区")}
-            ctaLabel={pick(lang, "샤오홍슈 바로가기", "前往小红书")}
+            highlight={pick(lang, "중국어 커뮤니티", "中文专属社区,萌宠实拍一站式查看")}
+            ctaLabel={pick(lang, "샤오홍슈 바로가기", "点击直达小红书")}
             ctaBg="bg-social-xhs"
             ctaText="text-white"
             href="https://www.xiaohongshu.com/user/profile/61a28839000000001000e304?xsec_token=YBlEemk-s1wYQ1Av9EU9rEhml6vuWQXT8EfisTKFHRAMA=&xsec_source=app_share&xhsshare=CopyLink&shareRedId=ODg1ODo2Rj42NzUyOTgwNjczOTdIOz9M&apptime=1778217466&share_id=5737c633f0d74e5b9a720b40fbbf4f88"
@@ -471,7 +477,7 @@ export default function ContactPage() {
             {pick(
               lang,
               "꼬똥 드 툴레아외에도 일반 견종등 추가 견종이 궁금하신 경우, 아래 전용 페이지에서 추가적으로 다양한 아이들을 확인하실 수 있습니다",
-              "除了棉花面纱犬之外,如果您对一般犬种等其他犬种感兴趣,可通过下方的专用页面查看更多可爱的宝贝。"
+              "除棉花面纱犬外,若您喜爱其他各类萌犬品种,均可点击下方专属页面,挑选更多可爱幼犬。"
             )}
           </p>
           <a

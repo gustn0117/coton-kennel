@@ -16,9 +16,9 @@ const NAV = {
   ],
   zh: [
     { href: "/", label: "首页" },
-    { href: "/puppies", label: "幼犬介绍" },
-    { href: "/visitor-guide", label: "评价 / 参观指南" },
-    { href: "/contact", label: "咨询 / 联系" },
+    { href: "/puppies", label: "幼犬甄选" },
+    { href: "/visitor-guide", label: "结缘评价" },
+    { href: "/contact", label: "咨询 / 参观指南" },
   ],
 };
 

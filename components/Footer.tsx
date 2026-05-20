@@ -183,15 +183,15 @@ export default function Footer() {
             <p className="text-[13px] leading-[1.65] text-white/85 lg:text-[14px]">
               {pick(
                 lang,
-                "대표자 : 김지혜 ㅣ 사업자 번호 : 554-02-01209",
-                "代表 : 金智慧 ㅣ 营业执照号 : 554-02-01209"
+                "대표자 : 최원석 ㅣ 사업자 번호 : 129-62-00880",
+                "代表 : 崔源石 ㅣ 营业执照号 : 129-62-00880"
               )}
             </p>
           </Col>
 
           <Col label={pick(lang, "동물판매업허가번호", "动物销售许可证号")}>
             <p className="tnum text-[13px] text-white/85 lg:text-[14px]">
-              3240000-045-2018-0033
+              3240000-045-2026-0001
             </p>
           </Col>
         </div>

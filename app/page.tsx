@@ -117,16 +117,16 @@ export default async function HomePage() {
   return (
     <>
       <Hero
-        eyebrow="Conton Kennel"
+        eyebrow={pick(lang, "COTON KENNEL", "Coton Kennel")}
         title={pick(
           lang,
-          `FCI검증,\n기준을 지키는 분양`,
-          `FCI 认证,\n严守标准的分养`
+          `서울 유일 국제 도그쇼 챔피언 혈통을\n이어가는 꼬똥 드 툴레아 전문 켄넬`,
+          `以 FCI 国际认证为基\n以赛事荣耀为证\n以自家匠心繁育为本`
         )}
         description={pick(
           lang,
-          "평생을 함께할 아이를 준비합니다",
-          "为您准备相伴一生的宝贝"
+          "FCI 기준을 지키며,\n평생 함께할 가족을 준비합니다.",
+          "守护每一次一生相伴的美好邂逅"
         )}
         cta={{
           href: "/puppies",
@@ -154,9 +154,9 @@ export default async function HomePage() {
       <section className="pb-16 md:pb-20 lg:pb-24">
         <div className="mx-auto w-full max-w-page-wide px-5 sm:px-6 lg:px-12 xl:px-20 2xl:px-[176px]">
           <h2 className="text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[34px] xl:text-[44px] xl:leading-[64px] xl:tracking-[-0.55px]">
-            <span>{pick(lang, "가족을 기다리는 ", "正在等待家人的 ")}</span>
+            <span>{pick(lang, "가족을 기다리는 ", "默默守候, ")}</span>
             <span className="text-brand-brown">
-              {pick(lang, "아이들", "宝贝")}
+              {pick(lang, "아이들", "静待一生相伴的你")}
             </span>
           </h2>
         </div>
@@ -177,8 +177,8 @@ export default async function HomePage() {
       {/* 가족이 된 후기 - 3 cards 481×615, 비대칭 라운드 + 별점 */}
       <section className="mx-auto w-full max-w-page-wide px-5 pb-20 sm:px-6 md:pb-24 lg:px-12 lg:pb-24 xl:px-20 2xl:px-[180px] 2xl:pb-[122px]">
         <h2 className="text-[26px] font-bold leading-[1.15] text-black sm:text-[30px] lg:text-[34px] xl:text-[44px] xl:leading-[64px] xl:tracking-[-0.55px]">
-          <span>{pick(lang, "가족이 된 ", "成为家人的 ")}</span>
-          <span className="text-brand-brown">{pick(lang, "후기", "故事")}</span>
+          <span>{pick(lang, "가족이 된 ", "宠主心声·")}</span>
+          <span className="text-brand-brown">{pick(lang, "후기", "真实结缘评价")}</span>
         </h2>
         <p className="mt-4 text-[15px] text-ink-500 sm:text-[16px] lg:mt-8 lg:text-[18px] xl:text-[22px] 2xl:mt-[44px] 2xl:text-[24px]">
           {pick(

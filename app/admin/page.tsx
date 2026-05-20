@@ -669,6 +669,12 @@ function SiteVideosTab({ pw }: { pw: string }) {
           <li>
             MP4 등 영상 파일을 직접 업로드합니다. 업로드 직후부터 메인 페이지에 반영됩니다.
           </li>
+          <li className="text-red-600">
+            <strong>⚠ 코덱 주의</strong> — 아이폰으로 촬영한 영상은 HEVC(H.265)
+            코덱이라 Windows PC에서 재생되지 않을 수 있습니다. 반드시{" "}
+            <strong>H.264 (MP4)</strong>로 변환한 뒤 업로드해 주세요. (아이폰: 설정 →
+            카메라 → 포맷 → ‘높은 호환성’으로 촬영하면 H.264로 저장됩니다.)
+          </li>
           <li>
             <strong>썸네일 이미지(포스터)</strong>를 선택적으로 등록하면 재생 전 화면으로 표시됩니다. 없으면 영상 첫 프레임이 사용됩니다.
           </li>
@@ -1059,8 +1065,9 @@ function PuppiesTab({ pw }: { pw: string }) {
               className={inputCls}
             >
               <option>화이트</option>
-              <option>크림</option>
-              <option>파티 컬러</option>
+              <option>화이트블랙</option>
+              <option>화이트크림</option>
+              <option>파티</option>
             </select>
           </Field>
           <Field label="개월 수">
@@ -1176,7 +1183,9 @@ function PuppiesList({
   reload: () => Promise<void>;
 }) {
   const [statusFilter, setStatusFilter] = useState<"전체" | "분양중" | "분양완료">("전체");
-  const [colorFilter, setColorFilter] = useState<"전체" | "화이트" | "크림" | "파티 컬러">("전체");
+  const [colorFilter, setColorFilter] = useState<
+    "전체" | "화이트" | "화이트블랙" | "화이트크림" | "파티"
+  >("전체");
   const [sort, setSort] = useState<"latest" | "oldest" | "order">("order");
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -1298,8 +1307,9 @@ function PuppiesList({
         >
           <option value="전체">전체 색상</option>
           <option value="화이트">화이트</option>
-          <option value="크림">크림</option>
-          <option value="파티 컬러">파티 컬러</option>
+          <option value="화이트블랙">화이트블랙</option>
+          <option value="화이트크림">화이트크림</option>
+          <option value="파티">파티</option>
         </select>
         <select
           value={sort}
