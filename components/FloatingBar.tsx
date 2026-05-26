@@ -22,7 +22,7 @@ const KakaoLogo = (
       y="23"
       textAnchor="middle"
       dominantBaseline="middle"
-      fontFamily="'Pretendard','Noto Sans KR',sans-serif"
+      fontFamily="'Pretendard','Noto Sans KR','Noto Sans SC',sans-serif"
       fontSize="8"
       fontWeight="800"
       fill="#FFFFFF"
@@ -66,7 +66,7 @@ const XhsLogo = (
       y="25"
       textAnchor="middle"
       dominantBaseline="middle"
-      fontFamily="'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif"
+      fontFamily="'Pretendard','Noto Sans KR','Noto Sans SC',sans-serif"
       fontSize="11"
       fontWeight="800"
       fill="#fff"
@@ -89,8 +89,8 @@ const WechatLogo = (
 const PremiumPetLogo = (
   <svg viewBox="0 0 48 48" className="h-full w-full" aria-hidden>
     <rect width="48" height="48" rx="12" fill="#E9DEC8" />
-    <text x="24" y="19" textAnchor="middle" dominantBaseline="middle" fontFamily="'Playfair Display',Georgia,serif" fontSize="7" fontWeight="700" fill="#8E5E27" letterSpacing="0.6">PREMIUM</text>
-    <text x="24" y="30" textAnchor="middle" dominantBaseline="middle" fontFamily="'Playfair Display',Georgia,serif" fontSize="7" fontWeight="700" fill="#8E5E27" letterSpacing="0.6">PET</text>
+    <text x="24" y="19" textAnchor="middle" dominantBaseline="middle" fontFamily="'Pretendard','Noto Sans KR','Noto Sans SC',sans-serif" fontSize="7" fontWeight="700" fill="#8E5E27" letterSpacing="0.6">PREMIUM</text>
+    <text x="24" y="30" textAnchor="middle" dominantBaseline="middle" fontFamily="'Pretendard','Noto Sans KR','Noto Sans SC',sans-serif" fontSize="7" fontWeight="700" fill="#8E5E27" letterSpacing="0.6">PET</text>
   </svg>
 );
 

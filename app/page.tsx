@@ -275,11 +275,18 @@ function HomeHero({
           </p>
           <Link
             href="/puppies"
-            className="mt-9 inline-flex h-[52px] w-[210px] items-center justify-center gap-3 bg-brand-brown px-6 font-pretendard text-[15px] font-medium text-white transition-transform hover:-translate-y-0.5 sm:mt-10 lg:mt-12 lg:h-[59px] lg:w-[230px] lg:text-[16px] 2xl:mt-[44px]"
+            className="relative mt-9 inline-flex h-[52px] w-[210px] items-center justify-center bg-brand-brown px-10 font-pretendard text-[15px] font-medium text-white transition-transform hover:-translate-y-0.5 sm:mt-10 lg:mt-12 lg:h-[59px] lg:w-[230px] lg:text-[16px] 2xl:mt-[44px]"
             style={{ borderRadius: "29.5px" }}
           >
-            <span>{pick(lang, "강아지 보러가기", "查看幼犬")}</span>
-            <svg width="22" height="8" viewBox="0 0 22 8" fill="none" aria-hidden>
+            <span className="text-center">{pick(lang, "강아지 보러가기", "查看幼犬")}</span>
+            <svg
+              width="22"
+              height="8"
+              viewBox="0 0 22 8"
+              fill="none"
+              aria-hidden
+              className="absolute right-6 top-1/2 -translate-y-1/2"
+            >
               <path
                 d="M0 4h20m0 0L16 1m4 3l-4 3"
                 stroke="currentColor"

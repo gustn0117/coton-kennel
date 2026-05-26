@@ -75,7 +75,7 @@ export default function AdminPage() {
           onSubmit={login}
           className="w-full max-w-sm rounded-2xl border border-line-card/60 bg-white p-8 shadow-card"
         >
-          <p className="font-serif text-[12px] uppercase tracking-[0.3em] text-brand-brown">
+          <p className="text-[12px] uppercase tracking-[0.3em] text-brand-brown">
             Coton Kennel
           </p>
           <h1 className="mt-3 text-[24px] font-bold tracking-[-0.018em] text-ink-900">
@@ -110,7 +110,7 @@ export default function AdminPage() {
     <main className="mx-auto max-w-page px-6 py-12 lg:px-10">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="font-serif text-[12px] uppercase tracking-[0.32em] text-brand-brown">
+          <p className="text-[12px] uppercase tracking-[0.32em] text-brand-brown">
             Admin Dashboard
           </p>
           <h1 className="mt-2 text-[28px] font-bold tracking-[-0.018em] text-ink-900 md:text-[34px]">

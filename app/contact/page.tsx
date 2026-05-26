@@ -309,11 +309,11 @@ export default function ContactPage() {
             }
           />
           <VisitCard
-            label={pick(lang, "운영시간", "营业须知")}
+            label={pick(lang, "상담시간", "咨询时间")}
             value={pick(
               lang,
-              "주차가능 24시간 연중무휴",
-              "全天候可到访, 全年无休, 内设专属停车区域"
+              "전화 상담은 24시간 연중무휴로 언제든 편하게 문의 가능합니다.",
+              "电话咨询全年无休, 24小时可联系。"
             )}
           />
         </div>
@@ -913,4 +913,3 @@ function SnsCard({
     </a>
   );
 }
-

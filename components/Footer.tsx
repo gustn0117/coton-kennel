@@ -14,7 +14,7 @@ const KakaoTile = (
       d="M24 11.5c-7.18 0-13 4.4-13 9.83 0 3.5 2.4 6.57 6.02 8.3l-1.3 4.66c-.12.43.34.78.72.55l5.43-3.5c.69.1 1.4.14 2.13.14 7.18 0 13-4.4 13-9.83S31.18 11.5 24 11.5z"
       fill="#3B1E1E"
     />
-    <text x="24" y="23" textAnchor="middle" dominantBaseline="middle" fontFamily="'Pretendard',sans-serif" fontSize="8" fontWeight="800" fill="#fff" letterSpacing="0.4">TALK</text>
+    <text x="24" y="23" textAnchor="middle" dominantBaseline="middle" fontFamily="'Pretendard','Noto Sans KR','Noto Sans SC',sans-serif" fontSize="8" fontWeight="800" fill="#fff" letterSpacing="0.4">TALK</text>
   </svg>
 );
 const InstaTile = (
@@ -43,7 +43,7 @@ const YoutubeTile = (
 const XhsTile = (
   <svg viewBox="0 0 48 48" className="h-full w-full" aria-hidden>
     <rect width="48" height="48" rx="12" fill="#FF2442" />
-    <text x="24" y="25" textAnchor="middle" dominantBaseline="middle" fontFamily="'Noto Sans SC','PingFang SC',sans-serif" fontSize="11" fontWeight="800" fill="#fff">小红书</text>
+    <text x="24" y="25" textAnchor="middle" dominantBaseline="middle" fontFamily="'Pretendard','Noto Sans KR','Noto Sans SC',sans-serif" fontSize="11" fontWeight="800" fill="#fff">小红书</text>
   </svg>
 );
 const WechatTile = (
@@ -165,7 +165,11 @@ export default function Footer() {
               010-5523-1973
             </a>
             <p className="mt-2 text-[13px] font-medium text-white/85 lg:text-[14px]">
-              {pick(lang, "24시 방문 가능", "24小时可参观")}
+              {pick(
+                lang,
+                "전화 상담은 24시간 연중무휴로 가능합니다.",
+                "电话咨询全年无休, 24小时可联系。"
+              )}
             </p>
           </Col>
 

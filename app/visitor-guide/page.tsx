@@ -75,7 +75,7 @@ export default function VisitorGuidePage() {
             이야기와 매장 방문 안내를 확인하세요 !
           </>,
           <>
-            一起来看看棉花面纱犬融入家庭,
+            一起来看看棉花面纱犬融入家庭，
             <br />
             相伴相守的暖心小故事
           </>
