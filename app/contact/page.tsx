@@ -369,7 +369,7 @@ export default function ContactPage() {
             }
             desc={pick(
               lang,
-              "전화 상담 가능 시간은 평일 10:00–19:00입니다. 월요일은 휴무입니다.",
+              "전화 상담은 24시간 연중무휴로 언제든 편하게 문의 가능합니다.",
               "咨询全天无休接待"
             )}
             ctaLabel={pick(lang, "전화상담 바로가기", "致电咨询")}

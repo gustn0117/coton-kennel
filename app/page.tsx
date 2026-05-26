@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Hero from "@/components/Hero";
 import PuppyImage from "@/components/PuppyImage";
 import StarRating from "@/components/StarRating";
 import PremiumGuide from "@/components/PremiumGuide";
@@ -116,26 +115,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero
-        eyebrow={pick(lang, "COTON KENNEL", "Coton Kennel")}
-        title={pick(
-          lang,
-          `서울 유일 국제 도그쇼 챔피언 혈통을\n이어가는 꼬똥 드 툴레아 전문 켄넬`,
-          `以 FCI 国际认证为基\n以赛事荣耀为证\n以自家匠心繁育为本`
-        )}
-        description={pick(
-          lang,
-          "FCI 기준을 지키며,\n평생 함께할 가족을 준비합니다.",
-          "守护每一次一生相伴的美好邂逅"
-        )}
-        cta={{
-          href: "/puppies",
-          label: pick(lang, "강아지 보러가기", "查看幼犬"),
-        }}
-        variant="hero"
-        images={heroImages.slice(0, 1)}
-        imageRadius={46}
-      />
+      <HomeHero lang={lang} heroImage={heroImages[0]?.image_url ?? null} />
 
       {/* Premium Guide — slide carousel: arrows swap the whole section */}
       <PremiumGuide lang={lang} images={premiumImages} />
@@ -232,6 +212,85 @@ export default async function HomePage() {
         </div>
       </section>
     </>
+  );
+}
+
+/**
+ * 홈 Hero — 강아지 이미지를 풀배경으로 깔고 어두운 그라디언트 위에
+ * 흰색 텍스트(타이틀 굵음, 서브 85%)를 좌측 정렬로 올리는 임팩트 큰 hero.
+ * 다른 페이지의 Hero(2단 컬럼)와는 의도적으로 다른 디자인이다.
+ */
+function HomeHero({
+  lang,
+  heroImage,
+}: {
+  lang: Awaited<ReturnType<typeof getLang>>;
+  heroImage: string | null;
+}) {
+  return (
+    <section className="relative isolate w-full overflow-hidden bg-ink-900">
+      {/* Background image */}
+      {heroImage ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={heroImage}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 -z-10 h-full w-full object-cover"
+        />
+      ) : (
+        <div className="absolute inset-0 -z-10 h-full w-full bg-ink-900" />
+      )}
+      {/* Dark gradient overlay for legibility */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/55 to-black/25"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 bg-gradient-to-t from-black/45 to-transparent"
+      />
+
+      <div className="mx-auto w-full max-w-page-wide px-5 py-20 sm:px-6 sm:py-24 md:py-28 lg:px-12 lg:py-32 xl:px-20 xl:py-40 2xl:px-[179px] 2xl:py-[150px]">
+        <div className="max-w-[760px] text-left text-white">
+          <p className="font-pretendard text-[16px] font-medium tracking-[0.04em] text-white/85 sm:text-[18px] lg:text-[20px] xl:text-[22px]">
+            Coton Kennel
+          </p>
+          <p className="mt-3 font-pretendard text-[19px] font-bold leading-[1.3] tracking-[-0.01em] text-white sm:mt-4 sm:text-[22px] lg:text-[26px] xl:text-[30px] 2xl:text-[34px]">
+            {pick(lang, "FCI 공인 / 서울 유일", "FCI 国际认证 / 首尔唯一")}
+          </p>
+          <h1 className="mt-6 whitespace-pre-line font-pretendard text-[40px] font-extrabold leading-[1.08] tracking-[-0.02em] text-white sm:mt-7 sm:text-[52px] md:text-[60px] lg:text-[72px] xl:text-[84px] 2xl:text-[96px]">
+            {pick(
+              lang,
+              "국제 도그쇼\n챔피언 혈통\n꼬똥 드 툴레아",
+              "国际犬展\n冠军血统\n棉花面纱犬"
+            )}
+          </h1>
+          <p className="mt-6 font-pretendard text-[15.5px] font-medium leading-[1.55] text-white/85 sm:mt-7 sm:text-[17px] lg:text-[19px] xl:text-[22px] 2xl:text-[24px]">
+            {pick(
+              lang,
+              "평생 함께할 가족을 준비합니다",
+              "守护每一次一生相伴的美好邂逅"
+            )}
+          </p>
+          <Link
+            href="/puppies"
+            className="mt-9 inline-flex h-[52px] w-[210px] items-center justify-center gap-3 bg-brand-brown px-6 font-pretendard text-[15px] font-medium text-white transition-transform hover:-translate-y-0.5 sm:mt-10 lg:mt-12 lg:h-[59px] lg:w-[230px] lg:text-[16px] 2xl:mt-[44px]"
+            style={{ borderRadius: "29.5px" }}
+          >
+            <span>{pick(lang, "강아지 보러가기", "查看幼犬")}</span>
+            <svg width="22" height="8" viewBox="0 0 22 8" fill="none" aria-hidden>
+              <path
+                d="M0 4h20m0 0L16 1m4 3l-4 3"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }
 

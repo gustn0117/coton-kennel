@@ -36,13 +36,19 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
+          "Pretendard",
           "Noto Sans KR",
-          "Noto Sans",
+          "Noto Sans SC",
           "Apple SD Gothic Neo",
           "system-ui",
           "sans-serif",
         ],
-        pretendard: ["Pretendard", "Noto Sans KR", "sans-serif"],
+        pretendard: [
+          "Pretendard",
+          "Noto Sans KR",
+          "Noto Sans SC",
+          "sans-serif",
+        ],
       },
       maxWidth: {
         page: "1574px",
