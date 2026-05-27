@@ -34,7 +34,7 @@ type Props = {
  * - 우측 이미지 805×668, radius 가변(46/51/68)
  */
 export default function Hero({
-  eyebrow = "Conton Kennel",
+  eyebrow = "Coton Kennel",
   title,
   description,
   cta,

@@ -4,7 +4,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
 import PuppyImage from "@/components/PuppyImage";
-import { supabasePublic, type Notice, type SiteImage } from "@/lib/supabase";
+import {
+  supabasePublic,
+  telHref,
+  DEFAULT_PHONE_1,
+  DEFAULT_PHONE_2,
+  type Notice,
+  type SiteImage,
+  type SiteSetting,
+} from "@/lib/supabase";
 import NoticeModal, { isNew } from "@/components/NoticeModal";
 import MapEmbed, { mapLink } from "@/components/MapEmbed";
 import { useLang } from "@/lib/LangProvider";
@@ -97,6 +105,8 @@ export default function ContactPage() {
   const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
   const [stepImages, setStepImages] = useState<Record<string, string | null>>({});
   const [noticePage, setNoticePage] = useState(0);
+  const [phone1, setPhone1] = useState(DEFAULT_PHONE_1);
+  const [phone2, setPhone2] = useState(DEFAULT_PHONE_2);
 
   useEffect(() => {
     supabasePublic
@@ -120,6 +130,15 @@ export default function ContactPage() {
           map[r.key] = r.image_url;
         });
         setStepImages(map);
+      });
+    supabasePublic
+      .from("site_settings")
+      .select("key, value")
+      .then(({ data }) => {
+        for (const row of (data ?? []) as SiteSetting[]) {
+          if (row.key === "phone1" && row.value) setPhone1(row.value);
+          if (row.key === "phone2" && row.value) setPhone2(row.value);
+        }
       });
   }, []);
 
@@ -303,8 +322,8 @@ export default function ContactPage() {
             label={pick(lang, "대표번호", "联系热线")}
             value={
               <span className="tnum flex flex-col gap-0.5 leading-tight">
-                <span>010-9410-4366</span>
-                <span>010-5523-1973</span>
+                <span>{phone1}</span>
+                <span>{phone2}</span>
               </span>
             }
           />
@@ -363,8 +382,8 @@ export default function ContactPage() {
             title={pick(lang, "전화 상담", "电话咨询")}
             highlight={
               <span className="flex flex-col items-center gap-0.5 leading-tight">
-                <span>010-9410-4366</span>
-                <span>010-5523-1973</span>
+                <span>{phone1}</span>
+                <span>{phone2}</span>
               </span>
             }
             desc={pick(
@@ -375,7 +394,7 @@ export default function ContactPage() {
             ctaLabel={pick(lang, "전화상담 바로가기", "致电咨询")}
             ctaBg="bg-brand-brown"
             ctaText="text-white"
-            href="tel:01094104366"
+            href={telHref(phone1)}
           />
           {/* 위챗 */}
           <button

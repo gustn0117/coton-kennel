@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
+import { telHref } from "@/lib/supabase";
 import { ArrowRight } from "./icons";
 
 /* small footer SNS tiles (brand-colored, rounded square) */
@@ -76,7 +77,13 @@ const SOCIAL: { href: string; label: string; tile: React.ReactNode }[] = [
   { href: "https://weixin.qq.com/", label: "WeChat", tile: WechatTile },
 ];
 
-export default function Footer() {
+export default function Footer({
+  phone1,
+  phone2,
+}: {
+  phone1: string;
+  phone2: string;
+}) {
   const pathname = usePathname();
   const lang = useLang();
   const terms = pick(lang, "이용약관", "服务条款");
@@ -153,21 +160,21 @@ export default function Footer() {
 
           <Col label="Contact">
             <a
-              href="tel:01094104366"
+              href={telHref(phone1)}
               className="tnum block text-[18px] font-bold text-white hover:text-brand-tan lg:text-[20px]"
             >
-              010-9410-4366
+              {phone1}
             </a>
             <a
-              href="tel:01055231973"
+              href={telHref(phone2)}
               className="tnum mt-1 block text-[18px] font-bold text-white hover:text-brand-tan lg:text-[20px]"
             >
-              010-5523-1973
+              {phone2}
             </a>
             <p className="mt-2 text-[13px] font-medium text-white/85 lg:text-[14px]">
               {pick(
                 lang,
-                "전화 상담은 24시간 연중무휴로 가능합니다.",
+                "전화 상담은 24시간 연중무휴로 언제든 편하게 문의 가능합니다.",
                 "电话咨询全年无休, 24小时可联系。"
               )}
             </p>

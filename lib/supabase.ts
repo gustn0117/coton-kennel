@@ -69,6 +69,47 @@ export type SiteVideo = {
   updated_at: string;
 };
 
+export type SiteSetting = {
+  key: string;
+  value: string;
+  updated_at: string;
+};
+
+/** key 별 라벨/설명 — 어드민 UI에서 표시 */
+export const SITE_SETTING_FIELDS: { key: string; label: string; placeholder: string }[] = [
+  { key: "phone1", label: "전화번호 1", placeholder: "010-0000-0000" },
+  { key: "phone2", label: "전화번호 2", placeholder: "010-0000-0000" },
+];
+
+/** 어드민 미설정 시 사용할 기본값 — DB seed와 동일하게 유지 */
+export const DEFAULT_PHONE_1 = "010-9410-4366";
+export const DEFAULT_PHONE_2 = "010-5523-1973";
+
+/** 표시용 전화번호 → tel: href 포맷 (숫자만 추출) */
+export function telHref(phone: string | null | undefined): string {
+  const digits = (phone ?? "").replace(/\D/g, "");
+  return digits ? `tel:${digits}` : "tel:";
+}
+
+/** 서버/클라이언트 어디서나 호출 가능한 site_settings 일괄 조회 — DB 다운/미설정 시 기본값 반환 */
+export async function fetchSiteSettings(): Promise<Record<string, string>> {
+  try {
+    const { data } = await supabasePublic
+      .from("site_settings")
+      .select("key, value");
+    const map: Record<string, string> = {
+      phone1: DEFAULT_PHONE_1,
+      phone2: DEFAULT_PHONE_2,
+    };
+    for (const row of (data ?? []) as SiteSetting[]) {
+      if (row.value) map[row.key] = row.value;
+    }
+    return map;
+  } catch {
+    return { phone1: DEFAULT_PHONE_1, phone2: DEFAULT_PHONE_2 };
+  }
+}
+
 export type SiteImageGroup = {
   key: string;
   slot: number;
@@ -133,7 +174,7 @@ export const SITE_IMAGE_GROUPS: SiteImageGroup[] = [
     key: "puppies.breed.heritage",
     slot: 0,
     label: "Heritage 섹션",
-    description: "강아지 소개 슬라이드 2번 ‘Heritage / Conton Kennel’ 우측 이미지.",
+    description: "강아지 소개 슬라이드 2번 ‘Heritage / Coton Kennel’ 우측 이미지.",
     page: "/puppies",
     pageLabel: "강아지소개 페이지",
   },

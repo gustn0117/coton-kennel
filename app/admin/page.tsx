@@ -8,10 +8,10 @@ import type {
   SiteImage,
   SiteVideo,
 } from "@/lib/supabase";
-import { SITE_IMAGE_GROUPS } from "@/lib/supabase";
+import { SITE_IMAGE_GROUPS, SITE_SETTING_FIELDS, type SiteSetting } from "@/lib/supabase";
 import { MapPinIcon } from "@/components/icons";
 
-type Tab = "site-images" | "site-videos" | "notices" | "puppies" | "reviews";
+type Tab = "site-images" | "site-videos" | "notices" | "puppies" | "reviews" | "settings";
 const STORAGE_KEY = "ck_admin_pw";
 const VARIANTS = [
   "p1", "p2", "p3", "p4", "p5", "p6",
@@ -134,6 +134,7 @@ export default function AdminPage() {
             ["notices", "공지사항"],
             ["puppies", "강아지"],
             ["reviews", "후기"],
+            ["settings", "사이트 설정"],
           ] as [Tab, string][]
         ).map(([k, label]) => (
           <button
@@ -157,6 +158,7 @@ export default function AdminPage() {
         {tab === "notices" && <NoticesTab pw={pw} />}
         {tab === "puppies" && <PuppiesTab pw={pw} />}
         {tab === "reviews" && <ReviewsTab pw={pw} />}
+        {tab === "settings" && <SiteSettingsTab pw={pw} />}
       </div>
     </main>
   );
@@ -1674,6 +1676,135 @@ function ReviewsTab({ pw }: { pw: string }) {
             <li className="py-8 text-center text-[13px] text-ink-500">없음</li>
           )}
         </ul>
+      </Panel>
+    </div>
+  );
+}
+
+/* ---------------- SITE SETTINGS (전화번호 등 사이트 전역 값) ---------------- */
+function SiteSettingsTab({ pw }: { pw: string }) {
+  const [values, setValues] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [saved, setSaved] = useState<string | null>(null);
+
+  async function load() {
+    const r = await fetch("/api/admin/site-settings", { cache: "no-store" });
+    const rows: SiteSetting[] = await r.json();
+    const map: Record<string, string> = {};
+    for (const row of rows) map[row.key] = row.value;
+    setValues(map);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function saveOne(key: string) {
+    setBusy(true);
+    setSaved(null);
+    try {
+      const r = await fetch("/api/admin/site-settings", {
+        method: "PATCH",
+        headers: authHeaders(pw),
+        body: JSON.stringify({ key, value: values[key] ?? "" }),
+      });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      setSaved(key);
+      await load();
+    } catch (err) {
+      alert(`저장 실패: ${(err as Error).message}`);
+    } finally {
+      setBusy(false);
+      window.setTimeout(() => setSaved(null), 2500);
+    }
+  }
+
+  async function saveAll() {
+    setBusy(true);
+    setSaved(null);
+    try {
+      for (const field of SITE_SETTING_FIELDS) {
+        const r = await fetch("/api/admin/site-settings", {
+          method: "PATCH",
+          headers: authHeaders(pw),
+          body: JSON.stringify({
+            key: field.key,
+            value: values[field.key] ?? "",
+          }),
+        });
+        if (!r.ok) throw new Error(`${field.key} HTTP ${r.status}`);
+      }
+      setSaved("all");
+      await load();
+    } catch (err) {
+      alert(`저장 실패: ${(err as Error).message}`);
+    } finally {
+      setBusy(false);
+      window.setTimeout(() => setSaved(null), 2500);
+    }
+  }
+
+  if (loading) {
+    return <p className="py-10 text-center text-[14px] text-ink-500">불러오는 중...</p>;
+  }
+
+  return (
+    <div className="space-y-8">
+      <div className="rounded-2xl border border-line-card/70 bg-line-surface p-5 text-[13.5px] leading-[1.8] text-ink-700">
+        <p className="flex items-center gap-2 font-semibold text-ink-900">
+          <MapPinIcon className="h-4 w-4 text-brand-brown" />
+          안내 — 전화번호 일괄 변경
+        </p>
+        <ul className="mt-2 list-disc space-y-1 pl-5">
+          <li>여기서 저장한 값은 <strong>웹사이트 푸터, 상담/문의 페이지의 대표번호 카드 · 전화 상담 카드, 개인정보처리방침의 연락처</strong> 4곳에 동시에 반영됩니다.</li>
+          <li>형식은 <code className="rounded bg-white px-1.5 py-0.5 text-[12.5px]">010-0000-0000</code> 처럼 하이픈 포함으로 입력하시면 됩니다. 통화 버튼(<code className="rounded bg-white px-1.5 py-0.5 text-[12.5px]">tel:</code>)에는 자동으로 하이픈 없이 들어갑니다.</li>
+        </ul>
+      </div>
+
+      <Panel title="전화번호">
+        {SITE_SETTING_FIELDS.map((field) => (
+          <Field key={field.key} label={field.label}>
+            <div className="flex flex-wrap items-center gap-2">
+              <input
+                type="tel"
+                value={values[field.key] ?? ""}
+                onChange={(e) =>
+                  setValues((prev) => ({ ...prev, [field.key]: e.target.value }))
+                }
+                placeholder={field.placeholder}
+                className={`${inputCls} max-w-[260px] flex-1`}
+              />
+              <button
+                type="button"
+                onClick={() => saveOne(field.key)}
+                disabled={busy}
+                className={smallBtn}
+              >
+                저장
+              </button>
+              {saved === field.key && (
+                <span className="text-[12px] font-medium text-emerald-600">저장됨 ✓</span>
+              )}
+            </div>
+          </Field>
+        ))}
+        <div className="flex items-center gap-3 pt-2">
+          <button
+            type="button"
+            onClick={saveAll}
+            disabled={busy}
+            className={primaryBtn}
+          >
+            모두 저장
+          </button>
+          {saved === "all" && (
+            <span className="text-[12.5px] font-medium text-emerald-600">
+              전체 저장 완료 ✓
+            </span>
+          )}
+        </div>
       </Panel>
     </div>
   );

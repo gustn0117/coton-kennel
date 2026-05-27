@@ -1,12 +1,32 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Section } from "@/components/Section";
+import {
+  supabasePublic,
+  DEFAULT_PHONE_1,
+  DEFAULT_PHONE_2,
+  type SiteSetting,
+} from "@/lib/supabase";
 
 type Tab = "terms" | "privacy";
 
 export default function PolicyPage() {
   const [tab, setTab] = useState<Tab>("terms");
+  const [phone1, setPhone1] = useState(DEFAULT_PHONE_1);
+  const [phone2, setPhone2] = useState(DEFAULT_PHONE_2);
+
+  useEffect(() => {
+    supabasePublic
+      .from("site_settings")
+      .select("key, value")
+      .then(({ data }) => {
+        for (const row of (data ?? []) as SiteSetting[]) {
+          if (row.key === "phone1" && row.value) setPhone1(row.value);
+          if (row.key === "phone2" && row.value) setPhone2(row.value);
+        }
+      });
+  }, []);
 
   return (
     <>
@@ -38,7 +58,11 @@ export default function PolicyPage() {
         </div>
 
         <div className="rounded-b-3xl bg-white px-6 py-10 ring-1 ring-cream-300/50 md:px-12 md:py-14">
-          {tab === "terms" ? <TermsContent /> : <PrivacyContent />}
+          {tab === "terms" ? (
+            <TermsContent />
+          ) : (
+            <PrivacyContent phone1={phone1} phone2={phone2} />
+          )}
         </div>
       </Section>
     </>
@@ -270,7 +294,7 @@ function TermsContent() {
   );
 }
 
-function PrivacyContent() {
+function PrivacyContent({ phone1, phone2 }: { phone1: string; phone2: string }) {
   return (
     <>
       <Article num={1} title="수집하는 개인정보 항목">
@@ -409,7 +433,7 @@ function PrivacyContent() {
         <div className="mt-3 grid gap-2.5 sm:grid-cols-3">
           {[
             { label: "업체명", value: "꼬똥켄넬" },
-            { label: "연락처", value: "010-9410-4366 / 010-5523-1973" },
+            { label: "연락처", value: `${phone1} / ${phone2}` },
             { label: "이메일", value: "이메일 주소 입력" },
           ].map((c) => (
             <div

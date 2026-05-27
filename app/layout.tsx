@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import FloatingBar from "@/components/FloatingBar";
 import { LangProvider } from "@/lib/LangProvider";
 import { getLang } from "@/lib/i18n-server";
+import { fetchSiteSettings, DEFAULT_PHONE_1, DEFAULT_PHONE_2 } from "@/lib/supabase";
 
 export const metadata: Metadata = {
   title: "꼬똥켄넬 | Coton Kennel - FCI 검증, 기준을 지키는 분양",
@@ -20,7 +21,12 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const lang = await getLang();
+  const [lang, settings] = await Promise.all([
+    getLang(),
+    fetchSiteSettings(),
+  ]);
+  const phone1 = settings.phone1 ?? DEFAULT_PHONE_1;
+  const phone2 = settings.phone2 ?? DEFAULT_PHONE_2;
   return (
     <html lang={lang === "zh" ? "zh-CN" : "ko"}>
       <body className="bg-white min-h-screen">
@@ -28,7 +34,7 @@ export default async function RootLayout({
           <Header />
           <main>{children}</main>
           <FloatingBar />
-          <Footer />
+          <Footer phone1={phone1} phone2={phone2} />
         </LangProvider>
       </body>
     </html>
