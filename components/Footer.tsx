@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { useLang } from "@/lib/LangProvider";
 import { pick } from "@/lib/i18n";
 import { telHref } from "@/lib/supabase";
-import { ArrowRight } from "./icons";
+import { ArrowRight, CloseIcon } from "./icons";
+
+const WECHAT_QR =
+  "https://api.hsweb.pics/storage/v1/object/public/coton-kennel/guide/wechat-qr.png";
 
 /* small footer SNS tiles (brand-colored, rounded square) */
 const KakaoTile = (
@@ -57,6 +61,7 @@ const WechatTile = (
   </svg>
 );
 
+/* 외부 링크용 SNS 4종 — 위챗은 QR 모달이라 별도 처리 */
 const SOCIAL: { href: string; label: string; tile: React.ReactNode }[] = [
   { href: "https://pf.kakao.com/_FRxhsX", label: "KakaoTalk", tile: KakaoTile },
   {
@@ -74,7 +79,6 @@ const SOCIAL: { href: string; label: string; tile: React.ReactNode }[] = [
     label: "Xiaohongshu",
     tile: XhsTile,
   },
-  { href: "https://weixin.qq.com/", label: "WeChat", tile: WechatTile },
 ];
 
 export default function Footer({
@@ -88,6 +92,7 @@ export default function Footer({
   const lang = useLang();
   const terms = pick(lang, "이용약관", "服务条款");
   const privacy = pick(lang, "개인정보처리방침", "隐私政策");
+  const [showWeChatQR, setShowWeChatQR] = useState(false);
 
   if (pathname?.startsWith("/admin")) return null;
 
@@ -138,6 +143,16 @@ export default function Footer({
                 </a>
               </li>
             ))}
+            <li>
+              <button
+                type="button"
+                onClick={() => setShowWeChatQR(true)}
+                aria-label={pick(lang, "위챗 QR 보기", "微信二维码")}
+                className="block h-9 w-9 overflow-hidden rounded-xl shadow-md transition-transform hover:scale-105 sm:h-10 sm:w-10"
+              >
+                {WechatTile}
+              </button>
+            </li>
           </ul>
         </div>
 
@@ -207,6 +222,45 @@ export default function Footer({
           </Col>
         </div>
       </div>
+
+      {showWeChatQR && (
+        <div
+          className="ck-modal-fade fixed inset-0 z-50 flex items-center justify-center bg-black/55 backdrop-blur-md"
+          role="dialog"
+          aria-modal
+          onClick={() => setShowWeChatQR(false)}
+        >
+          <div
+            className="ck-modal-pop relative w-[300px] rounded-card-xl bg-white p-7 text-center text-ink-900 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setShowWeChatQR(false)}
+              aria-label={pick(lang, "닫기", "关闭")}
+              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-ink-500 hover:bg-line-tag hover:text-black"
+            >
+              <CloseIcon className="h-4 w-4" />
+            </button>
+            <div className="mx-auto h-11 w-11 overflow-hidden rounded-xl">
+              {WechatTile}
+            </div>
+            <h3 className="mt-4 text-lg font-bold text-ink-900">
+              {pick(lang, "위챗으로 상담하기", "微信咨询")}
+            </h3>
+            <p className="mt-1 text-sm text-ink-500">
+              {pick(lang, "아래 QR 코드를 스캔해주세요", "请扫描下方二维码")}
+            </p>
+            <div className="mt-5 flex justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={WECHAT_QR} alt="WeChat QR" className="block w-48" />
+            </div>
+            <p className="mt-4 text-xs text-ink-500">
+              wechat id : cotonkennel
+            </p>
+          </div>
+        </div>
+      )}
     </footer>
   );
 }
