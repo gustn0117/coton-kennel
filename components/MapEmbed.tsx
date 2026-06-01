@@ -17,11 +17,13 @@ type Props = {
 const KENNEL_NAVER_PLACE_ID = "2084747265";
 
 /**
- * 꼬똥켄넬 좌표 (Nominatim 조회 결과). 네이버 지도 SDK는 위경도 기반으로
- * Map 객체를 초기화하므로 상수로 보관.
+ * 꼬똥켄넬 좌표 — 네이버 자체 등록값.
+ * (m.map.naver.com/search.nhn?query=꼬똥켄넬 응답의 latitude/longitude)
+ * Nominatim 좌표는 도로 중심으로 ~50m 어긋나 마커가 옆 가게에 박혀
+ * 사용자 피드백("지도 위치 표기가 잘못되어있는데") 발생.
  */
-const KENNEL_LAT = 37.5419173;
-const KENNEL_LNG = 127.1299905;
+const KENNEL_LAT = 37.5415159;
+const KENNEL_LNG = 127.129249;
 
 // Naver Maps JS SDK 전역 타입 — 정식 타입을 끌어오지 않고 any로 처리
 type NaverMaps = {
